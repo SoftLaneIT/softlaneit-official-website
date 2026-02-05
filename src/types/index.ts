@@ -61,3 +61,38 @@ export interface ContactFormData {
   message: string;
   service?: string;
 }
+
+export interface BlogPost {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  content?: string;
+  image: string;
+  category: string;
+  date: string;
+  readTime: string;
+  author: {
+    name: string;
+    avatar: string;
+  };
+  tags: string[];
+}
+
+export interface JobOpening {
+  id: string;
+  title: string;
+  department: string;
+  location: string;
+  type: 'Full-time' | 'Part-time' | 'Contract' | 'Remote';
+  description: string;
+  requirements: string[];
+  skills: string[];
+}
+
+export interface CompanyPerk {
+  id: string;
+  icon: string;
+  title: string;
+  description: string;
+}

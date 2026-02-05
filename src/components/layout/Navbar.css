@@ -30,11 +30,25 @@
     display: flex;
     align-items: center;
     z-index: 10;
+    transition: all var(--transition-fast);
 }
 
-.navbar-logo-img {
-    height: 40px;
+.navbar-logo:hover {
+    transform: translateY(-2px);
+}
+
+.navbar-logo-svg {
+    height: 32px;
     width: auto;
+    transition: all var(--transition-fast);
+}
+
+.navbar-scrolled .navbar-logo-svg {
+    height: 28px;
+}
+
+.navbar-logo:hover .navbar-logo-svg {
+    filter: drop-shadow(0 4px 12px rgba(255, 101, 0, 0.4));
 }
 
 /* Navigation Links */

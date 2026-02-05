@@ -1,7 +1,19 @@
 import React from 'react';
 import { useScrollAnimation } from '../../hooks';
 import { services } from '../../data/content';
+import { Code2, Smartphone, CloudCog, Brain, Globe, Lightbulb, Shield, Network } from 'lucide-react';
 import './Services.css';
+
+const iconMap: Record<string, React.ElementType> = {
+    Code2,
+    Smartphone,
+    CloudCog,
+    Brain,
+    Globe,
+    Lightbulb,
+    Shield,
+    Network,
+};
 
 export const Services: React.FC = () => {
     const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation();
@@ -32,14 +44,16 @@ export const Services: React.FC = () => {
                     ref={cardsRef}
                     className={`services-grid ${cardsVisible ? 'visible' : ''}`}
                 >
-                    {services.map((service, index) => (
+                    {services.map((service, index) => {
+                        const IconComponent = iconMap[service.icon];
+                        return (
                         <div
                             key={service.id}
                             className="service-card"
                             style={{ transitionDelay: `${index * 100}ms` }}
                         >
                             <div className="service-icon">
-                                <span>{service.icon}</span>
+                                {IconComponent && <IconComponent size={32} strokeWidth={1.5} />}
                             </div>
                             <h3 className="service-title">{service.title}</h3>
                             <p className="service-description">{service.description}</p>
@@ -55,7 +69,8 @@ export const Services: React.FC = () => {
                             </ul>
                             <div className="service-hover-glow"></div>
                         </div>
-                    ))}
+                        );
+                    })}
                 </div>
             </div>
         </section>

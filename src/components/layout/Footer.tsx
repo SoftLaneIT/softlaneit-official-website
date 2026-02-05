@@ -1,6 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { companyInfo, navLinks } from '../../data/content';
-import logoLight from '../../assets/images/logo-light.png';
+import { Logo } from '../common/Logo';
 import './Footer.css';
 
 export const Footer: React.FC = () => {
@@ -21,7 +22,7 @@ export const Footer: React.FC = () => {
                 <div className="footer-grid">
                     {/* Brand Column */}
                     <div className="footer-brand">
-                        <img src={logoLight} alt="SoftlaneIT" className="footer-logo" />
+                        <Logo className="footer-logo" variant="white" />
                         <p className="footer-description">
                             {companyInfo.description}
                         </p>
@@ -53,13 +54,14 @@ export const Footer: React.FC = () => {
                     <div className="footer-column">
                         <h4 className="footer-title">Quick Links</h4>
                         <ul className="footer-links">
-                            {navLinks.map((link) => (
-                                <li key={link.id}>
-                                    <a href={link.href} onClick={(e) => handleNavClick(e, link.href)}>
-                                        {link.label}
-                                    </a>
-                                </li>
-                            ))}
+                            <li><Link to="/">Home</Link></li>
+                            <li><a href="/#services">Services</a></li>
+                            <li><a href="/#about">About</a></li>
+                            <li><a href="/#portfolio">Portfolio</a></li>
+                            <li><a href="/#testimonials">Testimonials</a></li>
+                            <li><Link to="/blog">Blog</Link></li>
+                            <li><Link to="/careers">Careers</Link></li>
+                            <li><Link to="/contact">Contact</Link></li>
                         </ul>
                     </div>
 

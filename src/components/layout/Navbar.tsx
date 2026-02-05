@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { navLinks } from '../../data/content';
-import logoDark from '../../assets/images/logo-dark.png';
+import { Logo } from '../common/Logo';
 import './Navbar.css';
 
 export const Navbar: React.FC = () => {
+    const location = useLocation();
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [activeSection, setActiveSection] = useState('home');
@@ -32,11 +34,24 @@ export const Navbar: React.FC = () => {
 
     const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
         e.preventDefault();
-        const targetId = href.replace('#', '');
-        const element = document.getElementById(targetId);
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
-            setIsMobileMenuOpen(false);
+        setIsMobileMenuOpen(false);
+        
+        // Scroll to top first
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        
+        // If not on home page, navigate to home first
+        if (location.pathname !== '/') {
+            setTimeout(() => {
+                window.location.href = '/' + href;
+            }, 300);
+        } else {
+            setTimeout(() => {
+                const targetId = href.replace('#', '');
+                const element = document.getElementById(targetId);
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                }
+            }, 300);
         }
     };
 
@@ -47,12 +62,12 @@ export const Navbar: React.FC = () => {
     return (
         <nav className={`navbar ${isScrolled ? 'navbar-scrolled' : ''}`}>
             <div className="navbar-container">
-                <a href="#home" className="navbar-logo" onClick={(e) => handleNavClick(e, '#home')}>
-                    <img src={logoDark} alt="SoftlaneIT" className="navbar-logo-img" />
-                </a>
+                <Link to="/" className="navbar-logo">
+                    <Logo className="navbar-logo-svg" variant="white" height={32} />
+                </Link>
 
                 <div className={`navbar-links ${isMobileMenuOpen ? 'navbar-links-open' : ''}`}>
-                    {navLinks.map((link) => (
+                    {navLinks.filter(link => !['blog', 'careers', 'contact'].includes(link.id)).map((link) => (
                         <a
                             key={link.id}
                             href={link.href}
@@ -63,13 +78,29 @@ export const Navbar: React.FC = () => {
                             <span className="navbar-link-underline"></span>
                         </a>
                     ))}
-                    <a
-                        href="#contact"
+                    <Link 
+                        to="/blog" 
+                        className={`navbar-link ${location.pathname === '/blog' ? 'navbar-link-active' : ''}`}
+                        onClick={() => { window.scrollTo({ top: 0, behavior: 'smooth' }); setIsMobileMenuOpen(false); }}
+                    >
+                        Blog
+                        <span className="navbar-link-underline"></span>
+                    </Link>
+                    <Link 
+                        to="/careers" 
+                        className={`navbar-link ${location.pathname === '/careers' ? 'navbar-link-active' : ''}`}
+                        onClick={() => { window.scrollTo({ top: 0, behavior: 'smooth' }); setIsMobileMenuOpen(false); }}
+                    >
+                        Careers
+                        <span className="navbar-link-underline"></span>
+                    </Link>
+                    <Link
+                        to="/contact"
                         className="navbar-cta"
-                        onClick={(e) => handleNavClick(e, '#contact')}
+                        onClick={() => { window.scrollTo({ top: 0, behavior: 'smooth' }); setIsMobileMenuOpen(false); }}
                     >
                         Get Started
-                    </a>
+                    </Link>
                 </div>
 
                 <button
