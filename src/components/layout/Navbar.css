@@ -38,13 +38,13 @@
 }
 
 .navbar-logo-svg {
-    height: 32px;
+    height: 42px;
     width: auto;
     transition: all var(--transition-fast);
 }
 
 .navbar-scrolled .navbar-logo-svg {
-    height: 28px;
+    height: 36px;
 }
 
 .navbar-logo:hover .navbar-logo-svg {

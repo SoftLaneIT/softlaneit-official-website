@@ -63,7 +63,7 @@ export const Navbar: React.FC = () => {
         <nav className={`navbar ${isScrolled ? 'navbar-scrolled' : ''}`}>
             <div className="navbar-container">
                 <Link to="/" className="navbar-logo">
-                    <Logo className="navbar-logo-svg" variant="white" height={32} />
+                    <Logo className="navbar-logo-svg" variant="white" height={42} />
                 </Link>
 
                 <div className={`navbar-links ${isMobileMenuOpen ? 'navbar-links-open' : ''}`}>
