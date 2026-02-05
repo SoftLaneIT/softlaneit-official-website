@@ -1,20 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { companyInfo, navLinks } from '../../data/content';
+import { companyInfo } from '../../data/content';
 import { Logo } from '../common/Logo';
 import './Footer.css';
 
 export const Footer: React.FC = () => {
     const currentYear = new Date().getFullYear();
-
-    const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-        e.preventDefault();
-        const targetId = href.replace('#', '');
-        const element = document.getElementById(targetId);
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
-        }
-    };
 
     return (
         <footer className="footer">

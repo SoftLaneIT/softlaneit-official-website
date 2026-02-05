@@ -7,9 +7,11 @@ import { ContactPage } from './pages/ContactPage';
 import './styles/variables.css';
 import './styles/animations.css';
 
+const basename = import.meta.env.BASE_URL;
+
 function App() {
   return (
-    <Router>
+    <Router basename={basename}>
       <div className="app">
         <Navbar />
         <Routes>

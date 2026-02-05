@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { MapPin, Clock, Briefcase, Users, ArrowRight, CheckCircle2, Sparkles, Zap, Heart, TrendingUp, Globe } from 'lucide-react';
+import { MapPin, Clock, Briefcase, ArrowRight, CheckCircle2, Sparkles, Zap, Heart, TrendingUp, Globe } from 'lucide-react';
 import { jobOpenings, companyPerks } from '../data/content';
 import './CareersPage.css';
 

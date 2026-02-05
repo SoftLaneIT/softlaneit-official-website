@@ -19,7 +19,7 @@ export const useCounter = (options: CounterOptions) => {
 
     const [count, setCount] = useState(start);
     const [isRunning, setIsRunning] = useState(false);
-    const frameRef = useRef<number>();
+    const frameRef = useRef<number | undefined>(undefined);
 
     const animate = useCallback(() => {
         const startTime = performance.now();
