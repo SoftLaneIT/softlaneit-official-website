@@ -149,12 +149,17 @@ export const Hero: React.FC = () => {
                 </div>
             </div>
 
-            {/* Scroll Indicator */}
-            <div className="hero-scroll">
-                <div className="hero-scroll-mouse">
-                    <div className="hero-scroll-wheel"></div>
+            {/* Modern Scroll Indicator */}
+            <div className="hero-scroll-modern" onClick={handleLearnMore}>
+                <div className="hero-scroll-line"></div>
+                <div className="hero-scroll-arrows">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M7 10l5 5 5-5" />
+                    </svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M7 10l5 5 5-5" />
+                    </svg>
                 </div>
-                <span>Scroll to explore</span>
             </div>
         </section>
     );
