@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useParallax } from '../../hooks';
 import { companyInfo } from '../../data/content';
 import { Button } from '../common';
@@ -7,9 +7,47 @@ import './Hero.css';
 export const Hero: React.FC = () => {
     const { style: parallaxStyle } = useParallax({ speed: 0.3, direction: 'up' });
     const [isLoaded, setIsLoaded] = useState(false);
+    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+    const heroRef = useRef<HTMLElement>(null);
 
     useEffect(() => {
         setIsLoaded(true);
+    }, []);
+
+    useEffect(() => {
+        let animationFrameId: number;
+        let targetX = 0;
+        let targetY = 0;
+        let currentX = 0;
+        let currentY = 0;
+
+        const animate = () => {
+            currentX += (targetX - currentX) * 0.15;
+            currentY += (targetY - currentY) * 0.15;
+            setMousePosition({ x: currentX, y: currentY });
+            animationFrameId = requestAnimationFrame(animate);
+        };
+
+        const handleMouseMove = (e: MouseEvent) => {
+            if (heroRef.current) {
+                const rect = heroRef.current.getBoundingClientRect();
+                targetX = e.clientX - rect.left;
+                targetY = e.clientY - rect.top;
+            }
+        };
+
+        const heroElement = heroRef.current;
+        if (heroElement) {
+            heroElement.addEventListener('mousemove', handleMouseMove);
+            animationFrameId = requestAnimationFrame(animate);
+        }
+
+        return () => {
+            if (heroElement) {
+                heroElement.removeEventListener('mousemove', handleMouseMove);
+            }
+            cancelAnimationFrame(animationFrameId);
+        };
     }, []);
 
     const handleGetStarted = () => {
@@ -27,7 +65,16 @@ export const Hero: React.FC = () => {
     };
 
     return (
-        <section id="home" className="hero">
+        <section id="home" className="hero" ref={heroRef}>
+            {/* Cursor-following Glow */}
+            <div 
+                className="hero-cursor-glow"
+                style={{
+                    left: mousePosition.x,
+                    top: mousePosition.y,
+                }}
+            ></div>
+
             {/* Animated Background */}
             <div className="hero-bg" style={parallaxStyle}>
                 <div className="hero-gradient"></div>
