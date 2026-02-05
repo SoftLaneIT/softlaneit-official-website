@@ -66,6 +66,15 @@ export const Hero: React.FC = () => {
 
     return (
         <section id="home" className="hero" ref={heroRef}>
+            {/* Custom Cursor */}
+            <div 
+                className="hero-cursor"
+                style={{
+                    left: mousePosition.x,
+                    top: mousePosition.y,
+                }}
+            ></div>
+
             {/* Cursor-following Glow */}
             <div 
                 className="hero-cursor-glow"
