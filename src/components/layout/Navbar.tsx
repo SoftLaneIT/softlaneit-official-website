@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { navLinks } from '../../data/content';
 import { Logo } from '../common/Logo';
 import './Navbar.css';
 
 export const Navbar: React.FC = () => {
+    const navigate = useNavigate();
     const location = useLocation();
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -35,14 +36,14 @@ export const Navbar: React.FC = () => {
     const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
         e.preventDefault();
         setIsMobileMenuOpen(false);
-        
+
         // Scroll to top first
         window.scrollTo({ top: 0, behavior: 'smooth' });
-        
+
         // If not on home page, navigate to home first
         if (location.pathname !== '/') {
             setTimeout(() => {
-                window.location.href = '/' + href;
+                navigate('/' + href);
             }, 300);
         } else {
             setTimeout(() => {
@@ -78,16 +79,16 @@ export const Navbar: React.FC = () => {
                             <span className="navbar-link-underline"></span>
                         </a>
                     ))}
-                    <Link 
-                        to="/blog" 
+                    <Link
+                        to="/blog"
                         className={`navbar-link ${location.pathname === '/blog' ? 'navbar-link-active' : ''}`}
                         onClick={() => { window.scrollTo({ top: 0, behavior: 'smooth' }); setIsMobileMenuOpen(false); }}
                     >
                         Blog
                         <span className="navbar-link-underline"></span>
                     </Link>
-                    <Link 
-                        to="/careers" 
+                    <Link
+                        to="/careers"
                         className={`navbar-link ${location.pathname === '/careers' ? 'navbar-link-active' : ''}`}
                         onClick={() => { window.scrollTo({ top: 0, behavior: 'smooth' }); setIsMobileMenuOpen(false); }}
                     >

@@ -46,10 +46,10 @@ export const Footer: React.FC = () => {
                         <h4 className="footer-title">Quick Links</h4>
                         <ul className="footer-links">
                             <li><Link to="/">Home</Link></li>
-                            <li><a href="/#services">Services</a></li>
-                            <li><a href="/#about">About</a></li>
-                            <li><a href="/#portfolio">Portfolio</a></li>
-                            <li><a href="/#testimonials">Testimonials</a></li>
+                            <li><Link to="/#services">Services</Link></li>
+                            <li><Link to="/#about">About</Link></li>
+                            <li><Link to="/#portfolio">Portfolio</Link></li>
+                            <li><Link to="/#testimonials">Testimonials</Link></li>
                             <li><Link to="/blog">Blog</Link></li>
                             <li><Link to="/careers">Careers</Link></li>
                             <li><Link to="/contact">Contact</Link></li>
@@ -60,11 +60,11 @@ export const Footer: React.FC = () => {
                     <div className="footer-column">
                         <h4 className="footer-title">Services</h4>
                         <ul className="footer-links">
-                            <li><a href="#services">Software Development</a></li>
-                            <li><a href="#services">Mobile Apps</a></li>
-                            <li><a href="#services">Cloud Solutions</a></li>
-                            <li><a href="#services">AI & Machine Learning</a></li>
-                            <li><a href="#services">Web Development</a></li>
+                            <li><Link to="/#services">Software Development</Link></li>
+                            <li><Link to="/#services">Mobile Apps</Link></li>
+                            <li><Link to="/#services">Cloud Solutions</Link></li>
+                            <li><Link to="/#services">AI & Machine Learning</Link></li>
+                            <li><Link to="/#services">Web Development</Link></li>
                         </ul>
                     </div>
 

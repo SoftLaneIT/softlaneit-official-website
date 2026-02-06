@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { useScrollAnimation } from '../../hooks';
 import { blogPosts } from '../../data/content';
 import './Blog.css';
@@ -50,12 +51,12 @@ export const Blog = () => {
                     <img src={post.author.avatar} alt={post.author.name} className="author-avatar" />
                     <span className="author-name">{post.author.name}</span>
                   </div>
-                  <a href={`/blog/${post.slug}`} className="blog-link">
+                  <Link to={`/blog/${post.slug}`} className="blog-link">
                     Read More
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                       <path d="M5 12h14M12 5l7 7-7 7" />
                     </svg>
-                  </a>
+                  </Link>
                 </div>
               </div>
             </article>
@@ -63,12 +64,12 @@ export const Blog = () => {
         </div>
 
         <div className={`blog-cta ${isVisible ? 'animate-fade-in' : ''}`}>
-          <a href="/blog" className="btn-secondary">
+          <Link to="/blog" className="btn-secondary">
             View All Articles
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M5 12h14M12 5l7 7-7 7" />
             </svg>
-          </a>
+          </Link>
         </div>
       </div>
     </section>
