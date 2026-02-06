@@ -1,27 +1,49 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="/logo-icon.jpg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="SoftlaneIT - Innovating the Future of Technology. We build digital solutions that drive success. Custom software development, mobile apps, cloud solutions, and AI/ML services." />
-    <meta name="keywords" content="software development, mobile app development, cloud solutions, AI, machine learning, web development, IT consulting" />
-    <meta name="author" content="SoftlaneIT" />
-    
-    <!-- Open Graph / Social Media -->
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="SoftlaneIT - Innovating the Future of Technology" />
-    <meta property="og:description" content="We build digital solutions that drive success. Custom software development, mobile apps, cloud solutions, and AI/ML services." />
-    
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <title>SoftlaneIT - Innovating the Future of Technology</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="/logo-icon.jpg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="SoftlaneIT - Innovating the Future of Technology. We build digital solutions that drive success. Custom software development, mobile apps, cloud solutions, and AI/ML services." />
+  <meta name="keywords"
+    content="software development, mobile app development, cloud solutions, AI, machine learning, web development, IT consulting" />
+  <meta name="author" content="SoftlaneIT" />
+
+  <!-- Open Graph / Social Media -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="SoftlaneIT - Innovating the Future of Technology" />
+  <meta property="og:description"
+    content="We build digital solutions that drive success. Custom software development, mobile apps, cloud solutions, and AI/ML services." />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
+  <title>SoftlaneIT - Innovating the Future of Technology</title>
+  <script type="text/javascript">
+    // Single Page Apps for GitHub Pages
+    // MIT License
+    // https://github.com/rafrex/spa-github-pages
+    (function (l) {
+      if (l.search[1] === '/') {
+        var decoded = l.search.slice(1).split('&').map(function (s) {
+          return s.replace(/~and~/g, '&')
+        }).join('?');
+        window.history.replaceState(null, null,
+          l.pathname.slice(0, -1) + decoded + l.hash
+        );
+      }
+    }(window.location))
+  </script>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+
 </html>

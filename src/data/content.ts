@@ -99,7 +99,7 @@ export const projects: Project[] = [
         id: 'project-4',
         title: 'SmartFactory OS',
         description: 'Industrial IoT command center orchestrating 10,000+ connected devices. Predictive maintenance, digital twin simulation, and edge computing for zero downtime.',
-        image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop',
+        image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&auto=format&fit=crop&q=60',
         category: 'IoT & Industry 4.0',
         technologies: ['Rust', 'MQTT', 'TimeSeries', 'K8s', 'Edge AI'],
     },
