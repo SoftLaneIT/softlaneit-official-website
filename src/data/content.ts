@@ -162,7 +162,7 @@ export const companyInfo = {
     name: 'SoftlaneIT',
     tagline: 'Innovating the Future of Technology',
     description: 'We are a forward-thinking software development company dedicated to delivering innovative, scalable, and user-centric digital solutions that drive business growth.',
-    email: 'hello@softlaneit.com',
+    email: 'services@softlaneit.com',
     phone: '+1 (555) 123-4567',
     address: '123 Innovation Drive, Tech City, TC 12345',
     social: {

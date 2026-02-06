@@ -1,18 +1,40 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useScrollAnimation } from '../../hooks';
-import { projects } from '../../data/content';
+import { loadMarkdownFiles } from '../../utils/markdown';
 import './Portfolio.css';
 
-const categories = ['All', 'Web Application', 'Mobile App', 'E-Commerce', 'IoT', 'AI/ML'];
+interface Project {
+    id: string;
+    title: string;
+    description: string;
+    image: string;
+    category: string;
+    technologies: string[];
+}
+
+const categories = ['All', 'Web Application', 'Mobile App', 'E-Commerce', 'IoT', 'AI/ML', 'FinTech', 'Healthcare'];
 
 export const Portfolio: React.FC = () => {
     const [activeCategory, setActiveCategory] = useState('All');
-    const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation();
-    const { ref: gridRef, isVisible: gridVisible } = useScrollAnimation({ threshold: 0.1 });
+    const [projects, setProjects] = useState<any[]>([]);
+    const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation({ wait: projects.length });
+    const { ref: gridRef, isVisible: gridVisible } = useScrollAnimation({ threshold: 0.2, wait: projects.length });
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchProjects = async () => {
+            const projectFiles = import.meta.glob('../../content/projects/*.md', { query: '?raw', import: 'default' });
+            const loadedProjects = await loadMarkdownFiles<Project>(projectFiles);
+            setProjects(loadedProjects);
+        };
+        fetchProjects();
+    }, []);
 
     const filteredProjects = activeCategory === 'All'
         ? projects
-        : projects.filter(project => project.category === activeCategory);
+        : projects.filter(project => project.attributes.category === activeCategory || project.attributes.category.includes(activeCategory));
 
     return (
         <section id="portfolio" className="portfolio section">
@@ -55,18 +77,19 @@ export const Portfolio: React.FC = () => {
                 >
                     {filteredProjects.map((project, index) => (
                         <div
-                            key={project.id}
+                            key={project.slug}
                             className="portfolio-card"
                             style={{ transitionDelay: `${index * 100}ms` }}
+                            onClick={() => navigate(`/projects/${project.slug}`)}
                         >
                             <div className="portfolio-card-image">
-                                <img src={project.image} alt={project.title} loading="lazy" />
+                                <img src={project.attributes.image} alt={project.attributes.title} loading="lazy" />
                                 <div className="portfolio-card-overlay">
-                                    <span className="portfolio-card-category">{project.category}</span>
-                                    <h3 className="portfolio-card-title">{project.title}</h3>
-                                    <p className="portfolio-card-description">{project.description}</p>
+                                    <span className="portfolio-card-category">{project.attributes.category}</span>
+                                    <h3 className="portfolio-card-title">{project.attributes.title}</h3>
+                                    <p className="portfolio-card-description">{project.attributes.description}</p>
                                     <div className="portfolio-card-tech">
-                                        {project.technologies.map((tech, idx) => (
+                                        {(project.attributes.technologies || []).slice(0, 3).map((tech: string, idx: number) => (
                                             <span key={idx} className="portfolio-tech-tag">{tech}</span>
                                         ))}
                                     </div>

@@ -1,7 +1,20 @@
+
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { MapPin, Clock, Briefcase, ArrowRight, CheckCircle2, Sparkles, Zap, Heart, TrendingUp, Globe } from 'lucide-react';
-import { jobOpenings, companyPerks } from '../data/content';
+import { MapPin, ArrowRight, CheckCircle2, Sparkles, Zap, Heart, TrendingUp, Globe, Briefcase, Clock } from 'lucide-react';
+import { companyPerks } from '../data/content';
+import { loadMarkdownFiles } from '../utils/markdown';
 import './CareersPage.css';
+
+interface JobOpening {
+  title: string;
+  department: string;
+  location: string;
+  type: string;
+  description: string;
+  requirements: string[];
+  skills: string[];
+}
 
 const iconMap: Record<string, any> = {
   'Globe': Globe,
@@ -13,6 +26,18 @@ const iconMap: Record<string, any> = {
 };
 
 export const CareersPage = () => {
+  const [jobs, setJobs] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchJobs = async () => {
+      const jobFiles = import.meta.glob('../content/careers/*.md', { query: '?raw', import: 'default' });
+      const loadedJobs = await loadMarkdownFiles<JobOpening>(jobFiles);
+      setJobs(loadedJobs);
+    };
+
+    fetchJobs();
+  }, []);
+
   return (
     <div className="careers-page">
       {/* Animated Background */}
@@ -74,10 +99,10 @@ export const CareersPage = () => {
             </p>
           </div>
           <div className="perks-grid">
-            {companyPerks.map((perk) => {
+            {companyPerks.map((perk, index) => {
               const IconComponent = iconMap[perk.icon] || Sparkles;
               return (
-                <div key={perk.id} className="perk-card">
+                <div key={perk.id} className="perk-card" style={{ animationDelay: `${index * 0.1}s` }}>
                   <div className="perk-icon">
                     <IconComponent size={24} />
                   </div>
@@ -91,7 +116,7 @@ export const CareersPage = () => {
       </section>
 
       {/* Open Positions */}
-      <section className="careers-content">
+      <section id="openings" className="careers-content">
         <div className="container">
           <div className="section-header">
             <span className="section-label">Join Our Team</span>
@@ -100,25 +125,25 @@ export const CareersPage = () => {
               Find your next challenge and grow with us
             </p>
           </div>
-          
+
           <div className="positions-timeline">
-            {jobOpenings.map((job) => (
-              <div key={job.id} className="position-card">
+            {jobs.map((job) => (
+              <div key={job.slug} className="position-card">
                 <div className="position-header">
                   <div className="position-info">
-                    <h3>{job.title}</h3>
+                    <h3>{job.attributes.title}</h3>
                     <div className="position-meta">
                       <span className="meta-item">
                         <MapPin size={16} />
-                        {job.location}
+                        {job.attributes.location}
                       </span>
                       <span className="meta-item">
                         <Briefcase size={16} />
-                        {job.department}
+                        {job.attributes.department}
                       </span>
                       <span className="meta-item">
                         <Clock size={16} />
-                        {job.type}
+                        {job.attributes.type}
                       </span>
                     </div>
                   </div>
@@ -127,9 +152,9 @@ export const CareersPage = () => {
                     <ArrowRight size={18} />
                   </button>
                 </div>
-                
-                <p className="position-description">{job.description}</p>
-                
+
+                <p className="position-description">{job.attributes.description}</p>
+
                 <div className="position-details">
                   <div className="detail-section">
                     <h4>
@@ -137,19 +162,19 @@ export const CareersPage = () => {
                       Requirements
                     </h4>
                     <ul>
-                      {job.requirements.map((req, i) => (
+                      {job.attributes.requirements.map((req: string, i: number) => (
                         <li key={i}>{req}</li>
                       ))}
                     </ul>
                   </div>
-                  
+
                   <div className="detail-section">
                     <h4>
                       <Zap size={20} />
                       Skills
                     </h4>
                     <div className="skills-tags">
-                      {job.skills.map((skill, i) => (
+                      {job.attributes.skills.map((skill: string, i: number) => (
                         <span key={i} className="skill-tag">{skill}</span>
                       ))}
                     </div>
@@ -157,6 +182,12 @@ export const CareersPage = () => {
                 </div>
               </div>
             ))}
+
+            {jobs.length === 0 && (
+              <div className="no-jobs">
+                <p>Loading positions...</p>
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -175,9 +206,9 @@ export const CareersPage = () => {
 
       {/* Back to Home */}
       <div className="container" style={{ paddingBottom: '4rem' }}>
-        <Link to="/" className="back-home" style={{ 
-          display: 'inline-flex', 
-          alignItems: 'center', 
+        <Link to="/" className="back-home" style={{
+          display: 'inline-flex',
+          alignItems: 'center',
           gap: '0.5rem',
           color: 'var(--text-secondary)',
           textDecoration: 'none',

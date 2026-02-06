@@ -1,23 +1,58 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+
+import { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Calendar, Clock, ArrowRight, Search, Tag } from 'lucide-react';
-import { blogPosts } from '../data/content';
+import { loadMarkdownFiles } from '../utils/markdown';
 import './BlogPage.css';
+
+interface BlogPost {
+  title: string;
+  excerpt: string;
+  image: string;
+  category: string;
+  date: string;
+  readTime: string;
+  author: {
+    name: string;
+    avatar: string;
+  };
+  tags: string[];
+}
 
 export const BlogPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const [posts, setPosts] = useState<any[]>([]);
+  const navigate = useNavigate();
 
-  const categories = ['All', ...Array.from(new Set(blogPosts.map(post => post.category)))];
+  useEffect(() => {
+    const fetchPosts = async () => {
+      const blogFiles = import.meta.glob('../content/blog/*.md', { query: '?raw', import: 'default' });
+      const loadedPosts = await loadMarkdownFiles<BlogPost>(blogFiles);
 
-  const filteredPosts = blogPosts.filter(post => {
-    const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         post.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategory === 'All' || post.category === selectedCategory;
+      // Sort by date descending
+      loadedPosts.sort((a, b) => new Date(b.attributes.date).getTime() - new Date(a.attributes.date).getTime());
+
+      setPosts(loadedPosts);
+    };
+
+    fetchPosts();
+  }, []);
+
+  const categories = ['All', ...Array.from(new Set(posts.map(post => post.attributes.category)))];
+
+  const filteredPosts = posts.filter(post => {
+    const matchesSearch = post.attributes.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      post.attributes.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = selectedCategory === 'All' || post.attributes.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
 
-  const featuredPost = blogPosts[0];
+  if (posts.length === 0) {
+    return <div className="loading-container">Loading...</div>;
+  }
+
+  const featuredPost = posts[0];
   const regularPosts = filteredPosts.slice(1);
 
   return (
@@ -69,26 +104,26 @@ export const BlogPage = () => {
       {/* Featured Article */}
       <section className="featured-section">
         <div className="container">
-          <div className="featured-article" style={{ backgroundImage: `url(${featuredPost.image})` }}>
+          <div className="featured-article" style={{ backgroundImage: `url(${featuredPost.attributes.image})` }}>
             <div className="featured-overlay"></div>
             <div className="featured-content">
               <div className="featured-meta">
-                <span className="featured-category">{featuredPost.category}</span>
+                <span className="featured-category">{featuredPost.attributes.category}</span>
                 <div className="featured-info">
                   <Calendar size={16} />
-                  <span>{new Date(featuredPost.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
+                  <span>{new Date(featuredPost.attributes.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
                   <Clock size={16} />
-                  <span>{featuredPost.readTime}</span>
+                  <span>{featuredPost.attributes.readTime}</span>
                 </div>
               </div>
-              <h2 className="featured-title">{featuredPost.title}</h2>
-              <p className="featured-excerpt">{featuredPost.excerpt}</p>
+              <h2 className="featured-title">{featuredPost.attributes.title}</h2>
+              <p className="featured-excerpt">{featuredPost.attributes.excerpt}</p>
               <div className="featured-author">
-                <img src={featuredPost.author.avatar} alt={featuredPost.author.name} />
+                <img src={featuredPost.attributes.author.avatar} alt={featuredPost.attributes.author.name} />
                 <div>
-                  <p className="author-name">{featuredPost.author.name}</p>
+                  <p className="author-name">{featuredPost.attributes.author.name}</p>
                   <div className="featured-tags">
-                    {featuredPost.tags.slice(0, 3).map(tag => (
+                    {featuredPost.attributes.tags.slice(0, 3).map((tag: string) => (
                       <span key={tag} className="tag">
                         <Tag size={12} />
                         {tag}
@@ -97,7 +132,10 @@ export const BlogPage = () => {
                   </div>
                 </div>
               </div>
-              <button className="featured-btn">
+              <button
+                className="featured-btn"
+                onClick={() => navigate(`/blog/${featuredPost.slug}`)}
+              >
                 Read Full Article
                 <ArrowRight size={20} />
               </button>
@@ -111,30 +149,33 @@ export const BlogPage = () => {
         <div className="container">
           <div className="articles-grid">
             {regularPosts.map((post, index) => (
-              <article key={post.id} className="article-card" style={{ animationDelay: `${index * 0.1}s` }}>
+              <article key={post.slug} className="article-card" style={{ animationDelay: `${index * 0.1}s` }}>
                 <div className="article-image">
-                  <img src={post.image} alt={post.title} loading="lazy" />
-                  <span className="article-category">{post.category}</span>
+                  <img src={post.attributes.image} alt={post.attributes.title} loading="lazy" />
+                  <span className="article-category">{post.attributes.category}</span>
                 </div>
                 <div className="article-content">
                   <div className="article-meta">
                     <span className="article-date">
                       <Calendar size={14} />
-                      {new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                      {new Date(post.attributes.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                     </span>
                     <span className="article-read-time">
                       <Clock size={14} />
-                      {post.readTime}
+                      {post.attributes.readTime}
                     </span>
                   </div>
-                  <h3 className="article-title">{post.title}</h3>
-                  <p className="article-excerpt">{post.excerpt}</p>
+                  <h3 className="article-title">{post.attributes.title}</h3>
+                  <p className="article-excerpt">{post.attributes.excerpt}</p>
                   <div className="article-footer">
                     <div className="article-author">
-                      <img src={post.author.avatar} alt={post.author.name} />
-                      <span>{post.author.name}</span>
+                      <img src={post.attributes.author.avatar} alt={post.attributes.author.name} />
+                      <span>{post.attributes.author.name}</span>
                     </div>
-                    <button className="article-link">
+                    <button
+                      className="article-link"
+                      onClick={() => navigate(`/blog/${post.slug}`)}
+                    >
                       Read More
                       <ArrowRight size={16} />
                     </button>

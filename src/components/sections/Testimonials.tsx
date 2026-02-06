@@ -1,12 +1,32 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import { useScrollAnimation } from '../../hooks';
-import { testimonials } from '../../data/content';
+import { loadMarkdownFiles } from '../../utils/markdown';
 import './Testimonials.css';
+
+interface Testimonial {
+    id: string;
+    name: string;
+    role: string;
+    company: string;
+    avatar: string;
+    rating: number;
+}
 
 export const Testimonials: React.FC = () => {
     const [activeIndex, setActiveIndex] = useState(0);
-    const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation();
-    const { ref: contentRef, isVisible: contentVisible } = useScrollAnimation({ threshold: 0.2 });
+    const [testimonials, setTestimonials] = useState<any[]>([]);
+    const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation({ wait: testimonials.length });
+    const { ref: contentRef, isVisible: contentVisible } = useScrollAnimation({ threshold: 0.2, wait: testimonials.length });
+
+    useEffect(() => {
+        const fetchTestimonials = async () => {
+            const testimonialFiles = import.meta.glob('../../content/testimonials/*.md', { query: '?raw', import: 'default' });
+            const loadedTestimonials = await loadMarkdownFiles<Testimonial>(testimonialFiles);
+            setTestimonials(loadedTestimonials);
+        };
+        fetchTestimonials();
+    }, []);
 
     const handlePrev = () => {
         setActiveIndex((prev) => (prev === 0 ? testimonials.length - 1 : prev - 1));
@@ -15,6 +35,10 @@ export const Testimonials: React.FC = () => {
     const handleNext = () => {
         setActiveIndex((prev) => (prev === testimonials.length - 1 ? 0 : prev + 1));
     };
+
+    if (testimonials.length === 0) {
+        return null;
+    }
 
     const activeTestimonial = testimonials[activeIndex];
 
@@ -51,16 +75,16 @@ export const Testimonials: React.FC = () => {
                             </svg>
                         </div>
 
-                        <p className="testimonial-text">{activeTestimonial.content}</p>
+                        <p className="testimonial-text">{activeTestimonial.body}</p>
 
                         <div className="testimonial-rating">
                             {[...Array(5)].map((_, i) => (
                                 <svg
                                     key={i}
                                     viewBox="0 0 24 24"
-                                    fill={i < activeTestimonial.rating ? 'currentColor' : 'none'}
+                                    fill={i < activeTestimonial.attributes.rating ? 'currentColor' : 'none'}
                                     stroke="currentColor"
-                                    className={i < activeTestimonial.rating ? 'star-filled' : 'star-empty'}
+                                    className={i < activeTestimonial.attributes.rating ? 'star-filled' : 'star-empty'}
                                 >
                                     <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
                                 </svg>
@@ -69,13 +93,13 @@ export const Testimonials: React.FC = () => {
 
                         <div className="testimonial-author">
                             <img
-                                src={activeTestimonial.avatar}
-                                alt={activeTestimonial.name}
+                                src={activeTestimonial.attributes.avatar}
+                                alt={activeTestimonial.attributes.name}
                                 className="testimonial-avatar"
                             />
                             <div>
-                                <h4 className="testimonial-name">{activeTestimonial.name}</h4>
-                                <p className="testimonial-role">{activeTestimonial.role}, {activeTestimonial.company}</p>
+                                <h4 className="testimonial-name">{activeTestimonial.attributes.name}</h4>
+                                <p className="testimonial-role">{activeTestimonial.attributes.role}, {activeTestimonial.attributes.company}</p>
                             </div>
                         </div>
                     </div>

@@ -5,6 +5,7 @@ interface ScrollAnimationOptions {
     threshold?: number;
     rootMargin?: string;
     triggerOnce?: boolean;
+    wait?: any; // Can be any value that changes when we should re-check ref
 }
 
 interface ScrollAnimationReturn {
@@ -19,7 +20,8 @@ export const useScrollAnimation = (
     const {
         threshold = 0.1,
         rootMargin = '0px 0px -50px 0px',
-        triggerOnce = true
+        triggerOnce = true,
+        wait = false // New option to wait for content/loading
     } = options;
 
     const ref = useRef<HTMLDivElement>(null);
@@ -27,6 +29,8 @@ export const useScrollAnimation = (
     const [hasAnimated, setHasAnimated] = useState(false);
 
     useEffect(() => {
+        // If we're waiting for something (like data loading), don't set up observer yet
+        // OR if the ref is still null, we iterate again when 'wait' changes
         const element = ref.current;
         if (!element) return;
 
@@ -54,7 +58,7 @@ export const useScrollAnimation = (
         return () => {
             observer.unobserve(element);
         };
-    }, [threshold, rootMargin, triggerOnce]);
+    }, [threshold, rootMargin, triggerOnce, wait]); // Add wait to dependencies
 
     return { ref, isVisible, hasAnimated };
 };

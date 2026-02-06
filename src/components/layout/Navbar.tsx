@@ -15,15 +15,17 @@ export const Navbar: React.FC = () => {
         const handleScroll = () => {
             setIsScrolled(window.scrollY > 50);
 
-            // Update active section based on scroll position
-            const sections = navLinks.map(link => link.id);
-            for (const section of sections.reverse()) {
-                const element = document.getElementById(section);
-                if (element) {
-                    const rect = element.getBoundingClientRect();
-                    if (rect.top <= 150) {
-                        setActiveSection(section);
-                        break;
+            // Update active section based on scroll position - only if menu is closed to prevent jumping
+            if (!isMobileMenuOpen) {
+                const sections = navLinks.map(link => link.id);
+                for (const section of sections.reverse()) {
+                    const element = document.getElementById(section);
+                    if (element) {
+                        const rect = element.getBoundingClientRect();
+                        if (rect.top <= 150) {
+                            setActiveSection(section);
+                            break;
+                        }
                     }
                 }
             }
@@ -31,7 +33,19 @@ export const Navbar: React.FC = () => {
 
         window.addEventListener('scroll', handleScroll, { passive: true });
         return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
+    }, [isMobileMenuOpen]);
+
+    // Lock body scroll when mobile menu is open
+    useEffect(() => {
+        if (isMobileMenuOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'unset';
+        }
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, [isMobileMenuOpen]);
 
     const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
         e.preventDefault();
@@ -81,7 +95,7 @@ export const Navbar: React.FC = () => {
                     ))}
                     <Link
                         to="/blog"
-                        className={`navbar-link ${location.pathname === '/blog' ? 'navbar-link-active' : ''}`}
+                        className={`navbar-link ${location.pathname.startsWith('/blog') ? 'navbar-link-active' : ''}`}
                         onClick={() => { window.scrollTo({ top: 0, behavior: 'smooth' }); setIsMobileMenuOpen(false); }}
                     >
                         Blog

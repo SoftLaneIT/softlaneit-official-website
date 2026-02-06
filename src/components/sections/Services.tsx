@@ -1,8 +1,17 @@
-import React from 'react';
+
+import React, { useEffect, useState } from 'react';
 import { useScrollAnimation } from '../../hooks';
-import { services } from '../../data/content';
 import { Code2, Smartphone, CloudCog, Brain, Globe, Lightbulb, Shield, Network } from 'lucide-react';
+import { loadMarkdownFiles } from '../../utils/markdown';
 import './Services.css';
+
+interface Service {
+    id: string;
+    icon: string;
+    title: string;
+    description: string;
+    features: string[];
+}
 
 const iconMap: Record<string, React.ElementType> = {
     Code2,
@@ -16,8 +25,19 @@ const iconMap: Record<string, React.ElementType> = {
 };
 
 export const Services: React.FC = () => {
-    const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation();
-    const { ref: cardsRef, isVisible: cardsVisible } = useScrollAnimation({ threshold: 0.1 });
+    const [services, setServices] = useState<any[]>([]);
+    const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation({ wait: services.length });
+    const { ref: cardsRef, isVisible: cardsVisible } = useScrollAnimation({ threshold: 0.2, wait: services.length });
+
+    useEffect(() => {
+        const fetchServices = async () => {
+            const serviceFiles = import.meta.glob('../../content/services/*.md', { query: '?raw', import: 'default' });
+            const loadedServices = await loadMarkdownFiles<Service>(serviceFiles);
+            // Sort to maintain order if needed, or rely on file naming
+            setServices(loadedServices);
+        };
+        fetchServices();
+    }, []);
 
     return (
         <section id="services" className="services section">
@@ -45,30 +65,30 @@ export const Services: React.FC = () => {
                     className={`services-grid ${cardsVisible ? 'visible' : ''}`}
                 >
                     {services.map((service, index) => {
-                        const IconComponent = iconMap[service.icon];
+                        const IconComponent = iconMap[service.attributes.icon] || Code2;
                         return (
-                        <div
-                            key={service.id}
-                            className="service-card"
-                            style={{ transitionDelay: `${index * 100}ms` }}
-                        >
-                            <div className="service-icon">
-                                {IconComponent && <IconComponent size={32} strokeWidth={1.5} />}
+                            <div
+                                key={service.slug}
+                                className="service-card"
+                                style={{ transitionDelay: `${index * 100}ms` }}
+                            >
+                                <div className="service-icon">
+                                    {IconComponent && <IconComponent size={32} strokeWidth={1.5} />}
+                                </div>
+                                <h3 className="service-title">{service.attributes.title}</h3>
+                                <p className="service-description">{service.attributes.description}</p>
+                                <ul className="service-features">
+                                    {(service.attributes.features || []).map((feature: string, idx: number) => (
+                                        <li key={idx}>
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                                <polyline points="20 6 9 17 4 12"></polyline>
+                                            </svg>
+                                            {feature}
+                                        </li>
+                                    ))}
+                                </ul>
+                                <div className="service-hover-glow"></div>
                             </div>
-                            <h3 className="service-title">{service.title}</h3>
-                            <p className="service-description">{service.description}</p>
-                            <ul className="service-features">
-                                {service.features.map((feature, idx) => (
-                                    <li key={idx}>
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                            <polyline points="20 6 9 17 4 12"></polyline>
-                                        </svg>
-                                        {feature}
-                                    </li>
-                                ))}
-                            </ul>
-                            <div className="service-hover-glow"></div>
-                        </div>
                         );
                     })}
                 </div>

@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useParallax } from '../../hooks';
 import { companyInfo } from '../../data/content';
 import { Button } from '../common';
@@ -50,11 +51,10 @@ export const Hero: React.FC = () => {
         };
     }, []);
 
+    const navigate = useNavigate();
+
     const handleGetStarted = () => {
-        const contactSection = document.getElementById('contact');
-        if (contactSection) {
-            contactSection.scrollIntoView({ behavior: 'smooth' });
-        }
+        navigate('/contact');
     };
 
     const handleLearnMore = () => {
@@ -67,7 +67,7 @@ export const Hero: React.FC = () => {
     return (
         <section id="home" className="hero" ref={heroRef}>
             {/* Custom Cursor */}
-            <div 
+            <div
                 className="hero-cursor"
                 style={{
                     left: mousePosition.x,
@@ -76,7 +76,7 @@ export const Hero: React.FC = () => {
             ></div>
 
             {/* Cursor-following Glow */}
-            <div 
+            <div
                 className="hero-cursor-glow"
                 style={{
                     left: mousePosition.x,
