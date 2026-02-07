@@ -22,6 +22,7 @@ import { useParams, Link } from 'react-router-dom';
 import Markdown from 'react-markdown';
 import { Calendar, Clock, ArrowLeft, Tag, Share2 } from 'lucide-react';
 import { getMarkdownFile, type MarkdownContent } from '../utils/markdown';
+import { Loader } from '../components/common';
 import './BlogDetail.css';
 
 interface BlogPost {
@@ -57,7 +58,7 @@ export const BlogDetail = () => {
     }, [slug]);
 
     if (loading) {
-        return <div className="loading-container">Loading...</div>;
+        return <Loader />;
     }
 
     if (!post) {

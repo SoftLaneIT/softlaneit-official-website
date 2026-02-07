@@ -17,13 +17,14 @@
  */
 
 import './Loader.css';
+import logoIcon from '../../../public/logo-icon.jpg';
 
 export const Loader = () => {
     return (
         <div className="loader-container">
             <div className="loader-content">
-                <div className="loader-spinner"></div>
-                <div className="loader-text">Loading...</div>
+                <div className="loader-ring"></div>
+                <img src={logoIcon} alt="Loading..." className="loader-logo" />
             </div>
         </div>
     );

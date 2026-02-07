@@ -22,6 +22,7 @@ import { useParams, Link } from 'react-router-dom';
 import Markdown from 'react-markdown';
 import { ArrowLeft, ExternalLink, Code2 } from 'lucide-react';
 import { getMarkdownFile, type MarkdownContent } from '../utils/markdown';
+import { Loader } from '../components/common';
 import './ProjectDetail.css';
 
 interface Project {
@@ -51,7 +52,7 @@ export const ProjectDetail = () => {
     }, [slug]);
 
     if (loading) {
-        return <div className="loading-container">Loading...</div>;
+        return <Loader />;
     }
 
     if (!project) {

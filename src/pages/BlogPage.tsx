@@ -21,6 +21,7 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Calendar, Clock, ArrowRight, Search, Tag } from 'lucide-react';
 import { loadMarkdownFiles } from '../utils/markdown';
+import { Loader } from '../components/common';
 import './BlogPage.css';
 
 interface BlogPost {
@@ -67,7 +68,7 @@ export const BlogPage = () => {
   });
 
   if (posts.length === 0) {
-    return <div className="loading-container">Loading...</div>;
+    return <Loader />;
   }
 
   const featuredPost = posts[0];
