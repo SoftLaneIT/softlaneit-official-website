@@ -1,34 +1,9 @@
 
 # SoftlaneIT Official Website
 
-A modern, high-performance website for SoftlaneIT built with React, TypeScript, and Vite. The content is managed via Markdown files, making it easy to update without touching the code.
+A modern, high-performance website for SoftlaneIT.
 
-## 🚀 Getting Started
-
-### Prerequisites
-
--   Node.js (v18 or higher recommended)
--   npm or yarn
-
-### Installation
-
-1.  Clone the repository:
-    ```bash
-    git clone https://github.com/PramithaMJ/softlaneit-official-website.git
-    cd softlaneit-official-website
-    ```
-
-2.  Install dependencies:
-    ```bash
-    npm install
-    ```
-
-3.  Start the development server:
-    ```bash
-    npm run dev
-    ```
-
-## 📝 Managing Content
+## Managing Content
 
 The website's content (Blogs, Services, Projects, Careers, Testimonials) is stored in the `src/content` directory as Markdown (`.md`) files.
 
@@ -123,7 +98,7 @@ The website's content (Blogs, Services, Projects, Careers, Testimonials) is stor
     "SoftlaneIT is amazing!"
     ```
 
-## 🛠 Deployment
+## Deployment
 
 The project is configured for GitHub Pages.
 
@@ -140,12 +115,3 @@ The project is configured for GitHub Pages.
     npm run deploy
     ```
     *(Make sure `homepage` in `package.json` and `base` in `vite.config.ts` are set correctly)*
-
-## 📂 Project Structure
-
--   `src/components`: React components (UI, Sections, Layout)
--   `src/content`: Markdown content files
--   `src/pages`: Page components
--   `src/styles`: Global CSS and variables
--   `src/utils`: Helper functions (markdown parser, etc.)
-
