@@ -44,6 +44,14 @@ function ScrollToTop() {
 }
 
 function App() {
+  useEffect(() => {
+    // Add class to body to fade out the global loader
+    const timer = setTimeout(() => {
+      document.body.classList.add('app-loaded');
+    }, 100);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <Router basename={basename}>
       <ScrollToTop />

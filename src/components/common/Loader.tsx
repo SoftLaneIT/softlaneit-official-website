@@ -16,6 +16,15 @@
  * under the LICENSE.
  */
 
-export * from './Button';
-export * from './Logo';
-export * from './Loader';
+import './Loader.css';
+
+export const Loader = () => {
+    return (
+        <div className="loader-container">
+            <div className="loader-content">
+                <div className="loader-spinner"></div>
+                <div className="loader-text">Loading...</div>
+            </div>
+        </div>
+    );
+};
