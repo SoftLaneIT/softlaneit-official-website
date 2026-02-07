@@ -185,7 +185,7 @@ export const companyInfo = {
     address: '123 Innovation Drive, Tech City, TC 12345',
     social: {
         linkedin: 'https://linkedin.com/company/softlaneit',
-        twitter: 'https://twitter.com/softlaneit',
+        twitter: 'https://x.com/SoftLane_It',
         github: 'https://github.com/softlaneit',
         facebook: 'https://facebook.com/softlaneit',
     },
