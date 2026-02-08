@@ -16,14 +16,19 @@
  * under the LICENSE.
  */
 
+/* Global Scope Variable Fix for RGB usage locally */
 .project-detail {
+    --primary-rgb: 245, 130, 31;
+    /* Define locally for rgba usage */
     min-height: 100vh;
-    background-color: var(--color-bg);
+    background-color: var(--bg-body);
+    transition: background-color 0.3s ease;
 }
 
 .project-hero {
-    height: 50vh;
-    min-height: 400px;
+    height: 60vh;
+    /* Increased height for impact */
+    min-height: 480px;
     background-size: cover;
     background-position: center;
     position: relative;
@@ -34,110 +39,139 @@
 .project-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to right, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.4));
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.4) 100%);
     backdrop-filter: blur(2px);
 }
 
 .project-header {
     position: relative;
     z-index: 2;
-    max-width: 800px;
-    margin-top: 2rem;
+    max-width: 900px;
+    margin-top: 4rem;
+    padding-left: var(--space-6);
+    padding-right: var(--space-6);
 }
 
 .project-category {
     display: inline-block;
-    color: var(--color-primary);
-    font-weight: 600;
+    color: var(--primary-orange);
+    font-weight: var(--font-semibold);
     letter-spacing: 2px;
     text-transform: uppercase;
-    margin-bottom: 1rem;
+    font-size: var(--text-sm);
+    margin-bottom: var(--space-4);
 }
 
 .project-title {
-    font-size: clamp(2.5rem, 5vw, 4rem);
-    font-weight: 800;
-    color: white;
-    margin-bottom: 1.5rem;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: var(--font-extrabold);
+    color: var(--pure-white);
+    /* Always white on hero */
+    margin-bottom: var(--space-6);
     line-height: 1.1;
 }
 
 .project-subtitle {
-    font-size: 1.25rem;
+    font-size: var(--text-xl);
     color: rgba(255, 255, 255, 0.9);
     line-height: 1.6;
-    max-width: 600px;
+    max-width: 700px;
 }
 
 .project-content-grid {
     display: grid;
-    grid-template-columns: 1fr 300px;
-    gap: 4rem;
-    padding: 4rem 0;
+    grid-template-columns: 1fr 340px;
+    gap: var(--space-12);
+    padding: var(--space-16) 0;
 }
 
 .project-main {
-    color: var(--color-text-secondary);
+    color: var(--text-secondary);
 }
 
 .project-description {
-    font-size: 1.125rem;
+    font-size: var(--text-lg);
     line-height: 1.8;
 }
 
 .project-description h2 {
-    color: var(--color-text);
-    font-size: 2rem;
-    margin: 3rem 0 1.5rem;
+    color: var(--text-primary);
+    font-size: var(--text-3xl);
+    margin: var(--space-12) 0 var(--space-6);
+    font-weight: var(--font-bold);
 }
 
 .project-description p {
-    margin-bottom: 1.5rem;
+    margin-bottom: var(--space-6);
 }
 
 .project-sidebar {
     position: sticky;
-    top: 100px;
+    top: 120px;
     height: fit-content;
 }
 
 .sidebar-card {
-    background: var(--color-card-bg);
-    border: 1px solid var(--color-border);
-    padding: 1.5rem;
-    border-radius: 12px;
-    margin-bottom: 2rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    padding: var(--space-8);
+    border-radius: var(--radius-xl);
+    margin-bottom: var(--space-8);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Light Mode Card Override */
+[data-theme="light"] .sidebar-card {
+    background: var(--pure-white);
+    border-color: var(--gray-200);
+    box-shadow: var(--shadow-sm);
 }
 
 .sidebar-card h3 {
-    color: var(--color-text);
-    font-size: 1.25rem;
-    margin-bottom: 1.5rem;
-    font-weight: 600;
+    color: var(--text-primary);
+    font-size: var(--text-xl);
+    margin-bottom: var(--space-6);
+    font-weight: var(--font-semibold);
 }
 
 .tech-stack {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: var(--space-4);
 }
 
-.tech-item {
+.tech-tags {
     display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.75rem;
-    background: rgba(255, 255, 255, 0.03);
-    border-radius: 8px;
-    color: var(--color-text-secondary);
-    font-size: 0.9rem;
-    transition: all 0.3s ease;
+    flex-wrap: wrap;
+    gap: var(--space-2);
 }
 
-.tech-item:hover {
-    background: rgba(var(--color-primary-rgb), 0.1);
-    color: var(--color-primary);
-    transform: translateX(5px);
+.tech-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-md);
+    color: var(--text-secondary);
+    font-size: var(--text-sm);
+    transition: all var(--transition-normal);
+    border: 1px solid transparent;
+}
+
+/* Light Mode Tech Tag Override */
+[data-theme="light"] .tech-tag {
+    background: var(--gray-100);
+    color: var(--gray-900);
+    border: 1px solid var(--gray-300);
+    font-weight: var(--font-medium);
+}
+
+.tech-tag:hover {
+    background: rgba(var(--primary-rgb), 0.1);
+    color: var(--primary-orange);
+    border-color: rgba(var(--primary-rgb), 0.3);
+    transform: translateY(-2px);
 }
 
 .project-cta {
@@ -145,28 +179,29 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.75rem;
-    background: var(--color-primary);
-    color: white;
+    gap: var(--space-3);
+    background: var(--primary-orange);
+    color: var(--pure-white);
     border: none;
-    padding: 1rem;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 1rem;
+    padding: var(--space-4);
+    border-radius: var(--radius-lg);
+    font-weight: var(--font-semibold);
+    font-size: var(--text-base);
     cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 20px rgba(var(--color-primary-rgb), 0.3);
+    transition: all var(--transition-normal);
+    box-shadow: 0 4px 20px rgba(var(--primary-rgb), 0.3);
 }
 
 .project-cta:hover {
-    background: var(--color-primary-dark);
+    background: var(--primary-orange-dark);
+    /* Defined in variables or implicit */
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(var(--color-primary-rgb), 0.4);
+    box-shadow: 0 8px 25px rgba(var(--primary-rgb), 0.4);
 }
 
 @media (max-width: 968px) {
     .project-content-grid {
         grid-template-columns: 1fr;
-        gap: 2rem;
+        gap: var(--space-8);
     }
 }
