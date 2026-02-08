@@ -27,10 +27,10 @@
 }
 
 .navbar-scrolled {
-    background: rgba(0, 0, 0, 0.85);
+    background: var(--bg-nav);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--border-light);
     padding: var(--space-3) 0;
 }
 
@@ -80,17 +80,17 @@
     position: relative;
     font-size: var(--text-sm);
     font-weight: var(--font-medium);
-    color: var(--gray-300);
+    color: var(--text-primary);
     transition: color var(--transition-fast);
     padding: var(--space-2) 0;
 }
 
 .navbar-link:hover {
-    color: var(--pure-white);
+    color: var(--text-primary);
 }
 
 .navbar-link-active {
-    color: var(--pure-white);
+    color: var(--text-primary);
 }
 
 .navbar-link-underline {
@@ -146,7 +146,7 @@
     display: block;
     width: 24px;
     height: 2px;
-    background: var(--pure-white);
+    background: var(--text-primary);
     margin: 3px 0;
     transition: all var(--transition-normal);
     border-radius: var(--radius-full);
@@ -188,7 +188,7 @@
         justify-content: center;
         align-items: center;
         gap: var(--space-6);
-        background: #000000 !important;
+        background: var(--bg-body) !important;
         /* Force solid black background */
         /* background-color: #000000 !important; */
         /* background: rgba(0, 0, 0, 0.98); */
@@ -209,7 +209,7 @@
     /* Ensure specific override for scrolled state */
     .navbar.navbar-scrolled .navbar-links,
     .navbar-scrolled .navbar-links {
-        background: #000000 !important;
+        background: var(--bg-body) !important;
         backdrop-filter: none !important;
         -webkit-backdrop-filter: none !important;
     }

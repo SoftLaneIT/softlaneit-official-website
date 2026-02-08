@@ -20,6 +20,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { navLinks } from '../../data/content';
 import { Logo } from '../common/Logo';
+import { ThemeToggle } from '../common/ThemeToggle';
 import './Navbar.css';
 
 export const Navbar: React.FC = () => {
@@ -96,7 +97,7 @@ export const Navbar: React.FC = () => {
         <nav className={`navbar ${isScrolled ? 'navbar-scrolled' : ''}`}>
             <div className="navbar-container">
                 <Link to="/" className="navbar-logo">
-                    <Logo className="navbar-logo-svg" variant="white" height={42} />
+                    <Logo className="navbar-logo-svg" variant="default" height={42} />
                 </Link>
 
                 <div className={`navbar-links ${isMobileMenuOpen ? 'navbar-links-open' : ''}`}>
@@ -134,6 +135,7 @@ export const Navbar: React.FC = () => {
                     >
                         Get Started
                     </Link>
+                    <ThemeToggle />
                 </div>
 
                 <button

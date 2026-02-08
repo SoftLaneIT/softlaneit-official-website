@@ -31,7 +31,7 @@ export const Footer: React.FC = () => {
                 <div className="footer-grid">
                     {/* Brand Column */}
                     <div className="footer-brand">
-                        <Logo className="footer-logo" variant="white" />
+                        <Logo className="footer-logo" variant="default" />
                         <p className="footer-description">
                             {companyInfo.description}
                         </p>

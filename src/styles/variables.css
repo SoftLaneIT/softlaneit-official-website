@@ -42,7 +42,7 @@
   /* Gradients */
   --gradient-primary: linear-gradient(135deg, #F5821F 0%, #FF6B00 100%);
   --gradient-dark: linear-gradient(180deg, #0A0A0A 0%, #1A1A1A 100%);
-  --gradient-glass: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+  --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
   --gradient-hero: radial-gradient(ellipse at center, #1a1a1a 0%, #000000 100%);
 
   /* Typography */
@@ -124,13 +124,81 @@
   --container-lg: 1024px;
   --container-xl: 1280px;
   --container-2xl: 1536px;
+
+  /* ========================================
+     Semantic Variables (Dark Mode Default)
+  ======================================== */
+
+  /* Backgrounds */
+  --bg-body: var(--pure-black);
+  --bg-card: var(--gray-900);
+  --bg-card-hover: var(--gray-800);
+  --bg-glass: rgba(10, 10, 10, 0.85);
+  --bg-nav: rgba(0, 0, 0, 0.85);
+
+  /* Text */
+  --text-primary: var(--pure-white);
+  --text-secondary: var(--gray-400);
+  --text-tertiary: var(--gray-600);
+  --text-muted: var(--gray-700);
+
+  /* Borders */
+  --border-light: rgba(255, 255, 255, 0.1);
+  --border-medium: rgba(255, 255, 255, 0.2);
+
+  /* Gradients */
+  --gradient-bg: var(--gradient-dark);
+
+  /* Buttons */
+  --bg-button-secondary: var(--gray-800);
+  --bg-button-secondary-hover: var(--gray-700);
+  --text-button-secondary: var(--pure-white);
+}
+
+/* ========================================
+   Light Theme Overrides
+======================================== */
+[data-theme="light"] {
+  /* Backgrounds */
+  --bg-body: #F5F7FA;
+  --bg-card: var(--pure-white);
+  --bg-card-hover: var(--pure-white);
+  --bg-glass: rgba(255, 255, 255, 0.9);
+  --bg-nav: rgba(255, 255, 255, 0.95);
+
+  /* Text */
+  --text-primary: var(--gray-900);
+  --text-secondary: var(--gray-700);
+  --text-tertiary: var(--gray-600);
+  --text-muted: var(--gray-500);
+
+  /* Borders */
+  --border-light: rgba(0, 0, 0, 0.08);
+  --border-medium: rgba(0, 0, 0, 0.15);
+
+  /* Gradients */
+  --gradient-bg: linear-gradient(180deg, #FFFFFF 0%, #F8F9FA 100%);
+  --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.3) 100%);
+  --gradient-hero: radial-gradient(ellipse at center, #FFFFFF 0%, #F0F2F5 100%);
+
+  /* Shadows specific to light mode for depth */
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+  /* Buttons */
+  --bg-button-secondary: var(--gray-200);
+  --bg-button-secondary-hover: var(--gray-300);
+  --text-button-secondary: var(--gray-900);
 }
 
 /* ========================================
    Global Styles
 ======================================== */
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -146,11 +214,12 @@ body {
   font-size: var(--text-base);
   font-weight: var(--font-regular);
   line-height: 1.6;
-  color: var(--pure-white);
-  background: var(--pure-black);
+  color: var(--text-primary);
+  background: var(--bg-body);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: color 0.3s ease, background-color 0.3s ease;
 }
 
 img {
@@ -172,7 +241,8 @@ button {
   background: none;
 }
 
-ul, ol {
+ul,
+ol {
   list-style: none;
 }
 
@@ -193,7 +263,7 @@ ul, ol {
 }
 
 .section-dark {
-  background: var(--gradient-dark);
+  background: var(--bg-body);
 }
 
 .text-gradient {
@@ -211,7 +281,12 @@ ul, ol {
    Typography Styles
 ======================================== */
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-heading);
   font-weight: var(--font-bold);
   line-height: 1.2;
@@ -237,7 +312,7 @@ h3 {
 
 .section-subtitle {
   font-size: var(--text-lg);
-  color: var(--gray-400);
+  color: var(--text-secondary);
   max-width: 600px;
   margin: 0 auto var(--space-16);
 }
@@ -260,11 +335,11 @@ h3 {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--gray-900);
+  background: var(--bg-card);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--gray-700);
+  background: var(--text-tertiary);
   border-radius: var(--radius-full);
 }
 

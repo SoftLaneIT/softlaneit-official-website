@@ -30,7 +30,7 @@
 .testimonials-gradient {
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, #000000 0%, #0a0a0a 50%, #000000 100%);
+    background: var(--gradient-bg);
 }
 
 .testimonials-orb {
@@ -86,8 +86,8 @@
 
 /* Card */
 .testimonial-card {
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
     border-radius: var(--radius-2xl);
     padding: var(--space-12);
     text-align: center;
@@ -109,7 +109,7 @@
 
 .testimonial-text {
     font-size: var(--text-xl);
-    color: var(--gray-200);
+    color: var(--text-secondary);
     line-height: 1.8;
     margin-bottom: var(--space-8);
     font-style: italic;
@@ -133,7 +133,7 @@
 }
 
 .testimonial-rating .star-empty {
-    color: var(--gray-600);
+    color: var(--text-tertiary);
 }
 
 /* Author */
@@ -155,13 +155,13 @@
 .testimonial-name {
     font-size: var(--text-base);
     font-weight: var(--font-semibold);
-    color: var(--pure-white);
+    color: var(--text-primary);
     margin-bottom: var(--space-1);
 }
 
 .testimonial-role {
     font-size: var(--text-sm);
-    color: var(--gray-500);
+    color: var(--text-muted);
 }
 
 /* Navigation */
@@ -179,12 +179,19 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
     border-radius: 50%;
-    color: var(--gray-400);
+    color: var(--text-muted);
     cursor: pointer;
     transition: all var(--transition-normal);
+}
+
+[data-theme="light"] .testimonials-nav-btn {
+    background: var(--white);
+    border-color: var(--gray-300);
+    color: var(--gray-600);
+    box-shadow: var(--shadow-sm);
 }
 
 .testimonials-nav-btn:hover {
@@ -204,17 +211,22 @@
 }
 
 .testimonials-dot {
-    width: 10px;
-    height: 10px;
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.2);
+    background: var(--gray-600);
+    /* Dark mode default */
     border: none;
     cursor: pointer;
     transition: all var(--transition-normal);
 }
 
+[data-theme="light"] .testimonials-dot {
+    background: var(--gray-300);
+}
+
 .testimonials-dot:hover {
-    background: rgba(255, 255, 255, 0.4);
+    background: var(--primary-orange-light);
 }
 
 .testimonials-dot.active {

@@ -18,14 +18,27 @@
 
 import logoWhite from '../../assets/images/logo-white.svg';
 import logoDark from '../../assets/images/logo-dark.svg';
+import { useTheme } from '../../context/ThemeContext';
 
 export const Logo = ({ className = "", variant = "default", height = 40 }: { className?: string; variant?: "default" | "white" | "dark"; height?: number }) => {
-  const logoSrc = variant === "dark" ? logoDark : logoWhite;
-  
+  const { theme } = useTheme();
+
+  let logoSrc;
+
+  if (variant === 'default') {
+    // In light mode, we want the dark logo (contrast).
+    // In dark mode, we want the white logo.
+    logoSrc = theme === 'light' ? logoDark : logoWhite;
+  } else if (variant === 'dark') {
+    logoSrc = logoDark;
+  } else {
+    logoSrc = logoWhite;
+  }
+
   return (
-    <img 
-      src={logoSrc} 
-      alt="Softlane IT" 
+    <img
+      src={logoSrc}
+      alt="Softlane IT"
       className={className}
       style={{ height: `${height}px`, width: 'auto' }}
     />
