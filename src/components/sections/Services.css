@@ -233,4 +233,15 @@
     .service-card {
         padding: var(--space-6);
     }
+
+    /* Disable scroll animations on mobile - always show content */
+    .services-header {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+
+    .services-grid>* {
+        opacity: 1 !important;
+        transform: none !important;
+    }
 }
