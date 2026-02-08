@@ -93,8 +93,10 @@ export const Navbar: React.FC = () => {
         setIsMobileMenuOpen(!isMobileMenuOpen);
     };
 
+    const isDarkHeroPage = location.pathname.startsWith('/blog') || location.pathname.startsWith('/projects/');
+
     return (
-        <nav className={`navbar ${isScrolled ? 'navbar-scrolled' : ''}`}>
+        <nav className={`navbar ${isScrolled ? 'navbar-scrolled' : ''} ${isDarkHeroPage ? 'navbar-dark-hero' : ''}`}>
             <div className="navbar-container">
                 <Link to="/" className="navbar-logo">
                     <Logo className="navbar-logo-svg" variant="default" height={42} />

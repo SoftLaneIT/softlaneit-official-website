@@ -76,6 +76,7 @@
     gap: var(--space-8);
 }
 
+/* Default: Adapt to theme (Black in Light Mode, White in Dark Mode) */
 .navbar-link {
     position: relative;
     font-size: var(--text-sm);
@@ -85,12 +86,34 @@
     padding: var(--space-2) 0;
 }
 
-.navbar-link:hover {
+/* Override: Force WHITE text on Dark Hero pages (Blog/Projects) when NOT scrolled */
+.navbar-dark-hero:not(.navbar-scrolled) {
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.2) 70%, transparent 100%);
+}
+
+.navbar-dark-hero:not(.navbar-scrolled) .navbar-link {
+    color: var(--pure-white);
+}
+
+[data-theme="light"] .navbar-dark-hero:not(.navbar-scrolled) {
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0.25) 70%, transparent 100%);
+}
+
+[data-theme="light"] .navbar-dark-hero:not(.navbar-scrolled) .navbar-link {
+    color: var(--pure-white);
+}
+
+.navbar-scrolled .navbar-link {
     color: var(--text-primary);
+    /* Scrolled always respects theme */
+}
+
+.navbar-link:hover {
+    color: var(--primary-orange);
 }
 
 .navbar-link-active {
-    color: var(--text-primary);
+    color: var(--primary-orange);
 }
 
 .navbar-link-underline {
@@ -150,6 +173,10 @@
     margin: 3px 0;
     transition: all var(--transition-normal);
     border-radius: var(--radius-full);
+}
+
+.navbar-dark-hero:not(.navbar-scrolled) .navbar-hamburger span {
+    background: var(--pure-white);
 }
 
 .navbar-hamburger-open span:nth-child(1) {

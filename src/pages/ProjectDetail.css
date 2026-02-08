@@ -127,11 +127,16 @@
     box-shadow: var(--shadow-sm);
 }
 
-.sidebar-card h3 {
+.tech-stack h3 {
     color: var(--text-primary);
     font-size: var(--text-xl);
-    margin-bottom: var(--space-6);
+    margin-bottom: var(--space-4);
     font-weight: var(--font-semibold);
+}
+
+[data-theme="light"] .tech-stack h3 {
+    color: var(--gray-900) !important;
+    /* Force dark text for visibility in light mode */
 }
 
 .tech-stack {
@@ -180,6 +185,8 @@
     align-items: center;
     justify-content: center;
     gap: var(--space-3);
+    margin-top: var(--space-6);
+    /* Added spacing from tags */
     background: var(--primary-orange);
     color: var(--pure-white);
     border: none;
