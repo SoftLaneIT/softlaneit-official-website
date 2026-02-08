@@ -181,9 +181,9 @@
 }
 
 .testimonials-nav-btn {
-    width: 52px;
-    /* Slightly larger for premium feel */
-    height: 52px;
+    width: 60px;
+    /* Increased to 60px */
+    height: 60px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -212,9 +212,9 @@
 }
 
 .testimonials-nav-btn svg {
-    width: 20px;
-    /* Small refined arrow */
-    height: 20px;
+    width: 26px;
+    /* Increased to 26px */
+    height: 26px;
 }
 
 .testimonials-dots {
@@ -225,9 +225,9 @@
 }
 
 .testimonials-dot {
-    width: 8px;
-    /* Small dots */
-    height: 8px;
+    width: 14px;
+    /* Increased to 14px */
+    height: 14px;
     border-radius: 50%;
     background: var(--gray-700);
     border: none;
