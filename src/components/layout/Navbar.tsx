@@ -94,9 +94,10 @@ export const Navbar: React.FC = () => {
     };
 
     const isDarkHeroPage = location.pathname.startsWith('/blog') || location.pathname.startsWith('/projects/');
+    const isHomePage = location.pathname === '/';
 
     return (
-        <nav className={`navbar ${isScrolled ? 'navbar-scrolled' : ''} ${isDarkHeroPage ? 'navbar-dark-hero' : ''}`}>
+        <nav className={`navbar ${isScrolled ? 'navbar-scrolled' : ''} ${isDarkHeroPage ? 'navbar-dark-hero' : ''} ${isMobileMenuOpen ? 'navbar-menu-open' : ''}`}>
             <div className="navbar-container">
                 <Link to="/" className="navbar-logo">
                     <Logo className="navbar-logo-svg" variant="default" height={42} />
@@ -107,7 +108,7 @@ export const Navbar: React.FC = () => {
                         <a
                             key={link.id}
                             href={link.href}
-                            className={`navbar-link ${activeSection === link.id ? 'navbar-link-active' : ''}`}
+                            className={`navbar-link ${isHomePage && activeSection === link.id ? 'navbar-link-active' : ''}`}
                             onClick={(e) => handleNavClick(e, link.href)}
                         >
                             {link.label}

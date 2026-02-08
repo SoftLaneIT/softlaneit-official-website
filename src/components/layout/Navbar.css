@@ -193,57 +193,50 @@
 
 /* Mobile Styles */
 @media (max-width: 768px) {
+
+    /* When mobile menu is open, remove backdrop-filter from navbar
+       to prevent it from creating a new containing block for fixed children */
+    .navbar.navbar-menu-open {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+    }
+
     .navbar-hamburger {
         display: flex;
         z-index: 1001;
-        /* Ensure above overlay */
     }
 
     .navbar-logo {
         position: relative;
         z-index: 1001;
-        /* Ensure above overlay */
     }
 
     .navbar-links {
         position: fixed;
         top: 0;
         left: 0;
-        right: 0;
-        bottom: 0;
+        width: 100vw;
+        height: 100vh;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         gap: var(--space-6);
         background: var(--bg-body) !important;
-        /* Force solid black background */
-        /* background-color: #000000 !important; */
-        /* background: rgba(0, 0, 0, 0.98); */
-        /* backdrop-filter: blur(15px); */
-        /* -webkit-backdrop-filter: blur(15px); */
         opacity: 0;
         visibility: hidden;
-        transition: all var(--transition-normal);
+        pointer-events: none;
+        transition: opacity var(--transition-normal), visibility var(--transition-normal);
         z-index: 1000;
-        /* High z-index but below logo/hamburger */
         padding: var(--space-24) var(--space-8) var(--space-8);
-
-        /* Reset backdrop filter to prevent transparency issues */
         backdrop-filter: none !important;
         -webkit-backdrop-filter: none !important;
-    }
-
-    /* Ensure specific override for scrolled state */
-    .navbar.navbar-scrolled .navbar-links,
-    .navbar-scrolled .navbar-links {
-        background: var(--bg-body) !important;
-        backdrop-filter: none !important;
-        -webkit-backdrop-filter: none !important;
+        overflow-y: auto;
     }
 
     .navbar-links-open {
         opacity: 1;
         visibility: visible;
+        pointer-events: auto;
     }
 
     /* When mobile menu is open, always use theme-aware text colors */
@@ -258,7 +251,6 @@
 
     .navbar-link {
         font-size: var(--text-2xl);
-        /* Larger text for mobile */
     }
 
     .navbar-cta {

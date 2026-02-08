@@ -131,8 +131,8 @@
 
   /* Backgrounds */
   --bg-body: var(--pure-black);
-  --bg-card: var(--gray-900);
-  --bg-card-hover: var(--gray-800);
+  --bg-card: #0d0d0d;
+  --bg-card-hover: #151515;
   --bg-glass: rgba(10, 10, 10, 0.85);
   --bg-nav: rgba(0, 0, 0, 0.85);
 
