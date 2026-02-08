@@ -246,6 +246,16 @@
         visibility: visible;
     }
 
+    /* When mobile menu is open, always use theme-aware text colors */
+    .navbar-links-open .navbar-link {
+        color: var(--text-primary) !important;
+    }
+
+    .navbar-links-open .navbar-link:hover,
+    .navbar-links-open .navbar-link-active {
+        color: var(--primary-orange) !important;
+    }
+
     .navbar-link {
         font-size: var(--text-2xl);
         /* Larger text for mobile */
