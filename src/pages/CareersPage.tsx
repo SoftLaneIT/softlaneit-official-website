@@ -19,7 +19,7 @@
 
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { MapPin, ArrowRight, CheckCircle2, Sparkles, Zap, Briefcase, Clock } from 'lucide-react';
+import { MapPin, ArrowRight, CheckCircle2, Sparkles, Zap, Briefcase, Clock, ChevronDown } from 'lucide-react';
 import { loadMarkdownFiles } from '../utils/markdown';
 import './CareersPage.css';
 
@@ -35,6 +35,11 @@ interface JobOpening {
 
 export const CareersPage = () => {
   const [jobs, setJobs] = useState<any[]>([]);
+  const [expandedJob, setExpandedJob] = useState<string | null>(null);
+
+  const toggleJob = (slug: string) => {
+    setExpandedJob(prev => prev === slug ? null : slug);
+  };
 
   useEffect(() => {
     const fetchJobs = async () => {
@@ -91,9 +96,11 @@ export const CareersPage = () => {
           </div>
 
           <div className="positions-timeline">
-            {jobs.map((job) => (
-              <div key={job.slug} className="position-card">
-                <div className="position-header">
+            {jobs.map((job) => {
+              const isExpanded = expandedJob === job.slug;
+              return (
+              <div key={job.slug} className={`position-card ${isExpanded ? 'position-card-expanded' : ''}`}>
+                <div className="position-header" onClick={() => toggleJob(job.slug)} style={{ cursor: 'pointer' }}>
                   <div className="position-info">
                     <h3>{job.attributes.title}</h3>
                     <div className="position-meta">
@@ -111,41 +118,49 @@ export const CareersPage = () => {
                       </span>
                     </div>
                   </div>
-                  <button className="apply-btn">
-                    Apply Now
-                    <ArrowRight size={18} />
-                  </button>
+                  <div className="position-actions">
+                    <button className="apply-btn">
+                      Apply Now
+                      <ArrowRight size={18} />
+                    </button>
+                    <button className={`toggle-btn ${isExpanded ? 'toggle-btn-open' : ''}`} aria-label="Toggle details">
+                      <ChevronDown size={20} />
+                    </button>
+                  </div>
                 </div>
 
-                <p className="position-description">{job.attributes.description}</p>
+                <div className={`position-body ${isExpanded ? 'position-body-open' : ''}`}>
+                  <p className="position-description">{job.attributes.description}</p>
 
-                <div className="position-details">
-                  <div className="detail-section">
-                    <h4>
-                      <CheckCircle2 size={20} />
-                      Requirements
-                    </h4>
-                    <ul>
-                      {job.attributes.requirements.map((req: string, i: number) => (
-                        <li key={i}>{req}</li>
-                      ))}
-                    </ul>
-                  </div>
+                  <div className="position-details">
+                    <div className="detail-section">
+                      <h4>
+                        <CheckCircle2 size={20} />
+                        Requirements
+                      </h4>
+                      <ul>
+                        {job.attributes.requirements.map((req: string, i: number) => (
+                          <li key={i}>{req}</li>
+                        ))}
+                      </ul>
+                    </div>
 
-                  <div className="detail-section">
-                    <h4>
-                      <Zap size={20} />
-                      Skills
-                    </h4>
-                    <div className="skills-tags">
-                      {job.attributes.skills.map((skill: string, i: number) => (
-                        <span key={i} className="skill-tag">{skill}</span>
-                      ))}
+                    <div className="detail-section">
+                      <h4>
+                        <Zap size={20} />
+                        Skills
+                      </h4>
+                      <div className="skills-tags">
+                        {job.attributes.skills.map((skill: string, i: number) => (
+                          <span key={i} className="skill-tag">{skill}</span>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            ))}
+              );
+            })}
 
             {jobs.length === 0 && (
               <div className="no-jobs">
