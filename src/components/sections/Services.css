@@ -81,8 +81,8 @@
 .service-card {
     position: relative;
     padding: var(--space-8);
-    background: var(--gray-800);
-    /* Lighter dark for better contrast */
+    background: #0A0A0A;
+    /* Premium dark black */
     border: 1px solid var(--border-light);
     border-radius: var(--radius-xl);
     transition: all var(--transition-normal);
@@ -108,8 +108,8 @@
 
 .service-card:hover {
     transform: translateY(-8px);
-    background: #3e444a;
-    /* Slightly lighter than gray-800 */
+    background: #141414;
+    /* Slight lift */
     border-color: rgba(245, 130, 31, 0.4);
 }
 

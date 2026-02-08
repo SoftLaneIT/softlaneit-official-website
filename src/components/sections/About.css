@@ -174,7 +174,8 @@
 }
 
 .about-stat {
-    background: var(--bg-card);
+    background: #0A0A0A;
+    /* Premium dark black */
     border: 1px solid var(--border-light);
     border-radius: var(--radius-xl);
     padding: var(--space-8);
@@ -182,10 +183,21 @@
     transition: all var(--transition-normal);
 }
 
+[data-theme="light"] .about-stat {
+    background: var(--bg-card);
+    border-color: var(--border-light);
+}
+
 .about-stat:hover {
+    background: #141414;
+    /* Slight lift */
+    border-color: rgba(245, 130, 31, 0.4);
+    transform: translateY(-4px);
+}
+
+[data-theme="light"] .about-stat:hover {
     background: var(--bg-card-hover);
     border-color: rgba(245, 130, 31, 0.2);
-    transform: translateY(-4px);
 }
 
 .about-stat-value {
