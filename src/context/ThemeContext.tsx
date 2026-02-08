@@ -24,6 +24,20 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         return 'dark'; // Default to dark
     });
 
+    // Listen for system theme changes (only when user hasn't manually set a theme)
+    useEffect(() => {
+        const mediaQuery = window.matchMedia('(prefers-color-scheme: light)');
+        const handleSystemThemeChange = (e: MediaQueryListEvent) => {
+            const savedTheme = localStorage.getItem('theme');
+            // Only follow system if user hasn't manually toggled
+            if (!savedTheme) {
+                setThemeState(e.matches ? 'light' : 'dark');
+            }
+        };
+        mediaQuery.addEventListener('change', handleSystemThemeChange);
+        return () => mediaQuery.removeEventListener('change', handleSystemThemeChange);
+    }, []);
+
     useEffect(() => {
         const root = document.documentElement;
         if (theme === 'light') {
