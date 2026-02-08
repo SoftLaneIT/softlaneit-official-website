@@ -38,7 +38,7 @@
     z-index: 100;
     transform: translate(-50%, -50%);
     box-shadow: 0 0 20px rgba(255, 140, 0, 0.6), 0 0 40px rgba(255, 101, 0, 0.4);
-    mix-blend-mode: screen;
+    mix-blend-mode: normal;
 }
 
 .hero-cursor::before {
@@ -107,18 +107,24 @@
 .hero-gradient {
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, #0a0a0a 0%, #111111 50%, #0d0d0d 100%);
+    background: var(--gradient-bg);
 }
 
 .hero-grid {
     position: absolute;
     inset: 0;
     background-image:
-        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
     background-size: 60px 60px;
     mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
     -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+}
+
+[data-theme="light"] .hero-grid {
+    background-image:
+        linear-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
 }
 
 /* Floating Orbs - Hidden for torch effect */
@@ -249,6 +255,7 @@
     line-height: 1.1;
     margin-bottom: var(--space-6);
     letter-spacing: -0.03em;
+    color: var(--text-primary);
 }
 
 .hero-title-gradient {
@@ -261,7 +268,7 @@
 /* Subtitle */
 .hero-subtitle {
     font-size: var(--text-lg);
-    color: var(--gray-400);
+    color: var(--text-secondary);
     max-width: 650px;
     margin: 0 auto var(--space-10);
     line-height: 1.7;
@@ -301,20 +308,20 @@
     display: block;
     font-size: var(--text-3xl);
     font-weight: var(--font-bold);
-    color: var(--pure-white);
+    color: var(--text-primary);
     line-height: 1;
     margin-bottom: var(--space-1);
 }
 
 .hero-stat-label {
     font-size: var(--text-sm);
-    color: var(--gray-500);
+    color: var(--text-muted);
 }
 
 .hero-stat-divider {
     width: 1px;
     height: 40px;
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--border-light);
 }
 
 /* Modern Scroll Indicator */
@@ -408,11 +415,11 @@
 }
 
 .hero-scroll-modern:hover .hero-scroll-line {
-    background: linear-gradient(to bottom, transparent, #fff, transparent);
+    background: linear-gradient(to bottom, transparent, var(--text-primary), transparent);
 }
 
 .hero-scroll-modern:hover .hero-scroll-arrows svg {
-    stroke: #fff;
+    stroke: var(--text-primary);
 }
 
 /* Responsive */

@@ -20,28 +20,26 @@
   min-height: 100vh;
   position: relative;
   overflow: hidden;
-  background: linear-gradient(135deg, #0a0b1e 0%, #1a1b3e 100%);
+  background: var(--bg-body);
 }
 
-/* Animated Background */
+/* Animated Background - Hidden to prevent empty space issues */
 .careers-bg {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  pointer-events: none;
+  display: none;
 }
 
 .particle {
   position: absolute;
   width: 2px;
   height: 2px;
-  background: var(--accent-gradient);
+  background: var(--gradient-primary);
   border-radius: 50%;
   opacity: 0.6;
   animation: float 20s infinite ease-in-out;
+}
+
+[data-theme="light"] .particle {
+  opacity: 0.15;
 }
 
 @keyframes float {
@@ -57,7 +55,7 @@
 
 /* Text Gradient */
 .text-gradient {
-  background: var(--accent-gradient);
+  background: var(--gradient-primary);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -67,18 +65,16 @@
 .careers-hero {
   position: relative;
   z-index: 1;
-  padding: 140px 0 80px;
+  padding: 120px 0 40px;
   text-align: center;
+  background: var(--bg-body);
 }
 
 .careers-hero h1 {
   font-size: 3.5rem;
   font-weight: 700;
   margin-bottom: 1.5rem;
-  background: linear-gradient(135deg, #fff 0%, #a8b3ff 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--text-primary);
 }
 
 .careers-hero p {
@@ -93,7 +89,7 @@
   display: flex;
   justify-content: center;
   gap: 4rem;
-  margin-top: 3rem;
+  margin-top: 2rem;
 }
 
 .stat {
@@ -104,7 +100,7 @@
   display: block;
   font-size: 2.5rem;
   font-weight: 700;
-  background: var(--accent-gradient);
+  background: var(--gradient-primary);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -120,7 +116,8 @@
 .careers-content {
   position: relative;
   z-index: 1;
-  padding: 60px 0 100px;
+  padding: var(--space-8) 0 var(--space-12);
+  background: var(--bg-body);
 }
 
 .container {
@@ -131,25 +128,36 @@
 
 /* Section Styles */
 .careers-section {
-  margin-bottom: 100px;
+  margin-bottom: 0;
+  padding: var(--space-8) 0 var(--space-12);
+  position: relative;
+  z-index: 1;
+  background: var(--bg-body);
 }
 
 .section-header {
   text-align: center;
-  margin-bottom: 4rem;
+  margin-bottom: 2.5rem;
 }
 
 .section-label {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
   padding: 0.5rem 1rem;
-  background: rgba(255, 112, 55, 0.1);
-  color: var(--accent-primary);
+  background: rgba(245, 130, 31, 0.12);
+  color: var(--primary-orange);
   border-radius: 20px;
   font-size: 0.85rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1px;
   margin-bottom: 1rem;
+}
+
+[data-theme="light"] .section-label {
+  background: rgba(245, 130, 31, 0.1);
+  color: var(--primary-orange-dark);
 }
 
 .section-title {
@@ -180,24 +188,28 @@
   top: 0;
   bottom: 0;
   width: 2px;
-  background: linear-gradient(180deg, 
-    transparent 0%, 
-    var(--accent-primary) 20%, 
-    var(--accent-primary) 80%, 
+  background: linear-gradient(180deg,
+    transparent 0%,
+    var(--primary-orange) 20%,
+    var(--primary-orange) 80%,
     transparent 100%
   );
 }
 
 .position-card {
   position: relative;
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
   border-radius: 16px;
   padding: 2rem;
   margin-bottom: 2rem;
   margin-left: 2rem;
   transition: all 0.3s ease;
+}
+
+[data-theme="light"] .position-card {
+  border-color: rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
 }
 
 .position-card::before {
@@ -207,24 +219,75 @@
   top: 2rem;
   width: 12px;
   height: 12px;
-  background: var(--accent-gradient);
+  background: var(--gradient-primary);
   border-radius: 50%;
-  box-shadow: 0 0 20px rgba(255, 112, 55, 0.5);
+  box-shadow: 0 0 20px rgba(245, 130, 31, 0.5);
 }
 
 .position-card:hover {
   transform: translateX(10px);
-  border-color: var(--accent-primary);
-  box-shadow: 0 10px 40px rgba(255, 112, 55, 0.2);
+  border-color: var(--primary-orange);
+  box-shadow: 0 10px 40px rgba(245, 130, 31, 0.15);
+}
+
+[data-theme="light"] .position-card:hover {
+  box-shadow: 0 10px 40px rgba(245, 130, 31, 0.12);
 }
 
 .position-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0;
   flex-wrap: wrap;
   gap: 1rem;
+}
+
+.position-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.toggle-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(245, 130, 31, 0.1);
+  border: 1px solid rgba(245, 130, 31, 0.2);
+  color: var(--primary-orange);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.toggle-btn svg {
+  transition: transform 0.3s ease;
+}
+
+.toggle-btn-open svg {
+  transform: rotate(180deg);
+}
+
+.toggle-btn:hover {
+  background: rgba(245, 130, 31, 0.2);
+}
+
+/* Collapsible body */
+.position-body {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.4s ease, opacity 0.3s ease, margin 0.3s ease;
+  margin-top: 0;
+}
+
+.position-body-open {
+  max-height: 1000px;
+  opacity: 1;
+  margin-top: 1.5rem;
 }
 
 .position-info h3 {
@@ -239,7 +302,7 @@
   flex-wrap: wrap;
 }
 
-.meta-item {
+.position-card .meta-item {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -247,10 +310,10 @@
   font-size: 0.9rem;
 }
 
-.meta-item svg {
+.position-card .meta-item svg {
   width: 16px;
   height: 16px;
-  color: var(--accent-primary);
+  color: var(--primary-orange);
 }
 
 .apply-btn {
@@ -258,8 +321,8 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
-  background: var(--accent-gradient);
-  color: white;
+  background: var(--gradient-primary);
+  color: var(--pure-white);
   border: none;
   border-radius: 8px;
   font-weight: 600;
@@ -271,7 +334,7 @@
 
 .apply-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 30px rgba(255, 112, 55, 0.4);
+  box-shadow: 0 10px 30px rgba(245, 130, 31, 0.4);
 }
 
 .position-description {
@@ -287,7 +350,7 @@
 }
 
 .detail-section h4 {
-  color: var(--text-primary);
+  color: var(--primary-orange);
   font-size: 1.1rem;
   margin-bottom: 1rem;
   display: flex;
@@ -296,7 +359,7 @@
 }
 
 .detail-section h4 svg {
-  color: var(--accent-primary);
+  color: var(--primary-orange);
   width: 20px;
   height: 20px;
 }
@@ -321,7 +384,7 @@
   top: 0.6rem;
   width: 6px;
   height: 6px;
-  background: var(--accent-gradient);
+  background: var(--gradient-primary);
   border-radius: 50%;
 }
 
@@ -333,11 +396,21 @@
 
 .skill-tag {
   padding: 0.5rem 1rem;
-  background: rgba(255, 112, 55, 0.1);
-  color: var(--accent-primary);
+  background: rgba(245, 130, 31, 0.12);
+  color: var(--primary-orange);
   border-radius: 20px;
   font-size: 0.85rem;
   font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+[data-theme="light"] .skill-tag {
+  background: rgba(245, 130, 31, 0.1);
+  color: var(--primary-orange-dark);
+}
+
+.skill-tag:hover {
+  background: rgba(245, 130, 31, 0.2);
 }
 
 /* Perks Grid - Bento Style */
@@ -349,13 +422,17 @@
 
 .perk-card {
   position: relative;
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
   border-radius: 16px;
   padding: 2rem;
   transition: all 0.3s ease;
   overflow: hidden;
+}
+
+[data-theme="light"] .perk-card {
+  border-color: rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
 }
 
 .perk-card::before {
@@ -365,15 +442,19 @@
   left: 0;
   right: 0;
   height: 3px;
-  background: var(--accent-gradient);
+  background: var(--gradient-primary);
   transform: scaleX(0);
   transition: transform 0.3s ease;
 }
 
 .perk-card:hover {
   transform: translateY(-5px);
-  border-color: var(--accent-primary);
-  box-shadow: 0 10px 40px rgba(255, 112, 55, 0.2);
+  border-color: var(--primary-orange);
+  box-shadow: 0 10px 40px rgba(245, 130, 31, 0.15);
+}
+
+[data-theme="light"] .perk-card:hover {
+  box-shadow: 0 10px 40px rgba(245, 130, 31, 0.12);
 }
 
 .perk-card:hover::before {
@@ -383,13 +464,17 @@
 .perk-icon {
   width: 48px;
   height: 48px;
-  background: rgba(255, 112, 55, 0.1);
+  background: rgba(245, 130, 31, 0.12);
   border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 1.5rem;
-  color: var(--accent-primary);
+  color: var(--primary-orange);
+}
+
+[data-theme="light"] .perk-icon {
+  background: rgba(245, 130, 31, 0.1);
 }
 
 .perk-icon svg {
@@ -411,13 +496,20 @@
 
 /* CTA Section */
 .careers-cta {
+  position: relative;
+  z-index: 1;
   text-align: center;
   padding: 4rem 2rem;
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
   border-radius: 24px;
-  margin-top: 4rem;
+  margin: 0 auto var(--space-12);
+  max-width: 1200px;
+}
+
+[data-theme="light"] .careers-cta {
+  border-color: rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
 }
 
 .careers-cta h2 {
@@ -437,8 +529,8 @@
   align-items: center;
   gap: 0.75rem;
   padding: 1rem 2rem;
-  background: var(--accent-gradient);
-  color: white;
+  background: var(--gradient-primary);
+  color: var(--pure-white);
   border: none;
   border-radius: 12px;
   font-size: 1.1rem;
@@ -450,7 +542,14 @@
 
 .cta-btn:hover {
   transform: translateY(-3px);
-  box-shadow: 0 15px 40px rgba(255, 112, 55, 0.4);
+  box-shadow: 0 15px 40px rgba(245, 130, 31, 0.4);
+}
+
+/* No Jobs */
+.no-jobs {
+  text-align: center;
+  padding: 3rem;
+  color: var(--text-secondary);
 }
 
 /* Responsive Design */

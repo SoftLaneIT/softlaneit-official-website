@@ -27,10 +27,10 @@
 }
 
 .navbar-scrolled {
-    background: rgba(0, 0, 0, 0.85);
+    background: var(--bg-nav);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--border-light);
     padding: var(--space-3) 0;
 }
 
@@ -76,21 +76,44 @@
     gap: var(--space-8);
 }
 
+/* Default: Adapt to theme (Black in Light Mode, White in Dark Mode) */
 .navbar-link {
     position: relative;
     font-size: var(--text-sm);
     font-weight: var(--font-medium);
-    color: var(--gray-300);
+    color: var(--text-primary);
     transition: color var(--transition-fast);
     padding: var(--space-2) 0;
 }
 
-.navbar-link:hover {
+/* Override: Force WHITE text on Dark Hero pages (Blog/Projects) when NOT scrolled */
+.navbar-dark-hero:not(.navbar-scrolled) {
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.2) 70%, transparent 100%);
+}
+
+.navbar-dark-hero:not(.navbar-scrolled) .navbar-link {
     color: var(--pure-white);
 }
 
-.navbar-link-active {
+[data-theme="light"] .navbar-dark-hero:not(.navbar-scrolled) {
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0.25) 70%, transparent 100%);
+}
+
+[data-theme="light"] .navbar-dark-hero:not(.navbar-scrolled) .navbar-link {
     color: var(--pure-white);
+}
+
+.navbar-scrolled .navbar-link {
+    color: var(--text-primary);
+    /* Scrolled always respects theme */
+}
+
+.navbar-link:hover {
+    color: var(--primary-orange);
+}
+
+.navbar-link-active {
+    color: var(--primary-orange);
 }
 
 .navbar-link-underline {
@@ -146,10 +169,14 @@
     display: block;
     width: 24px;
     height: 2px;
-    background: var(--pure-white);
+    background: var(--text-primary);
     margin: 3px 0;
     transition: all var(--transition-normal);
     border-radius: var(--radius-full);
+}
+
+.navbar-dark-hero:not(.navbar-scrolled) .navbar-hamburger span {
+    background: var(--pure-white);
 }
 
 .navbar-hamburger-open span:nth-child(1) {
@@ -166,62 +193,64 @@
 
 /* Mobile Styles */
 @media (max-width: 768px) {
+
+    /* When mobile menu is open, remove backdrop-filter from navbar
+       to prevent it from creating a new containing block for fixed children */
+    .navbar.navbar-menu-open {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+    }
+
     .navbar-hamburger {
         display: flex;
         z-index: 1001;
-        /* Ensure above overlay */
     }
 
     .navbar-logo {
         position: relative;
         z-index: 1001;
-        /* Ensure above overlay */
     }
 
     .navbar-links {
         position: fixed;
         top: 0;
         left: 0;
-        right: 0;
-        bottom: 0;
+        width: 100vw;
+        height: 100vh;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         gap: var(--space-6);
-        background: #000000 !important;
-        /* Force solid black background */
-        /* background-color: #000000 !important; */
-        /* background: rgba(0, 0, 0, 0.98); */
-        /* backdrop-filter: blur(15px); */
-        /* -webkit-backdrop-filter: blur(15px); */
+        background: var(--bg-body) !important;
         opacity: 0;
         visibility: hidden;
-        transition: all var(--transition-normal);
+        pointer-events: none;
+        transition: opacity var(--transition-normal), visibility var(--transition-normal);
         z-index: 1000;
-        /* High z-index but below logo/hamburger */
         padding: var(--space-24) var(--space-8) var(--space-8);
-
-        /* Reset backdrop filter to prevent transparency issues */
         backdrop-filter: none !important;
         -webkit-backdrop-filter: none !important;
-    }
-
-    /* Ensure specific override for scrolled state */
-    .navbar.navbar-scrolled .navbar-links,
-    .navbar-scrolled .navbar-links {
-        background: #000000 !important;
-        backdrop-filter: none !important;
-        -webkit-backdrop-filter: none !important;
+        overflow-y: auto;
     }
 
     .navbar-links-open {
         opacity: 1;
         visibility: visible;
+        pointer-events: auto;
+    }
+
+    /* When mobile menu is open, always use theme-aware text colors */
+    .navbar-links-open .navbar-link {
+        color: var(--text-primary) !important;
+    }
+
+    .navbar-links-open .navbar-link:hover,
+    .navbar-links-open .navbar-link-active {
+        color: var(--primary-orange) !important;
     }
 
     .navbar-link {
         font-size: var(--text-2xl);
-        /* Larger text for mobile */
     }
 
     .navbar-cta {

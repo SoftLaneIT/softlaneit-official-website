@@ -19,8 +19,7 @@
 
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { MapPin, ArrowRight, CheckCircle2, Sparkles, Zap, Heart, TrendingUp, Globe, Briefcase, Clock } from 'lucide-react';
-import { companyPerks } from '../data/content';
+import { MapPin, ArrowRight, CheckCircle2, Sparkles, Zap, Briefcase, Clock, ChevronDown } from 'lucide-react';
 import { loadMarkdownFiles } from '../utils/markdown';
 import './CareersPage.css';
 
@@ -34,17 +33,13 @@ interface JobOpening {
   skills: string[];
 }
 
-const iconMap: Record<string, any> = {
-  'Globe': Globe,
-  'GraduationCap': Sparkles,
-  'Heart': Heart,
-  'Palmtree': Zap,
-  'TrendingUp': TrendingUp,
-  'Zap': Zap,
-};
-
 export const CareersPage = () => {
   const [jobs, setJobs] = useState<any[]>([]);
+  const [expandedJob, setExpandedJob] = useState<string | null>(null);
+
+  const toggleJob = (slug: string) => {
+    setExpandedJob(prev => prev === slug ? null : slug);
+  };
 
   useEffect(() => {
     const fetchJobs = async () => {
@@ -58,21 +53,6 @@ export const CareersPage = () => {
 
   return (
     <div className="careers-page">
-      {/* Animated Background */}
-      <div className="careers-bg">
-        {[...Array(30)].map((_, i) => (
-          <div
-            key={i}
-            className="particle"
-            style={{
-              left: `${(i * 7) % 100}%`,
-              top: `${(i * 13) % 100}%`,
-              animationDelay: `${(i * 0.4) % 20}s`,
-              animationDuration: `${15 + (i * 0.3) % 10}s`,
-            }}
-          />
-        ))}
-      </div>
 
       {/* Hero Section */}
       <section className="careers-hero">
@@ -104,35 +84,6 @@ export const CareersPage = () => {
         </div>
       </section>
 
-      {/* Why Join Us - Perks Section */}
-      <section className="careers-section">
-        <div className="container">
-          <div className="section-header">
-            <span className="section-label">Benefits & Perks</span>
-            <h2 className="section-title">
-              Why <span className="text-gradient">SoftlaneIT</span>
-            </h2>
-            <p className="section-description">
-              We invest in our people because they're our greatest asset
-            </p>
-          </div>
-          <div className="perks-grid">
-            {companyPerks.map((perk, index) => {
-              const IconComponent = iconMap[perk.icon] || Sparkles;
-              return (
-                <div key={perk.id} className="perk-card" style={{ animationDelay: `${index * 0.1}s` }}>
-                  <div className="perk-icon">
-                    <IconComponent size={24} />
-                  </div>
-                  <h3>{perk.title}</h3>
-                  <p>{perk.description}</p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
       {/* Open Positions */}
       <section id="openings" className="careers-content">
         <div className="container">
@@ -145,9 +96,11 @@ export const CareersPage = () => {
           </div>
 
           <div className="positions-timeline">
-            {jobs.map((job) => (
-              <div key={job.slug} className="position-card">
-                <div className="position-header">
+            {jobs.map((job) => {
+              const isExpanded = expandedJob === job.slug;
+              return (
+              <div key={job.slug} className={`position-card ${isExpanded ? 'position-card-expanded' : ''}`}>
+                <div className="position-header" onClick={() => toggleJob(job.slug)} style={{ cursor: 'pointer' }}>
                   <div className="position-info">
                     <h3>{job.attributes.title}</h3>
                     <div className="position-meta">
@@ -165,41 +118,49 @@ export const CareersPage = () => {
                       </span>
                     </div>
                   </div>
-                  <button className="apply-btn">
-                    Apply Now
-                    <ArrowRight size={18} />
-                  </button>
+                  <div className="position-actions">
+                    <button className="apply-btn">
+                      Apply Now
+                      <ArrowRight size={18} />
+                    </button>
+                    <button className={`toggle-btn ${isExpanded ? 'toggle-btn-open' : ''}`} aria-label="Toggle details">
+                      <ChevronDown size={20} />
+                    </button>
+                  </div>
                 </div>
 
-                <p className="position-description">{job.attributes.description}</p>
+                <div className={`position-body ${isExpanded ? 'position-body-open' : ''}`}>
+                  <p className="position-description">{job.attributes.description}</p>
 
-                <div className="position-details">
-                  <div className="detail-section">
-                    <h4>
-                      <CheckCircle2 size={20} />
-                      Requirements
-                    </h4>
-                    <ul>
-                      {job.attributes.requirements.map((req: string, i: number) => (
-                        <li key={i}>{req}</li>
-                      ))}
-                    </ul>
-                  </div>
+                  <div className="position-details">
+                    <div className="detail-section">
+                      <h4>
+                        <CheckCircle2 size={20} />
+                        Requirements
+                      </h4>
+                      <ul>
+                        {job.attributes.requirements.map((req: string, i: number) => (
+                          <li key={i}>{req}</li>
+                        ))}
+                      </ul>
+                    </div>
 
-                  <div className="detail-section">
-                    <h4>
-                      <Zap size={20} />
-                      Skills
-                    </h4>
-                    <div className="skills-tags">
-                      {job.attributes.skills.map((skill: string, i: number) => (
-                        <span key={i} className="skill-tag">{skill}</span>
-                      ))}
+                    <div className="detail-section">
+                      <h4>
+                        <Zap size={20} />
+                        Skills
+                      </h4>
+                      <div className="skills-tags">
+                        {job.attributes.skills.map((skill: string, i: number) => (
+                          <span key={i} className="skill-tag">{skill}</span>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            ))}
+              );
+            })}
 
             {jobs.length === 0 && (
               <div className="no-jobs">
@@ -207,18 +168,6 @@ export const CareersPage = () => {
               </div>
             )}
           </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="careers-cta">
-        <div className="container">
-          <h2>Don't See Your Role?</h2>
-          <p>We're always looking for exceptional talent. Send us your resume and let's talk about your future.</p>
-          <button className="cta-btn">
-            Send General Application
-            <ArrowRight size={20} />
-          </button>
         </div>
       </section>
 

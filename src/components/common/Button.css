@@ -100,12 +100,12 @@
 
 /* Secondary Variant */
 .btn-secondary {
-    background: var(--gray-800);
-    color: var(--pure-white);
+    background: var(--bg-button-secondary);
+    color: var(--text-button-secondary);
 }
 
 .btn-secondary:hover {
-    background: var(--gray-700);
+    background: var(--bg-button-secondary-hover);
     transform: translateY(-2px);
 }
 
@@ -125,11 +125,11 @@
 /* Ghost Variant */
 .btn-ghost {
     background: transparent;
-    color: var(--pure-white);
+    color: var(--text-primary);
 }
 
 .btn-ghost:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--bg-card-hover);
 }
 
 /* Full Width */

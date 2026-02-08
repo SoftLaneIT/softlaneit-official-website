@@ -30,7 +30,7 @@
 .services-gradient {
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, #000000 0%, #0a0a0a 50%, #000000 100%);
+    background: var(--gradient-bg);
 }
 
 /* Header */
@@ -81,11 +81,17 @@
 .service-card {
     position: relative;
     padding: var(--space-8);
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: #0A0A0A;
+    /* Premium dark black */
+    border: 1px solid var(--border-light);
     border-radius: var(--radius-xl);
     transition: all var(--transition-normal);
     overflow: hidden;
+}
+
+[data-theme="light"] .service-card {
+    background: var(--pure-white);
+    border-color: var(--border-light);
 }
 
 .service-card::before {
@@ -102,7 +108,13 @@
 
 .service-card:hover {
     transform: translateY(-8px);
-    background: rgba(255, 255, 255, 0.04);
+    background: #141414;
+    /* Slight lift */
+    border-color: rgba(245, 130, 31, 0.4);
+}
+
+[data-theme="light"] .service-card:hover {
+    background: var(--pure-white);
     border-color: rgba(245, 130, 31, 0.2);
 }
 
@@ -169,13 +181,13 @@
 .service-title {
     font-size: var(--text-xl);
     font-weight: var(--font-bold);
-    color: var(--pure-white);
+    color: var(--text-primary);
     margin-bottom: var(--space-3);
 }
 
 .service-description {
     font-size: var(--text-sm);
-    color: var(--gray-400);
+    color: var(--text-secondary);
     line-height: 1.6;
     margin-bottom: var(--space-5);
 }
@@ -192,7 +204,11 @@
     align-items: center;
     gap: var(--space-2);
     font-size: var(--text-sm);
-    color: var(--gray-300);
+    color: var(--text-secondary);
+}
+
+[data-theme="light"] .service-features li {
+    color: var(--text-primary);
 }
 
 .service-features svg {
@@ -216,5 +232,16 @@
 
     .service-card {
         padding: var(--space-6);
+    }
+
+    /* Disable scroll animations on mobile - always show content */
+    .services-header {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+
+    .services-grid>* {
+        opacity: 1 !important;
+        transform: none !important;
     }
 }

@@ -30,7 +30,7 @@
 .testimonials-gradient {
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, #000000 0%, #0a0a0a 50%, #000000 100%);
+    background: var(--gradient-bg);
 }
 
 .testimonials-orb {
@@ -86,30 +86,45 @@
 
 /* Card */
 .testimonial-card {
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: radial-gradient(circle at center, rgba(245, 130, 31, 0.15) 0%, rgba(10, 10, 10, 0.6) 50%, rgba(10, 10, 10, 0.9) 100%);
+    /* Glassy gradient */
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    /* Glass border */
     border-radius: var(--radius-2xl);
     padding: var(--space-12);
     text-align: center;
     position: relative;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="light"] .testimonial-card {
+    background: var(--bg-card);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-color: var(--border-light);
+    box-shadow: var(--shadow-sm);
 }
 
 .testimonial-quote {
     position: absolute;
     top: var(--space-8);
     left: var(--space-8);
-    opacity: 0.1;
+    opacity: 0.15;
+    /* Slightly more visible but still subtle */
 }
 
 .testimonial-quote svg {
     width: 60px;
     height: 60px;
     color: var(--primary-orange);
+    /* Use tint if needed or stick to orange */
 }
 
 .testimonial-text {
     font-size: var(--text-xl);
-    color: var(--gray-200);
+    color: var(--text-secondary);
     line-height: 1.8;
     margin-bottom: var(--space-8);
     font-style: italic;
@@ -133,7 +148,7 @@
 }
 
 .testimonial-rating .star-empty {
-    color: var(--gray-600);
+    color: var(--text-tertiary);
 }
 
 /* Author */
@@ -155,13 +170,19 @@
 .testimonial-name {
     font-size: var(--text-base);
     font-weight: var(--font-semibold);
-    color: var(--pure-white);
+    color: var(--text-primary);
     margin-bottom: var(--space-1);
 }
 
 .testimonial-role {
     font-size: var(--text-sm);
-    color: var(--gray-500);
+    color: rgba(255, 255, 255, 0.9);
+    /* Crisp white for dark mode visibility */
+}
+
+[data-theme="light"] .testimonial-role {
+    color: var(--gray-900);
+    /* Solid black for light mode */
 }
 
 /* Navigation */
@@ -174,47 +195,67 @@
 }
 
 .testimonials-nav-btn {
-    width: 48px;
-    height: 48px;
+    width: 60px;
+    /* Increased to 60px */
+    height: 60px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.03);
+    /* Very subtle fill */
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    /* Fine border */
     border-radius: 50%;
-    color: var(--gray-400);
+    color: var(--text-secondary);
     cursor: pointer;
     transition: all var(--transition-normal);
+}
+
+[data-theme="light"] .testimonials-nav-btn {
+    background: var(--pure-white);
+    border-color: var(--gray-200);
+    color: var(--gray-900);
+    box-shadow: var(--shadow-sm);
 }
 
 .testimonials-nav-btn:hover {
     background: var(--primary-orange);
     border-color: var(--primary-orange);
     color: var(--pure-white);
+    transform: scale(1.05);
 }
 
 .testimonials-nav-btn svg {
-    width: 24px;
-    height: 24px;
+    width: 26px;
+    /* Increased to 26px */
+    height: 26px;
 }
 
 .testimonials-dots {
     display: flex;
-    gap: var(--space-2);
+    gap: var(--space-3);
+    /* Spaced out dots */
+    align-items: center;
 }
 
 .testimonials-dot {
-    width: 10px;
-    height: 10px;
+    width: 14px;
+    /* Increased to 14px */
+    height: 14px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.2);
+    background: var(--gray-700);
     border: none;
     cursor: pointer;
     transition: all var(--transition-normal);
+    padding: 0;
+}
+
+[data-theme="light"] .testimonials-dot {
+    background: var(--gray-300);
 }
 
 .testimonials-dot:hover {
-    background: rgba(255, 255, 255, 0.4);
+    background: var(--primary-orange-light);
 }
 
 .testimonials-dot.active {
