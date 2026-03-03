@@ -1,6 +1,6 @@
 ---
 title: Service Discovery in Microservices Architecture
-excerpt: Imagine you’re in a new city trying to find a specific restaurant. You could wander around aimlessly, or you could use a map service that knows the current location of all restaurants, their operating hours, and how to reach them.
+excerpt: "Imagine you're in a new city trying to find a specific restaurant. You could wander around aimlessly, or you could use a map service that knows the current location of all restaurants, their operating hours, and how to reach them."
 image: https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=500&fit=crop
 category: Architecture
 date: 2025-09-12

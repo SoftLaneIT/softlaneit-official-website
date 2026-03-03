@@ -1,6 +1,6 @@
 ---
 title: Tired with the VirtualBox Ubuntu Server default shell?
-excerpt: After a long day of coding, you just want to tinker around and run a few experiments on your own terms. So, you spin up a fresh Ubuntu Server on a VirtualBox VM.
+excerpt: "After a long day of coding, you just want to tinker around and run a few experiments on your own terms. So, you spin up a fresh Ubuntu Server on a VirtualBox VM."
 image: https://miro.medium.com/v2/resize:fit:1400/format:webp/1*B-Ygh7QpZAo8hAqL3xAVpA.png
 category: Tutorials
 date: 2026-03-03
