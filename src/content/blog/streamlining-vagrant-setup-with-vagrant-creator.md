@@ -1,10 +1,10 @@
 ---
-title: Streamlining Vagrant Setup with Vagrant Creator: Say Goodbye to Manual Configurations!
+title: "Streamlining Vagrant Setup with Vagrant Creator: Say Goodbye to Manual Configurations!"
 excerpt: "Vagrant Creator is a Python package designed by me to simplify the process of generating Vagrant init files with custom configurations. Whether you're new to Vagrant or a seasoned developer..."
 image: https://miro.medium.com/v2/resize:fit:1400/format:webp/1*gg7O6k-9G9DSo86JBs8dCg.png
 category: DevOps
 date: 2026-03-03
-readTime: 3 min read
+readTime: "3 min read"
 author:
   name: Tharindu Jayawardhana
   avatar: https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop
