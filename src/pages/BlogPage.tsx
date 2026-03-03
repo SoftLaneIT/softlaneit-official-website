@@ -195,7 +195,12 @@ export const BlogPage = () => {
         <div className="container">
           <div className="articles-grid">
             {regularPosts.map((post, index) => (
-              <article key={post.slug} className="article-card" style={{ animationDelay: `${index * 0.1}s` }}>
+              <article
+                key={post.slug}
+                className="article-card"
+                style={{ animationDelay: `${index * 0.1}s` }}
+                onClick={() => navigate(`/blog/${post.slug}`)}
+              >
                 <div className="article-image">
                   <img src={post.attributes.image} alt={post.attributes.title} loading="lazy" />
                   <span className="article-category">{post.attributes.category}</span>
@@ -221,14 +226,15 @@ export const BlogPage = () => {
                     <div className="article-actions">
                       <button
                         className="article-share-btn"
-                        onClick={() => handleShare(post.slug, post.attributes.title)}
+                        onClick={(e) => { e.stopPropagation(); handleShare(post.slug, post.attributes.title); }}
                         title="Share this article"
                       >
                         {copiedSlug === post.slug ? <Check size={14} /> : <Share2 size={14} />}
+                        <span>{copiedSlug === post.slug ? 'Copied!' : 'Share'}</span>
                       </button>
                       <button
                         className="article-link"
-                        onClick={() => navigate(`/blog/${post.slug}`)}
+                        onClick={(e) => { e.stopPropagation(); navigate(`/blog/${post.slug}`); }}
                       >
                         Read More
                         <ArrowRight size={16} />
