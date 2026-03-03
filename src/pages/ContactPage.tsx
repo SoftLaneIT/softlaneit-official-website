@@ -95,7 +95,7 @@ export const ContactPage = () => {
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
-                      placeholder="John Doe"
+                      placeholder="Your Name"
                       required
                     />
                   </div>
