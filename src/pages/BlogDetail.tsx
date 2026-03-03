@@ -20,7 +20,8 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Markdown from 'react-markdown';
-import { Calendar, Clock, ArrowLeft, Tag, Share2 } from 'lucide-react';
+import remarkGfm from 'remark-gfm';
+import { Calendar, Clock, ArrowLeft, Tag, Share2, Check } from 'lucide-react';
 import { getMarkdownFile, type MarkdownContent } from '../utils/markdown';
 import { Loader } from '../components/common';
 import './BlogDetail.css';
@@ -43,6 +44,20 @@ export const BlogDetail = () => {
     const { slug } = useParams<{ slug: string }>();
     const [post, setPost] = useState<MarkdownContent<BlogPost> | null>(null);
     const [loading, setLoading] = useState(true);
+    const [copied, setCopied] = useState(false);
+
+    const handleShare = () => {
+        const url = window.location.href;
+        const title = post?.attributes.title || 'SoftlaneIT Blog';
+        if (navigator.share) {
+            navigator.share({ title, url }).catch(() => { });
+        } else {
+            navigator.clipboard.writeText(url).then(() => {
+                setCopied(true);
+                setTimeout(() => setCopied(false), 2000);
+            });
+        }
+    };
 
     useEffect(() => {
         const fetchPost = async () => {
@@ -108,7 +123,7 @@ export const BlogDetail = () => {
             <div className="container">
                 <div className="blog-content-wrapper">
                     <div className="blog-main-content">
-                        <Markdown>{post.body}</Markdown>
+                        <Markdown remarkPlugins={[remarkGfm]}>{post.body}</Markdown>
                     </div>
 
                     <div className="blog-sidebar">
@@ -125,9 +140,9 @@ export const BlogDetail = () => {
                         </div>
                         <div className="sidebar-widget">
                             <h3>Share</h3>
-                            <button className="share-btn">
-                                <Share2 size={16} />
-                                Share Article
+                            <button className="share-btn" onClick={handleShare}>
+                                {copied ? <Check size={16} /> : <Share2 size={16} />}
+                                {copied ? 'Link Copied!' : 'Share Article'}
                             </button>
                         </div>
                     </div>

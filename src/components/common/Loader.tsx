@@ -17,7 +17,7 @@
  */
 
 import './Loader.css';
-import logoIcon from '../../../public/logo-icon.jpg';
+import logoIcon from '../../../public/logo-icon.webp';
 
 export const Loader = () => {
     return (
