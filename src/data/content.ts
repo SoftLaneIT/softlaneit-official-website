@@ -181,8 +181,8 @@ export const companyInfo = {
     tagline: 'Innovating the Future of Technology',
     description: 'We are a forward-thinking software development company dedicated to delivering innovative, scalable, and user-centric digital solutions that drive business growth.',
     email: 'services@softlaneit.com',
-    phone: '+1 (555) 123-4567',
-    address: '123 Innovation Drive, Tech City, TC 12345',
+    phone: '0775605593',
+    address: '66/2B, Ananda Shastralaya lane, Thalawathugoda road,Pitakotte',
     social: {
         linkedin: 'https://linkedin.com/company/softlaneit',
         twitter: 'https://x.com/SoftLane_It',

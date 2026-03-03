@@ -110,7 +110,7 @@ export const ContactPage = () => {
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
-                      placeholder="john@example.com"
+                      placeholder="your_email@example.com"
                       required
                     />
                   </div>
