@@ -7,7 +7,7 @@ date: 2026-02-01
 readTime: "3 min read"
 author:
   name: Tharindu Jayawardhana
-  avatar: https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop
+  avatar: https://miro.medium.com/v2/resize:fill:176:176/1*Frjl2Ze5k4_IZY6LT3JFFw.jpeg?w=150&h=150&fit=crop
 tags:
   - Performance
   - Architecture
