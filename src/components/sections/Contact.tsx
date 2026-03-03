@@ -57,9 +57,11 @@ export const Contact: React.FC = () => {
 
         const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
         const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+        const autoReplyTemplateId = import.meta.env.VITE_EMAILJS_AUTOREPLY_TEMPLATE_ID;
         const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
         try {
+            // Send notification to SoftlaneIT team
             await emailjs.send(
                 serviceId,
                 templateId,
@@ -73,6 +75,28 @@ export const Contact: React.FC = () => {
                 },
                 publicKey
             );
+
+            // Send auto-reply to the client
+            if (autoReplyTemplateId) {
+                await emailjs.send(
+                    serviceId,
+                    autoReplyTemplateId,
+                    {
+                        to_name: formData.name,
+                        to_email: formData.email,
+                        from_name: companyInfo.name,
+                        company: formData.company,
+                        service: formData.service,
+                        message: formData.message,
+                        reply_to: companyInfo.email,
+                    },
+                    publicKey
+                ).catch((err) => {
+                    // Auto-reply failure is non-blocking — main email already sent
+                    console.warn('Auto-reply could not be sent:', err);
+                });
+            }
+
             setSubmitStatus('success');
             setFormData({ name: '', email: '', company: '', service: '', message: '' });
         } catch (err) {
