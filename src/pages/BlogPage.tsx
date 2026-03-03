@@ -61,9 +61,13 @@ export const BlogPage = () => {
   const categories = ['All', ...Array.from(new Set(posts.map(post => post.attributes.category)))];
 
   const filteredPosts = posts.filter(post => {
-    const matchesSearch = post.attributes.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      post.attributes.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategory === 'All' || post.attributes.category === selectedCategory;
+    const title = post.attributes?.title || '';
+    const excerpt = post.attributes?.excerpt || '';
+    const category = post.attributes?.category || '';
+
+    const matchesSearch = title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      excerpt.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = selectedCategory === 'All' || category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
 
