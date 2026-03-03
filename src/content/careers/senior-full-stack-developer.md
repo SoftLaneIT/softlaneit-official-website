@@ -2,7 +2,7 @@
 id: job-1
 title: Senior Full Stack Developer
 department: Engineering
-location: Remote / San Francisco
+location: Remote / Colombo
 type: Full-time
 description: We are looking for an experienced Full Stack Developer to join our growing team.
 requirements:
