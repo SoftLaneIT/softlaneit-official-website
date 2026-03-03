@@ -6,7 +6,7 @@ category: Tutorials
 date: 2026-03-03
 readTime: "4 min read"
 author:
-  name: Tharindu Jayawardhana
+  name: Chandula Jayathilake
   avatar: https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop
 tags:
   - VirtualBox
