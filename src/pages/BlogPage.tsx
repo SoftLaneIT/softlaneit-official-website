@@ -17,9 +17,9 @@
  */
 
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Calendar, Clock, ArrowRight, Search, Tag, Share2, Check } from 'lucide-react';
+import { Calendar, Clock, ArrowRight, Search, Tag, Share2, Check, BookOpen } from 'lucide-react';
 import { loadMarkdownFiles } from '../utils/markdown';
 import { Loader } from '../components/common';
 import './BlogPage.css';
@@ -43,6 +43,9 @@ export const BlogPage = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [posts, setPosts] = useState<any[]>([]);
   const [copiedSlug, setCopiedSlug] = useState<string | null>(null);
+  const [deepSearch, setDeepSearch] = useState(false);
+  const [searchFocused, setSearchFocused] = useState(false);
+  const searchRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
   const handleShare = (slug: string, title: string) => {
@@ -57,32 +60,47 @@ export const BlogPage = () => {
     }
   };
 
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
+        setSearchFocused(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   useEffect(() => {
     const fetchPosts = async () => {
       const blogFiles = import.meta.glob('../content/blog/*.md', { query: '?raw', import: 'default' });
       const loadedPosts = await loadMarkdownFiles<BlogPost>(blogFiles);
-
-      // Sort by date descending
       loadedPosts.sort((a, b) => new Date(b.attributes.date).getTime() - new Date(a.attributes.date).getTime());
-
       setPosts(loadedPosts);
     };
-
     fetchPosts();
   }, []);
 
   const categories = ['All', ...Array.from(new Set(posts.map(post => post.attributes.category)))];
 
+  const isSearching = searchTerm.trim().length > 0;
+
   const filteredPosts = posts.filter(post => {
     const title = post.attributes?.title || '';
     const excerpt = post.attributes?.excerpt || '';
     const category = post.attributes?.category || '';
+    const body = post.body || '';
 
-    const matchesSearch = title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      excerpt.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = !isSearching || (
+      title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      excerpt.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (deepSearch && body.toLowerCase().includes(searchTerm.toLowerCase()))
+    );
     const matchesCategory = selectedCategory === 'All' || category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
+
+  const searchResults = isSearching ? filteredPosts.slice(0, 6) : [];
 
   if (posts.length === 0) {
     return <Loader />;
@@ -113,15 +131,78 @@ export const BlogPage = () => {
 
           {/* Search & Filter */}
           <div className="blog-controls">
-            <div className="blog-search">
-              <Search size={20} />
-              <input
-                type="text"
-                placeholder="Search articles..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
+            <div className="blog-search-wrapper" ref={searchRef}>
+              <div className={`blog-search ${searchFocused && isSearching ? 'search-active' : ''}`}>
+                <Search size={20} />
+                <input
+                  type="text"
+                  placeholder="Search articles..."
+                  value={searchTerm}
+                  onFocus={() => setSearchFocused(true)}
+                  onChange={(e) => { setSearchTerm(e.target.value); setSearchFocused(true); }}
+                />
+                {isSearching && (
+                  <button className="search-clear-btn" onClick={() => { setSearchTerm(''); setSearchFocused(false); }}>
+                    ✕
+                  </button>
+                )}
+              </div>
+
+              {/* Deep search toggle */}
+              <label className="deep-search-toggle">
+                <input
+                  type="checkbox"
+                  checked={deepSearch}
+                  onChange={(e) => setDeepSearch(e.target.checked)}
+                />
+                <BookOpen size={14} />
+                <span>Search inside articles</span>
+              </label>
+
+              {/* Search Results Dropdown */}
+              {searchFocused && isSearching && (
+                <div className="search-results-dropdown">
+                  {searchResults.length === 0 ? (
+                    <div className="search-no-results">
+                      <Search size={20} />
+                      <span>No articles found for "<strong>{searchTerm}</strong>"</span>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="search-results-header">
+                        {filteredPosts.length} result{filteredPosts.length !== 1 ? 's' : ''} found
+                      </div>
+                      {searchResults.map(post => (
+                        <div
+                          key={post.slug}
+                          className="search-result-card"
+                          onClick={() => { navigate(`/blog/${post.slug}`); setSearchFocused(false); setSearchTerm(''); }}
+                        >
+                          <img src={post.attributes.image} alt={post.attributes.title} className="search-result-img" />
+                          <div className="search-result-info">
+                            <span className="search-result-category">{post.attributes.category}</span>
+                            <h4 className="search-result-title">{post.attributes.title}</h4>
+                            <p className="search-result-excerpt">{post.attributes.excerpt}</p>
+                            <div className="search-result-meta">
+                              <Calendar size={12} />
+                              <span>{new Date(post.attributes.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                              <Clock size={12} />
+                              <span>{post.attributes.readTime}</span>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                      {filteredPosts.length > 6 && (
+                        <div className="search-results-more" onClick={() => setSearchFocused(false)}>
+                          Scroll down to see all {filteredPosts.length} results ↓
+                        </div>
+                      )}
+                    </>
+                  )}
+                </div>
+              )}
             </div>
+
             <div className="blog-categories">
               {categories.map(category => (
                 <button
