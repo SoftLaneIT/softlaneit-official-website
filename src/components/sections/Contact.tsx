@@ -17,6 +17,7 @@
  */
 
 import React, { useState } from 'react';
+import emailjs from '@emailjs/browser';
 import { useScrollAnimation } from '../../hooks';
 import { companyInfo, services } from '../../data/content';
 import { Button } from '../common';
@@ -52,15 +53,59 @@ export const Contact: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
+        setSubmitStatus('idle');
 
-        // Simulate form submission
-        await new Promise(resolve => setTimeout(resolve, 1500));
+        const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+        const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+        const autoReplyTemplateId = import.meta.env.VITE_EMAILJS_AUTOREPLY_TEMPLATE_ID;
+        const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
-        setSubmitStatus('success');
-        setIsSubmitting(false);
-        setFormData({ name: '', email: '', company: '', service: '', message: '' });
+        try {
+            // Send notification to SoftlaneIT team
+            await emailjs.send(
+                serviceId,
+                templateId,
+                {
+                    from_name: formData.name,
+                    from_email: formData.email,
+                    company: formData.company,
+                    service: formData.service,
+                    message: formData.message,
+                    to_email: companyInfo.email,
+                },
+                publicKey
+            );
 
-        setTimeout(() => setSubmitStatus('idle'), 5000);
+            // Send auto-reply to the client
+            if (autoReplyTemplateId) {
+                await emailjs.send(
+                    serviceId,
+                    autoReplyTemplateId,
+                    {
+                        to_name: formData.name,
+                        to_email: formData.email,
+                        from_name: companyInfo.name,
+                        company: formData.company,
+                        service: formData.service,
+                        message: formData.message,
+                        reply_to: companyInfo.email,
+                    },
+                    publicKey
+                ).catch((err) => {
+                    // Auto-reply failure is non-blocking — main email already sent
+                    console.warn('Auto-reply could not be sent:', err);
+                });
+            }
+
+            setSubmitStatus('success');
+            setFormData({ name: '', email: '', company: '', service: '', message: '' });
+        } catch (err) {
+            console.error('EmailJS error:', err);
+            setSubmitStatus('error');
+        } finally {
+            setIsSubmitting(false);
+            setTimeout(() => setSubmitStatus('idle'), 6000);
+        }
     };
 
     return (
@@ -241,6 +286,16 @@ export const Contact: React.FC = () => {
                                         <polyline points="22 4 12 14.01 9 11.01" />
                                     </svg>
                                     Thank you! Your message has been sent successfully.
+                                </div>
+                            )}
+                            {submitStatus === 'error' && (
+                                <div className="form-error">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                        <circle cx="12" cy="12" r="10" />
+                                        <line x1="15" y1="9" x2="9" y2="15" />
+                                        <line x1="9" y1="9" x2="15" y2="15" />
+                                    </svg>
+                                    Oops! Something went wrong. Please try again or email us directly.
                                 </div>
                             )}
                         </form>
