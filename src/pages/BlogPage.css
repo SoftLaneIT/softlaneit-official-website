@@ -76,9 +76,19 @@
 }
 
 @keyframes float {
-  0%, 100% { transform: translate(0, 0); }
-  33% { transform: translate(30px, -30px); }
-  66% { transform: translate(-20px, 20px); }
+
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+
+  33% {
+    transform: translate(30px, -30px);
+  }
+
+  66% {
+    transform: translate(-20px, 20px);
+  }
 }
 
 @keyframes fadeInUp {
@@ -86,6 +96,7 @@
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -267,12 +278,10 @@
 .featured-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.92) 0%,
-    rgba(0, 0, 0, 0.6) 40%,
-    rgba(0, 0, 0, 0.2) 100%
-  );
+  background: linear-gradient(to top,
+      rgba(0, 0, 0, 0.92) 0%,
+      rgba(0, 0, 0, 0.6) 40%,
+      rgba(0, 0, 0, 0.2) 100%);
   z-index: 1;
 }
 
@@ -557,6 +566,60 @@
 
 .article-link:hover {
   gap: var(--space-2);
+}
+
+/* Share buttons */
+.featured-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-5);
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: var(--radius-full);
+  color: var(--pure-white);
+  font-weight: var(--font-semibold);
+  font-size: var(--text-sm);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  backdrop-filter: blur(4px);
+}
+
+.share-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.article-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.article-share-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: rgba(245, 130, 31, 0.1);
+  border: 1px solid rgba(245, 130, 31, 0.2);
+  border-radius: var(--radius-lg);
+  color: var(--primary-orange);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.article-share-btn:hover {
+  background: rgba(245, 130, 31, 0.2);
+  transform: translateY(-2px);
 }
 
 /* ========================================

@@ -19,7 +19,7 @@
 
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Calendar, Clock, ArrowRight, Search, Tag } from 'lucide-react';
+import { Calendar, Clock, ArrowRight, Search, Tag, Share2, Check } from 'lucide-react';
 import { loadMarkdownFiles } from '../utils/markdown';
 import { Loader } from '../components/common';
 import './BlogPage.css';
@@ -42,7 +42,20 @@ export const BlogPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [posts, setPosts] = useState<any[]>([]);
+  const [copiedSlug, setCopiedSlug] = useState<string | null>(null);
   const navigate = useNavigate();
+
+  const handleShare = (slug: string, title: string) => {
+    const url = `${window.location.origin}/blog/${slug}`;
+    if (navigator.share) {
+      navigator.share({ title, url }).catch(() => { });
+    } else {
+      navigator.clipboard.writeText(url).then(() => {
+        setCopiedSlug(slug);
+        setTimeout(() => setCopiedSlug(null), 2000);
+      });
+    }
+  };
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -155,13 +168,23 @@ export const BlogPage = () => {
                   </div>
                 </div>
               </div>
-              <button
-                className="featured-btn"
-                onClick={() => navigate(`/blog/${featuredPost.slug}`)}
-              >
-                Read Full Article
-                <ArrowRight size={20} />
-              </button>
+              <div className="featured-actions">
+                <button
+                  className="featured-btn"
+                  onClick={() => navigate(`/blog/${featuredPost.slug}`)}
+                >
+                  Read Full Article
+                  <ArrowRight size={20} />
+                </button>
+                <button
+                  className="share-btn"
+                  onClick={() => handleShare(featuredPost.slug, featuredPost.attributes.title)}
+                  title="Share this article"
+                >
+                  {copiedSlug === featuredPost.slug ? <Check size={16} /> : <Share2 size={16} />}
+                  {copiedSlug === featuredPost.slug ? 'Copied!' : 'Share'}
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -195,13 +218,22 @@ export const BlogPage = () => {
                       <img src={post.attributes.author.avatar} alt={post.attributes.author.name} />
                       <span>{post.attributes.author.name}</span>
                     </div>
-                    <button
-                      className="article-link"
-                      onClick={() => navigate(`/blog/${post.slug}`)}
-                    >
-                      Read More
-                      <ArrowRight size={16} />
-                    </button>
+                    <div className="article-actions">
+                      <button
+                        className="article-share-btn"
+                        onClick={() => handleShare(post.slug, post.attributes.title)}
+                        title="Share this article"
+                      >
+                        {copiedSlug === post.slug ? <Check size={14} /> : <Share2 size={14} />}
+                      </button>
+                      <button
+                        className="article-link"
+                        onClick={() => navigate(`/blog/${post.slug}`)}
+                      >
+                        Read More
+                        <ArrowRight size={16} />
+                      </button>
+                    </div>
                   </div>
                 </div>
               </article>

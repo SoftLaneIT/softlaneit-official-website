@@ -281,6 +281,24 @@
     flex-shrink: 0;
 }
 
+.form-error {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: var(--radius-lg);
+    color: #ef4444;
+    font-size: var(--text-sm);
+}
+
+.form-error svg {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
 /* Responsive */
 @media (max-width: 1024px) {
     .contact-grid {

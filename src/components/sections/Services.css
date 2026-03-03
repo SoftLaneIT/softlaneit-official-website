@@ -225,7 +225,7 @@
     }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
     .services-grid {
         grid-template-columns: 1fr;
     }
@@ -238,10 +238,12 @@
     .services-header {
         opacity: 1 !important;
         transform: none !important;
+        transition: none !important;
     }
 
     .services-grid>* {
         opacity: 1 !important;
         transform: none !important;
+        transition: none !important;
     }
 }
