@@ -114,3 +114,19 @@ export interface CompanyPerk {
   title: string;
   description: string;
 }
+
+export interface BlogPost {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  image: string;
+  category: string;
+  date: string;
+  readTime: string;
+  author: {
+    name: string;
+    avatar: string;
+  };
+  tags: string[];
+}
