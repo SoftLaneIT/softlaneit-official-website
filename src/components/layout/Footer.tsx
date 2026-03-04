@@ -77,7 +77,7 @@ export const Footer: React.FC = () => {
                             <li><Link to="/#services">Services</Link></li>
                             <li><Link to="/#about">About</Link></li>
                             <li><Link to="/#portfolio">Portfolio</Link></li>
-                            <li><Link to="/#testimonials">Testimonials</Link></li>
+                            {/* <li><Link to="/#testimonials">Testimonials</Link></li> */}
                             <li><Link to="/blog">Blog</Link></li>
                             <li><Link to="/careers">Careers</Link></li>
                             <li><Link to="/contact">Contact</Link></li>

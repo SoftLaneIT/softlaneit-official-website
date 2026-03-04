@@ -162,10 +162,10 @@ export const About: React.FC = () => {
                                 alt="SoftlaneIT Team Collaboration"
                                 className="about-image"
                             />
-                            <div className="about-experience-badge">
+                            {/* <div className="about-experience-badge">
                                 <span className="experience-years">3+</span>
                                 <span className="experience-text">Years of<br />Excellence</span>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>

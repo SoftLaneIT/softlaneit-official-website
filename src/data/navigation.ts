@@ -13,7 +13,7 @@ export const navLinks: NavLink[] = [
     { id: 'services', label: 'Services', href: '#services' },
     { id: 'about', label: 'About', href: '#about' },
     { id: 'portfolio', label: 'Portfolio', href: '#portfolio' },
-    { id: 'testimonials', label: 'Testimonials', href: '#testimonials' },
+    // { id: 'testimonials', label: 'Testimonials', href: '#testimonials' },
     { id: 'blog', label: 'Blog', href: '#blog' },
     { id: 'careers', label: 'Careers', href: '#careers' },
     { id: 'contact', label: 'Contact', href: '#contact' },
