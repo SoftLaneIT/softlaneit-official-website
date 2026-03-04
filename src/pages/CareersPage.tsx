@@ -37,9 +37,6 @@ export const CareersPage = () => {
   const [jobs, setJobs] = useState<any[]>([]);
   const [expandedJob, setExpandedJob] = useState<string | null>(null);
 
-  const openPositionsCount = jobs.filter(
-    (job) => job.attributes?.status !== 'closed'
-  ).length;
 
   const toggleJob = (slug: string) => {
     setExpandedJob(prev => prev === slug ? null : slug);
