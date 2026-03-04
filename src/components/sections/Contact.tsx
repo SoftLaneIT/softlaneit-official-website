@@ -252,6 +252,7 @@ export const Contact: React.FC = () => {
                                                 {service.title}
                                             </option>
                                         ))}
+                                        <option value="other">Other</option>
                                     </select>
                                 </div>
                             </div>
