@@ -16,12 +16,12 @@
  * under the LICENSE.
  */
 
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import { useScrollAnimation, useParallax } from '../../hooks';
-import { stats } from '../../data/content';
+// import { stats } from '../../data/content';
 import './About.css';
 
-interface CounterProps {
+/* interface CounterProps {
     end: number;
     suffix?: string;
     shouldStart: boolean;
@@ -54,11 +54,11 @@ const Counter: React.FC<CounterProps> = ({ end, suffix = '', shouldStart }) => {
     }, [shouldStart, end]);
 
     return <>{count}{suffix}</>;
-};
+}; */
 
 export const About: React.FC = () => {
     const { ref: contentRef, isVisible } = useScrollAnimation({ threshold: 0.2 });
-    const { ref: statsRef, isVisible: statsVisible } = useScrollAnimation({ threshold: 0.3 });
+    // const { ref: statsRef, isVisible: statsVisible } = useScrollAnimation({ threshold: 0.3 });
     const { style: parallaxStyle } = useParallax({ speed: 0.2 });
 
     return (
@@ -135,7 +135,7 @@ export const About: React.FC = () => {
                     </div>
 
                     {/* Stats */}
-                    <div
+                    {/* <div
                         ref={statsRef}
                         className={`about-stats ${statsVisible ? 'visible' : ''}`}
                     >
@@ -151,6 +151,22 @@ export const About: React.FC = () => {
                                 <span className="about-stat-label">{stat.label}</span>
                             </div>
                         ))}
+                    </div> */}
+
+                    {/* Visual Replacement for Stats */}
+                    <div className={`about-visual ${isVisible ? 'visible' : ''}`}>
+                        <div className="about-image-wrapper">
+                            <div className="about-image-glow"></div>
+                            <img
+                                src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&auto=format&fit=crop"
+                                alt="SoftlaneIT Team Collaboration"
+                                className="about-image"
+                            />
+                            <div className="about-experience-badge">
+                                <span className="experience-years">3+</span>
+                                <span className="experience-text">Years of<br />Excellence</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

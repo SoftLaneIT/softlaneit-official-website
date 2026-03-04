@@ -148,7 +148,7 @@ export const Hero: React.FC = () => {
                         </Button>
                     </div>
 
-                    <div className="hero-stats">
+                    {/* <div className="hero-stats">
                         <div className="hero-stat">
                             <span className="hero-stat-value">150+</span>
                             <span className="hero-stat-label">Projects</span>
@@ -163,7 +163,7 @@ export const Hero: React.FC = () => {
                             <span className="hero-stat-value">8+</span>
                             <span className="hero-stat-label">Years</span>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </div>
 
