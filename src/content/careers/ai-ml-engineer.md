@@ -4,6 +4,7 @@ title: AI/ML Engineer
 department: AI Research
 location: Remote
 type: Full-time
+status: closed
 description: Join our AI team to build cutting-edge machine learning solutions.
 requirements:
   - 3+ years of experience in ML/AI development
