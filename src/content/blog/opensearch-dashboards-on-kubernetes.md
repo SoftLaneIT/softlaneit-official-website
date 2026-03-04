@@ -15,176 +15,206 @@ tags:
   - DevOps
 ---
 
-Opensearch-dashboards on Kubernetes
-===================================
+I always wanted to know how monitoring in Kubernetes work. So when looked into several monitoring tools I found that Opensearch by Amazon is a great tool for this. But during this implementation I ran into many issues with fluent-bit. I used Fluent-bit to ship logs from Kubernetes to Opensearch. The configuration of Fluent-bit was so hard to get right and caused me many troubles. 😑
 
-![captionless image](https://miro.medium.com/v2/resize:fit:1400/format:webp/1*SMhErHzYfEoOBWIp07M5HA.jpeg)
-
-I always wanted to know how monitoring in Kubernetes work. So when looked into several monitoring tools I found that Opensearch by Amazon is a great tool for this. But during this implementation I ran into many issues with fluent-bit. I used Fluent-bit to ship logs from Kubernetes to Opensearch. The configuration of Fluent-bit was so hard to get right and caused me many troubles. 😑.
-
-I will guide you on how to setup this monitoring tool correctly so that you won’t have to bear the same problems i got into 😉
+I will guide you on how to setup this monitoring tool correctly so that you won't have to bear the same problems i got into 😉
 
 I am doing this on an Ubuntu EC2. First off we need a Kubernetes cluster to work on. For this I am using a Minikube cluster.
 
-1.  Install kubectl
+---
 
-This is the official documentation [http://kubernetes.io/docs/tasks/tools/install-kubectl-linux/](http://kubernetes.io/docs/tasks/tools/install-kubectl-linux/) , I will add the commands needed below as well:
+## 1. Install kubectl
 
-```
-#Download the latest release with the command:  
+This is the official documentation: [kubernetes.io/docs/tasks/tools/install-kubectl-linux/](http://kubernetes.io/docs/tasks/tools/install-kubectl-linux/)
+
+```bash
+# Download the latest release:
 curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-  
-#Download the kubectl checksum file:
+
+# Download the kubectl checksum file:
 curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
-#Validate the kubectl binary against the checksum file:
+
+# Validate the kubectl binary against the checksum file:
 echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check
-``````
-#if valid:
-kubectl: OK
-#If the check fails, sha256 exits with nonzero status and prints output similar to:
-kubectl: FAILED
-sha256sum: WARNING: 1 computed checksum did NOT match
-``````
-#install kubectl
+```
+
+```bash
+# If valid:
+# kubectl: OK
+# If the check fails, sha256 exits with nonzero status:
+# kubectl: FAILED
+# sha256sum: WARNING: 1 computed checksum did NOT match
+
+# Install kubectl
 sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-#test installation
+
+# Test installation
 kubectl version --client
 ```
 
-2. Install Docker for minikube
+---
 
-I installed docker in which i created the minikube cluster. The link for docker installation is: [https://docs.docker.com/engine/install/ubuntu/](https://docs.docker.com/engine/install/ubuntu/)
+## 2. Install Docker for Minikube
 
-and remember to **add the user to the docker group**
+Install Docker using the official guide: [docs.docker.com/engine/install/ubuntu/](https://docs.docker.com/engine/install/ubuntu/)
 
-```
+Remember to **add the user to the docker group**:
+
+```bash
 sudo usermod -aG docker $USER
-#either log out and log back in OR
-#run the below command to activate this group membership without needing to fully log out and in
+# Either log out and log back in OR
+# Run the below command to activate this group membership without needing to fully log out:
 newgrp docker
 ```
 
-3. Install Minikube
+---
 
-![Minikube installation: https://minikube.sigs.k8s.io/docs/start/?arch=%2Flinux%2Fx86-64%2Fstable%2Fbinary+download](https://miro.medium.com/v2/resize:fit:1400/format:webp/1*TpMIdTPd19tzULzzdBeTeg.png)```
+## 3. Install Minikube
+
+![Minikube installation guide](https://miro.medium.com/v2/resize:fit:1400/format:webp/1*TpMIdTPd19tzULzzdBeTeg.png)
+
+Reference: [minikube.sigs.k8s.io/docs/start/](https://minikube.sigs.k8s.io/docs/start/?arch=%2Flinux%2Fx86-64%2Fstable%2Fbinary+download)
+
+```bash
 curl -LO https://github.com/kubernetes/minikube/releases/latest/download/minikube-linux-amd64
 sudo install minikube-linux-amd64 /usr/local/bin/minikube && rm minikube-linux-amd64
 ```
 
-Next start the cluster and see whether it is working
+Next, start the cluster and verify it is working:
 
-```
+```bash
 minikube start
-#if needed more control over resource allocation and installation method
+# If you need more control over resource allocation:
 minikube start --driver=docker --cpus=6 --memory=24000mb
-#list all pods
+
+# List all pods
 kubectl get pods -A
 ```
 
-4. Install Opensearch
+---
 
-[https://docs.opensearch.org/latest/install-and-configure/install-opensearch/debian/](https://docs.opensearch.org/latest/install-and-configure/install-opensearch/debian/)
+## 4. Install Opensearch
 
-```
+Reference: [docs.opensearch.org/latest/install-and-configure/install-opensearch/debian/](https://docs.opensearch.org/latest/install-and-configure/install-opensearch/debian/)
+
+```bash
 sudo apt-get update && sudo apt-get -y install lsb-release ca-certificates curl gnupg2
 curl -o- https://artifacts.opensearch.org/publickeys/opensearch-release.pgp | sudo gpg --dearmor --batch --yes -o /usr/share/keyrings/opensearch-release-keyring
 echo "deb [signed-by=/usr/share/keyrings/opensearch-release-keyring] https://artifacts.opensearch.org/releases/bundle/opensearch/3.x/apt stable main" | sudo tee /etc/apt/sources.list.d/opensearch-3.x.list
 sudo apt-get update
+
+# List available versions
 sudo apt list -a opensearch
 ```
 
-Final command will list the available opensearch versions, i will proceed with installing the latest version:
+The final command will list the available OpenSearch versions. Install the latest:
 
-```
-# For new installations of OpenSearch 2.12 and later, you must define a custom admin password in order to set up a demo security configuration.
-# Use one of the following commands to define a custom admin password:
+```bash
+# For new installations of OpenSearch 2.12 and later, you must define a custom admin password:
 sudo env OPENSEARCH_INITIAL_ADMIN_PASSWORD=<custom-admin-password> apt-get install opensearch
 ```
 
-If the installation succeeds, it means APT has validated that the repository metadata was signed with a trusted GPG key.
+If the installation succeeds, APT has validated that the repository metadata was signed with a trusted GPG key.
 
-Lets enable and start opensearch
+Enable and start OpenSearch:
 
-```
+```bash
 sudo systemctl enable opensearch
 sudo systemctl start opensearch
-#check status
+
+# Check status
 sudo systemctl status opensearch
 ```
 
-Next we need to tweak some settings in opensearch:
+Tweak these settings in opensearch configuration:
 
+```bash
+sudo nano /etc/opensearch/opensearch.yml
 ```
 
-sudo nano /etc/opensearch/opensearch.yml
-#add this ----------------------
+Add the following:
+
+```yaml
 network.host: 0.0.0.0
 discovery.type: single-node
----------------------------------
-# then run
+```
+
+Then restart:
+
+```bash
 sudo systemctl daemon-reload
 sudo systemctl enable opensearch
 sudo systemctl start opensearch
 sudo systemctl status opensearch
-#confirm functionality
+
+# Confirm functionality
 curl -X GET https://localhost:9200 -u 'admin:<custom-admin-password>' -k
 ```
 
-5. Install Opensearch dashboard
+---
 
-[https://docs.opensearch.org/latest/install-and-configure/install-dashboards/index/](https://docs.opensearch.org/latest/install-and-configure/install-dashboards/debian/)
+## 5. Install Opensearch Dashboard
 
-```
+Reference: [docs.opensearch.org/latest/install-and-configure/install-dashboards/](https://docs.opensearch.org/latest/install-and-configure/install-dashboards/debian/)
+
+```bash
 sudo apt-get update && sudo apt-get -y install lsb-release ca-certificates curl gnupg2
 curl -o- https://artifacts.opensearch.org/publickeys/opensearch-release.pgp | sudo gpg --dearmor --batch --yes -o /usr/share/keyrings/opensearch-release-keyring
 echo "deb [signed-by=/usr/share/keyrings/opensearch-release-keyring] https://artifacts.opensearch.org/releases/bundle/opensearch-dashboards/3.x/apt stable main" | sudo tee /etc/apt/sources.list.d/opensearch-dashboards-3.x.list
 sudo apt-get update
-#list all versions
-sudo apt list -a opensearch-dashboards
 
-``````
-#Once complete, enable OpenSearch.
+# List all versions
+sudo apt list -a opensearch-dashboards
+```
+
+Enable and start the dashboard:
+
+```bash
+# Enable OpenSearch Dashboards
 sudo systemctl enable opensearch-dashboards
-#Start OpenSearch.
+# Start OpenSearch Dashboards
 sudo systemctl start opensearch-dashboards
-#Verify that OpenSearch launched correctly.
+# Verify it launched correctly
 sudo systemctl status opensearch-dashboards
 ```
 
-Next change these settings in opensearch-dashboard to bind dashboard to any available interface:
+Bind the dashboard to any available interface:
 
-```
+```bash
 sudo nano /etc/opensearch-dashboards/opensearch_dashboards.yml
-#add this line-----------------
+```
+
+Add:
+
+```yaml
 server.host: "0.0.0.0"
--------------------------------
 ```
 
-You should be able to access the opensearch dashboard at [http://localhost:5601](http://localhost:5601)
+You should now be able to access the OpenSearch Dashboard at:
 
-or in my case
+- `http://localhost:5601`
+- Or `http://<EC2-vm-public-ip>:5601` if running on EC2
 
-[http://<EC2-vm-public-ip>:5601](http://localhost:5601)
+Use the username and password defined during installation:
 
-Use the username and password given during installation:
+![OpenSearch login screen](https://miro.medium.com/v2/resize:fit:922/format:webp/1*VnNMaaM22jF8uO-6Nso-Eg.png)
 
-![captionless image](https://miro.medium.com/v2/resize:fit:922/format:webp/1*VnNMaaM22jF8uO-6Nso-Eg.png)
+---
 
-6. Install Fluent-bit
+## 6. Install Fluent-bit
 
-It is easier to install fluent-bit using helm
+It is easier to install Fluent-bit using Helm:
 
-```
+```bash
 helm repo add fluent https://fluent.github.io/helm-charts
 helm repo update
 ```
 
-Next add fluent-bit-values.yaml:
+Create a `fluent-bit-values.yaml` — you can use version 1 or version 2:
 
-This is a general values.yaml file you can use this version 1 or version 2.
+**Version 1** (basic):
 
-```
-# version 1
+```yaml
 # fluent-bit-values.yaml
 config:
   inputs: |
@@ -215,10 +245,9 @@ config:
         HTTP_Passwd       abcABC@123
 ```
 
-I am using a nginx default site in the kubernetes cluster to get the logs. If you also want to try with nginx try this version 2.
+**Version 2** (with Nginx parsing):
 
-```
-# version 2
+```yaml
 # fluent-bit-values.yaml - Add Nginx parsing
 config:
   service: |
@@ -247,18 +276,15 @@ config:
         Mem_Buf_Limit     5MB
         Refresh_Interval  5
   filters: |
-    # Basic filter for debugging - just add a field to track processing
     [FILTER]
         Name              modify
         Match             nginx.*
         Add               processed_by fluent-bit
   outputs: |
-    # Output to stdout for debugging first
     [OUTPUT]
         Name              stdout
         Match             nginx.*
         Format            json_lines
-    # Also output to OpenSearch
     [OUTPUT]
         Name              opensearch
         Match             nginx.*
@@ -285,15 +311,17 @@ config:
         Time_Format %d/%b/%Y:%H:%M:%S %z
 ```
 
-Upgrade the fluent-bit installation
+Upgrade/install the Fluent-bit Helm chart:
 
-```
+```bash
 helm upgrade --install fluent-bit fluent/fluent-bit -f fluent-bit-values.yaml
 ```
 
-7. Install Nginx site on the kubernetes cluster
+---
 
-```
+## 7. Install Nginx on the Kubernetes Cluster
+
+```yaml
 # nginx-config.yaml
 apiVersion: v1
 kind: ConfigMap
@@ -320,7 +348,9 @@ data:
             return 302 http://$host/;
         }
     }
-``````
+```
+
+```yaml
 # nginx-deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -353,39 +383,51 @@ spec:
             items:
               - key: nginx.conf
                 path: nginx.conf
-``````
+```
+
+Apply the deployment:
+
+```bash
 kubectl apply -f nginx-deployment.yaml
 ```
 
-8. Check logs
+---
 
-![captionless image](https://miro.medium.com/v2/resize:fit:1400/format:webp/1*q4R-OzPv7wtk1_iUgD7rmQ.png)
+## 8. Check Logs in OpenSearch
 
-Here nginx* logs refer to the logs generated by nginx.
+![OpenSearch logs dashboard](https://miro.medium.com/v2/resize:fit:1400/format:webp/1*q4R-OzPv7wtk1_iUgD7rmQ.png)
+
+Here `nginx*` logs refer to the logs generated by nginx.
 
 These are the pods running in my environment:
 
-![captionless image](https://miro.medium.com/v2/resize:fit:1400/format:webp/1*LfW7eaPtEv9lUTHOjF-mEw.png)
+![Kubernetes pods running](https://miro.medium.com/v2/resize:fit:1400/format:webp/1*LfW7eaPtEv9lUTHOjF-mEw.png)
 
-9. Now its time to configure dashboard to show the logs
+---
 
-```
-Create an Index Pattern
-1. Go to Management → Index Patterns.
-2. Click Create index pattern.
-3. Enter the index name used by Fluent Bit, e.g.:nginx*
-4. Select the time filter field (usually @timestamp).
-5. Save the index pattern.
-``````
-# Generate traffic with different forwarded IPs to display in dashboard
+## 9. Configure Dashboard to Show Logs
+
+**Create an Index Pattern:**
+
+1. Go to **Management → Index Patterns**
+2. Click **Create index pattern**
+3. Enter the index name used by Fluent Bit, e.g. `nginx*`
+4. Select the time filter field (usually `@timestamp`)
+5. Save the index pattern
+
+Generate traffic with different forwarded IPs to display in the dashboard:
+
+```bash
 curl -H "X-Forwarded-For: 192.168.1.100" http://$(minikube ip):30080/
 curl -H "X-Forwarded-For: 10.0.0.50" http://$(minikube ip):30080/error
 curl -H "X-Forwarded-For: 172.16.0.200" http://$(minikube ip):30080/redirect
 curl -H "X-Forwarded-For: 203.0.113.45" http://$(minikube ip):30080/notfound
-```![captionless image](https://miro.medium.com/v2/resize:fit:1248/format:webp/1*NjiCDSjd9DQmmvW3D0dZnw.png)
+```
 
-Now your discovery page in opensearch dashboards should look like:
-You can learn to create dashboards in their official documentation: [https://docs.opensearch.org/latest/dashboards/dashboard/index/](https://docs.opensearch.org/latest/dashboards/dashboard/index/)
+![OpenSearch discovery page](https://miro.medium.com/v2/resize:fit:1248/format:webp/1*NjiCDSjd9DQmmvW3D0dZnw.png)
 
-That’s all.
-Happy monitoring 😃
+Now your discovery page in OpenSearch Dashboards should look like the screenshot above. You can learn to create dashboards in the official documentation: [docs.opensearch.org/latest/dashboards/dashboard/](https://docs.opensearch.org/latest/dashboards/dashboard/index/)
+
+---
+
+That's all. Happy monitoring! 😃

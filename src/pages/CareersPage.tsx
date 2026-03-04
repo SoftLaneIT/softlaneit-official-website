@@ -37,6 +37,10 @@ export const CareersPage = () => {
   const [jobs, setJobs] = useState<any[]>([]);
   const [expandedJob, setExpandedJob] = useState<string | null>(null);
 
+  const openPositionsCount = jobs.filter(
+    (job) => job.attributes?.status !== 'closed'
+  ).length;
+
   const toggleJob = (slug: string) => {
     setExpandedJob(prev => prev === slug ? null : slug);
   };
@@ -73,7 +77,7 @@ export const CareersPage = () => {
               <span className="stat-label">Team Members</span>
             </div>
             <div className="stat">
-              <span className="stat-number">5</span>
+              <span className="stat-number">{openPositionsCount}</span>
               <span className="stat-label">Open Positions</span>
             </div>
             <div className="stat">
@@ -99,66 +103,72 @@ export const CareersPage = () => {
             {jobs.map((job) => {
               const isExpanded = expandedJob === job.slug;
               return (
-              <div key={job.slug} className={`position-card ${isExpanded ? 'position-card-expanded' : ''}`}>
-                <div className="position-header" onClick={() => toggleJob(job.slug)} style={{ cursor: 'pointer' }}>
-                  <div className="position-info">
-                    <h3>{job.attributes.title}</h3>
-                    <div className="position-meta">
-                      <span className="meta-item">
-                        <MapPin size={16} />
-                        {job.attributes.location}
-                      </span>
-                      <span className="meta-item">
-                        <Briefcase size={16} />
-                        {job.attributes.department}
-                      </span>
-                      <span className="meta-item">
-                        <Clock size={16} />
-                        {job.attributes.type}
-                      </span>
+                <div key={job.slug} className={`position-card ${isExpanded ? 'position-card-expanded' : ''}`}>
+                  <div className="position-header" onClick={() => toggleJob(job.slug)} style={{ cursor: 'pointer' }}>
+                    <div className="position-info">
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem' }}>
+                        <h3 style={{ margin: 0 }}>{job.attributes.title}</h3>
+                        <span className={`position-status ${job.attributes.status === 'closed' ? 'position-status-closed' : 'position-status-open'}`}>
+                          {job.attributes.status === 'closed' ? '● Closed' : '● Open'}
+                        </span>
+                      </div>
+                      <div className="position-meta">
+                        <span className="meta-item">
+                          <MapPin size={16} />
+                          {job.attributes.location}
+                        </span>
+                        <span className="meta-item">
+                          <Briefcase size={16} />
+                          {job.attributes.department}
+                        </span>
+                        <span className="meta-item">
+                          <Clock size={16} />
+                          {job.attributes.type}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="position-actions" onClick={e => e.stopPropagation()}>
+                      <button className="apply-btn" onClick={() => toggleJob(job.slug)}>
+                        Apply Now
+                        <ArrowRight size={18} />
+                      </button>
+                      <button className={`toggle-btn ${isExpanded ? 'toggle-btn-open' : ''}`} onClick={() => toggleJob(job.slug)} aria-label="Toggle details">
+                        {isExpanded ? 'Hide' : 'Details'}
+                        <ChevronDown size={16} />
+                      </button>
                     </div>
                   </div>
-                  <div className="position-actions">
-                    <button className="apply-btn">
-                      Apply Now
-                      <ArrowRight size={18} />
-                    </button>
-                    <button className={`toggle-btn ${isExpanded ? 'toggle-btn-open' : ''}`} aria-label="Toggle details">
-                      <ChevronDown size={20} />
-                    </button>
-                  </div>
-                </div>
 
-                <div className={`position-body ${isExpanded ? 'position-body-open' : ''}`}>
-                  <p className="position-description">{job.attributes.description}</p>
+                  <div className={`position-body ${isExpanded ? 'position-body-open' : ''}`}>
+                    <p className="position-description">{job.attributes.description}</p>
 
-                  <div className="position-details">
-                    <div className="detail-section">
-                      <h4>
-                        <CheckCircle2 size={20} />
-                        Requirements
-                      </h4>
-                      <ul>
-                        {job.attributes.requirements.map((req: string, i: number) => (
-                          <li key={i}>{req}</li>
-                        ))}
-                      </ul>
-                    </div>
+                    <div className="position-details">
+                      <div className="detail-section">
+                        <h4>
+                          <CheckCircle2 size={20} />
+                          Requirements
+                        </h4>
+                        <ul>
+                          {job.attributes.requirements.map((req: string, i: number) => (
+                            <li key={i}>{req}</li>
+                          ))}
+                        </ul>
+                      </div>
 
-                    <div className="detail-section">
-                      <h4>
-                        <Zap size={20} />
-                        Skills
-                      </h4>
-                      <div className="skills-tags">
-                        {job.attributes.skills.map((skill: string, i: number) => (
-                          <span key={i} className="skill-tag">{skill}</span>
-                        ))}
+                      <div className="detail-section">
+                        <h4>
+                          <Zap size={20} />
+                          Skills
+                        </h4>
+                        <div className="skills-tags">
+                          {job.attributes.skills.map((skill: string, i: number) => (
+                            <span key={i} className="skill-tag">{skill}</span>
+                          ))}
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
               );
             })}
 

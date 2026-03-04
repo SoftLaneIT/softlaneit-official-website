@@ -4,6 +4,7 @@ title: Senior Full Stack Developer
 department: Engineering
 location: Remote / Colombo
 type: Full-time
+status: closed
 description: We are looking for an experienced Full Stack Developer to join our growing team.
 requirements:
   - 5+ years of experience in full stack development

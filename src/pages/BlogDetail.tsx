@@ -89,31 +89,32 @@ export const BlogDetail = () => {
         <article className="blog-detail">
             <div className="blog-detail-hero" style={{ backgroundImage: `url(${post.attributes.image})` }}>
                 <div className="blog-detail-overlay"></div>
-                <div className="container">
+                <div className="container" style={{ height: '100%', display: 'flex', alignItems: 'stretch' }}>
                     <div className="blog-detail-header">
                         <Link to="/blog" className="back-nav">
-                            <ArrowLeft size={20} />
+                            <ArrowLeft size={18} />
                             Back to Blog
                         </Link>
-                        <div className="blog-detail-meta">
+                        <div className="blog-detail-content">
                             <span className="blog-category">{post.attributes.category}</span>
-                            <span className="meta-separator">•</span>
-                            <div className="meta-item">
-                                <Calendar size={16} />
-                                <span>{new Date(post.attributes.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
+                            <div className="blog-detail-meta">
+                                <div className="meta-item">
+                                    <Calendar size={16} />
+                                    <span>{new Date(post.attributes.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
+                                </div>
+                                <span className="meta-separator">•</span>
+                                <div className="meta-item">
+                                    <Clock size={16} />
+                                    <span>{post.attributes.readTime}</span>
+                                </div>
                             </div>
-                            <span className="meta-separator">•</span>
-                            <div className="meta-item">
-                                <Clock size={16} />
-                                <span>{post.attributes.readTime}</span>
-                            </div>
-                        </div>
-                        <h1 className="blog-detail-title">{post.attributes.title}</h1>
-                        <div className="blog-author-large">
-                            <img src={post.attributes.author.avatar} alt={post.attributes.author.name} />
-                            <div className="author-info">
-                                <span className="author-name">{post.attributes.author.name}</span>
-                                <span className="author-title">Author</span>
+                            <h1 className="blog-detail-title">{post.attributes.title}</h1>
+                            <div className="blog-author-large">
+                                <img src={post.attributes.author.avatar} alt={post.attributes.author.name} />
+                                <div className="author-info">
+                                    <span className="author-name">{post.attributes.author.name}</span>
+                                    <span className="author-title">Author</span>
+                                </div>
                             </div>
                         </div>
                     </div>
