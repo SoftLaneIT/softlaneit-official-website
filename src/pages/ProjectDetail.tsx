@@ -128,8 +128,8 @@ export const ProjectDetail = () => {
 
                         <div className="sidebar-widget" style={{ marginTop: '2rem' }}>
                             <h3 style={{ fontSize: '1.1rem', marginBottom: '1rem', color: 'var(--text-primary)' }}>Share</h3>
-                            <button className="share-btn" onClick={handleShare} style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', padding: '0.875rem', backgroundColor: 'var(--bg-secondary)', border: '1px solid var(--border-color)', borderRadius: '0.5rem', color: 'var(--text-primary)', cursor: 'pointer', transition: 'all 0.3s ease', fontSize: '0.95rem', fontWeight: 500 }}>
-                                {copied ? <Check size={16} /> : <Share2 size={16} />}
+                            <button className="project-cta project-cta-demo" onClick={handleShare} style={{ backgroundColor: 'transparent', border: '1px solid var(--border-color)', color: 'var(--text-secondary)' }}>
+                                {copied ? <Check size={18} /> : <Share2 size={18} />}
                                 {copied ? 'Link Copied!' : 'Share Project'}
                             </button>
                         </div>
