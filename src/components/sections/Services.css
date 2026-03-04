@@ -35,6 +35,8 @@
 
 /* Header */
 .services-header {
+    position: relative;
+    z-index: 1;
     text-align: center;
     margin-bottom: var(--space-16);
     opacity: 0;
