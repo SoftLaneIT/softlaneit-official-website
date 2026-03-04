@@ -3,7 +3,7 @@ title: "Opensearch-dashboards on Kubernetes"
 excerpt: "I always wanted to know how monitoring in Kubernetes work. So when looked into several monitoring tools I found that Opensearch by Amazon is a great tool for this. But during this implementation I ran into many issues with fluent-bit."
 image: https://miro.medium.com/v2/resize:fit:1400/format:webp/1*SMhErHzYfEoOBWIp07M5HA.jpeg
 category: DevOps
-date: 2026-03-03
+date: 2025-12-03
 readTime: "5 min read"
 author:
   name: Chandula Jayathilake
