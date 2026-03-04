@@ -20,7 +20,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Markdown from 'react-markdown';
-import { ExternalLink, Code2, PlayCircle } from 'lucide-react';
+import { ExternalLink, Code2, PlayCircle, Share2, Check } from 'lucide-react';
 import { getMarkdownFile, type MarkdownContent } from '../utils/markdown';
 import { Loader } from '../components/common';
 import './ProjectDetail.css';
@@ -39,6 +39,20 @@ export const ProjectDetail = () => {
     const { slug } = useParams<{ slug: string }>();
     const [project, setProject] = useState<MarkdownContent<Project> | null>(null);
     const [loading, setLoading] = useState(true);
+    const [copied, setCopied] = useState(false);
+
+    const handleShare = () => {
+        const url = window.location.href;
+        const title = project?.attributes.title || 'SoftlaneIT Portfolio';
+        if (navigator.share) {
+            navigator.share({ title, url }).catch(() => { });
+        } else {
+            navigator.clipboard.writeText(url).then(() => {
+                setCopied(true);
+                setTimeout(() => setCopied(false), 2000);
+            });
+        }
+    };
 
     useEffect(() => {
         const fetchProject = async () => {
@@ -111,6 +125,14 @@ export const ProjectDetail = () => {
                                 <PlayCircle size={18} />
                             </a>
                         )}
+
+                        <div className="sidebar-widget" style={{ marginTop: '2rem' }}>
+                            <h3 style={{ fontSize: '1.1rem', marginBottom: '1rem', color: 'var(--text-primary)' }}>Share</h3>
+                            <button className="share-btn" onClick={handleShare} style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', padding: '0.875rem', backgroundColor: 'var(--bg-secondary)', border: '1px solid var(--border-color)', borderRadius: '0.5rem', color: 'var(--text-primary)', cursor: 'pointer', transition: 'all 0.3s ease', fontSize: '0.95rem', fontWeight: 500 }}>
+                                {copied ? <Check size={16} /> : <Share2 size={16} />}
+                                {copied ? 'Link Copied!' : 'Share Project'}
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
