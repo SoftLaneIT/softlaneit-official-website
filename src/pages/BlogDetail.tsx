@@ -95,24 +95,26 @@ export const BlogDetail = () => {
                             <ArrowLeft size={18} />
                             Back to Blog
                         </Link>
-                        <span className="blog-category">{post.attributes.category}</span>
-                        <div className="blog-detail-meta">
-                            <div className="meta-item">
-                                <Calendar size={16} />
-                                <span>{new Date(post.attributes.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
+                        <div className="blog-detail-content">
+                            <span className="blog-category">{post.attributes.category}</span>
+                            <div className="blog-detail-meta">
+                                <div className="meta-item">
+                                    <Calendar size={16} />
+                                    <span>{new Date(post.attributes.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
+                                </div>
+                                <span className="meta-separator">•</span>
+                                <div className="meta-item">
+                                    <Clock size={16} />
+                                    <span>{post.attributes.readTime}</span>
+                                </div>
                             </div>
-                            <span className="meta-separator">•</span>
-                            <div className="meta-item">
-                                <Clock size={16} />
-                                <span>{post.attributes.readTime}</span>
-                            </div>
-                        </div>
-                        <h1 className="blog-detail-title">{post.attributes.title}</h1>
-                        <div className="blog-author-large">
-                            <img src={post.attributes.author.avatar} alt={post.attributes.author.name} />
-                            <div className="author-info">
-                                <span className="author-name">{post.attributes.author.name}</span>
-                                <span className="author-title">Author</span>
+                            <h1 className="blog-detail-title">{post.attributes.title}</h1>
+                            <div className="blog-author-large">
+                                <img src={post.attributes.author.avatar} alt={post.attributes.author.name} />
+                                <div className="author-info">
+                                    <span className="author-name">{post.attributes.author.name}</span>
+                                    <span className="author-title">Author</span>
+                                </div>
                             </div>
                         </div>
                     </div>
