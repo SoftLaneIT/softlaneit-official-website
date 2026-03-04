@@ -71,7 +71,7 @@ export const CareersPage = () => {
           <p>
             Join a team of visionaries, innovators, and problem solvers building tomorrow's digital solutions today.
           </p>
-          <div className="careers-stats">
+          {/* <div className="careers-stats">
             <div className="stat">
               <span className="stat-number">150+</span>
               <span className="stat-label">Team Members</span>
@@ -84,7 +84,7 @@ export const CareersPage = () => {
               <span className="stat-number">Global</span>
               <span className="stat-label">Remote-First</span>
             </div>
-          </div>
+          </div> */}
         </div>
       </section>
 

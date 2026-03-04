@@ -17,14 +17,7 @@ export const projects: Project[] = [
         category: 'FinTech',
         technologies: ['Next.js', 'TypeScript', 'Python', 'TimescaleDB', 'WebSocket'],
     },
-    {
-        id: 'project-2',
-        title: 'MediConnect Pro',
-        description: 'Revolutionary healthcare ecosystem connecting patients, providers, and pharmacies. Features AI diagnosis assistance, blockchain health records, and AR-enabled consultations.',
-        image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&h=600&fit=crop',
-        category: 'Healthcare',
-        technologies: ['React Native', 'WebRTC', 'Blockchain', 'TensorFlow'],
-    },
+
     {
         id: 'project-3',
         title: 'NeuralCommerce',
@@ -32,14 +25,6 @@ export const projects: Project[] = [
         image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=600&fit=crop',
         category: 'E-Commerce',
         technologies: ['Next.js', 'GraphQL', 'AWS Lambda', 'Neo4j', 'Three.js'],
-    },
-    {
-        id: 'project-4',
-        title: 'SmartFactory OS',
-        description: 'Industrial IoT command center orchestrating 10,000+ connected devices. Predictive maintenance, digital twin simulation, and edge computing for zero downtime.',
-        image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&h=600&fit=crop',
-        category: 'IoT & Industry 4.0',
-        technologies: ['Rust', 'MQTT', 'TimeSeries', 'K8s', 'Edge AI'],
     },
     {
         id: 'project-5',

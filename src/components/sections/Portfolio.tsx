@@ -32,7 +32,7 @@ interface Project {
     technologies: string[];
 }
 
-const categories = ['All', 'Web Application', 'Mobile App', 'E-Commerce', 'IoT', 'AI/ML', 'FinTech', 'Healthcare'];
+const categories = ['All', 'Web Application', 'Mobile App', 'E-Commerce', 'AI/ML', 'FinTech', 'Healthcare'];
 
 export const Portfolio: React.FC = () => {
     const [activeCategory, setActiveCategory] = useState('All');
