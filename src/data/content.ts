@@ -188,6 +188,8 @@ export const companyInfo = {
         twitter: 'https://x.com/SoftLane_It',
         github: 'https://github.com/softlaneit',
         facebook: 'https://www.facebook.com/share/1AJh558FUw/',
+        instagram: 'https://www.instagram.com/softlaneit',
+        tiktok: 'https://www.tiktok.com/@softlaneit',
     },
 };
 
