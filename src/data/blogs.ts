@@ -110,7 +110,7 @@ export const blogPosts: BlogPost[] = [
         readTime: '5 min read',
         author: {
             name: 'Chandula Jayathilake',
-            avatar: 'https://miro.medium.com/v2/resize:fill:176:176/1*Frjl2Ze5k4_IZY6LT3JFFw.jpeg?w=150&h=150&fit=crop',
+            avatar: 'https://miro.medium.com/v2/resize:fill:96:96/1*il6Xy0avljlTZ9IpkgQigg.jpeg',
         },
         tags: ['Kubernetes', 'Opensearch', 'Monitoring', 'DevOps'],
     },
@@ -155,7 +155,7 @@ export const blogPosts: BlogPost[] = [
         readTime: '3 min read',
         author: {
             name: 'Chandula Jayathilake',
-            avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop',
+            avatar: 'https://miro.medium.com/v2/resize:fill:96:96/1*il6Xy0avljlTZ9IpkgQigg.jpeg',
         },
         tags: ['Vagrant', 'Python', 'DevOps', 'Automation'],
     },
@@ -170,7 +170,7 @@ export const blogPosts: BlogPost[] = [
         readTime: '4 min read',
         author: {
             name: 'Chandula Jayathilake',
-            avatar: 'https://miro.medium.com/v2/resize:fill:176:176/1*Frjl2Ze5k4_IZY6LT3JFFw.jpeg?w=150&h=150&fit=crop',
+            avatar: 'https://miro.medium.com/v2/resize:fill:96:96/1*il6Xy0avljlTZ9IpkgQigg.jpeg',
         },
         tags: ['VirtualBox', 'Ubuntu', 'SSH', 'Tutorial'],
     },

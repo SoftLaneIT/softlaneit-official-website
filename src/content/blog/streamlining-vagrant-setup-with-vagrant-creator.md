@@ -7,7 +7,7 @@ date: 2025-03-03
 readTime: "3 min read"
 author:
   name: Chandula Jayathilake
-  avatar: https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop
+  avatar: https://miro.medium.com/v2/resize:fill:96:96/1*il6Xy0avljlTZ9IpkgQigg.jpeg?w=150&h=150&fit=crop
 tags:
   - Vagrant
   - Python
