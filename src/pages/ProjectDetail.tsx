@@ -18,9 +18,9 @@
 
 
 import { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Markdown from 'react-markdown';
-import { ArrowLeft, ExternalLink, Code2 } from 'lucide-react';
+import { ExternalLink, Code2, PlayCircle } from 'lucide-react';
 import { getMarkdownFile, type MarkdownContent } from '../utils/markdown';
 import { Loader } from '../components/common';
 import './ProjectDetail.css';
@@ -31,6 +31,8 @@ interface Project {
     image: string;
     category: string;
     technologies: string[];
+    link?: string;
+    demo?: string;
 }
 
 export const ProjectDetail = () => {
@@ -59,7 +61,6 @@ export const ProjectDetail = () => {
         return (
             <div className="not-found-container">
                 <h2>Project not found</h2>
-                <Link to="/#portfolio" className="back-link">Back to Portfolio</Link>
             </div>
         );
     }
@@ -69,10 +70,6 @@ export const ProjectDetail = () => {
             <div className="project-hero" style={{ backgroundImage: `url(${project.attributes.image})` }}>
                 <div className="project-overlay"></div>
                 <div className="container">
-                    <Link to="/#portfolio" className="back-nav">
-                        <ArrowLeft size={20} />
-                        Back to Portfolio
-                    </Link>
                     <div className="project-header">
                         <span className="project-category">{project.attributes.category}</span>
                         <h1 className="project-title">{project.attributes.title}</h1>
@@ -102,10 +99,18 @@ export const ProjectDetail = () => {
                             </div>
                         </div>
 
-                        <button className="project-cta">
-                            Visit Live Site
-                            <ExternalLink size={18} />
-                        </button>
+                        {project.attributes.link && (
+                            <a href={project.attributes.link} target="_blank" rel="noopener noreferrer" className="project-cta">
+                                Visit Live Site
+                                <ExternalLink size={18} />
+                            </a>
+                        )}
+                        {project.attributes.demo && (
+                            <a href={project.attributes.demo} target="_blank" rel="noopener noreferrer" className="project-cta project-cta-demo" style={{ marginTop: '1rem', backgroundColor: 'transparent', border: '1px solid var(--accent-primary)', color: 'var(--accent-primary)' }}>
+                                Watch Demo
+                                <PlayCircle size={18} />
+                            </a>
+                        )}
                     </div>
                 </div>
             </div>
