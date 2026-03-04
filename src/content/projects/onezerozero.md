@@ -5,6 +5,7 @@ image: /assets/projects/100.webp
 description: A sophisticated, cinematic web application for a premium dining brand, featuring immersive storytelling and fluid user experiences.
 technologies: ['React', 'TypeScript', 'Tailwind', 'Vite']
 featured: true
+order: 1
 link: 'https://onezerozero.pages.dev/'
 id: one-zero-zero
 ---

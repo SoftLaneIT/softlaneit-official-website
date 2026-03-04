@@ -5,6 +5,7 @@ image: https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&auto=f
 description: Enterprise cognitive platform with contextual understanding, multi-modal interactions, and intelligent workflow automation.
 technologies: ['Python', 'GPT-4', 'LangChain', 'Vector DB', 'Kubernetes']
 featured: true
+order: 5
 link: '#'
 id: cortex-ai-assistant
 ---

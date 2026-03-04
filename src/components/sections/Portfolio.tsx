@@ -30,6 +30,7 @@ interface Project {
     image: string;
     category: string;
     technologies: string[];
+    order?: number;
 }
 
 const categories = ['All', 'Web Application', 'Mobile App', 'E-Commerce', 'AI/ML', 'FinTech', 'Healthcare'];
@@ -45,6 +46,11 @@ export const Portfolio: React.FC = () => {
         const fetchProjects = async () => {
             const projectFiles = import.meta.glob('../../content/projects/*.md', { query: '?raw', import: 'default' });
             const loadedProjects = await loadMarkdownFiles<Project>(projectFiles);
+            loadedProjects.sort((a, b) => {
+                const orderA = a.attributes.order || 50;
+                const orderB = b.attributes.order || 50;
+                return orderA - orderB;
+            });
             setProjects(loadedProjects);
         };
         fetchProjects();

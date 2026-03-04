@@ -5,6 +5,7 @@ image: /assets/projects/osmo.webp
 description: A sleek, professional agency portfolio offering custom web design, web app development, and e-commerce solutions.
 technologies: ['React', 'TypeScript', 'Tailwind', 'SEO Optimization']
 featured: true
+order: 44
 link: 'https://osmodigital.devnerd.online/'
 id: osmo-digital
 ---

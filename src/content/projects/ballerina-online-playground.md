@@ -5,6 +5,7 @@ image: /assets/projects/ballerina.webp
 description: A free, online IDE and compiler for the Ballerina programming language, featuring real-time execution and AI-powered assistance.
 technologies: ['React', 'Monaco Editor', 'Ballerina', 'Node.js']
 featured: true
+order: 10
 link: 'https://ballerina-online-playground.pages.dev/'
 id: ballerina-online-playground
 ---

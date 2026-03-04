@@ -5,6 +5,7 @@ image: /assets/projects/kitul.webp
 description: An elegant e-commerce showcase for traditional Sri Lankan treacle products, combining cultural heritage with modern narrative design.
 technologies: ['React', 'TypeScript', 'Tailwind', 'Framer Motion']
 featured: true
+order: 3
 link: 'https://kitul.devnerd.online/'
 id: kitul
 ---
