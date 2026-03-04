@@ -19,7 +19,7 @@
 
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { Navbar, Footer } from './components/layout';
-import { Hero, Services, About, Portfolio, Testimonials } from './components/sections';
+import { Hero, Services, About, Portfolio } from './components/sections';
 import { BlogPage } from './pages/BlogPage';
 import { BlogDetail } from './pages/BlogDetail';
 import { ProjectDetail } from './pages/ProjectDetail';
@@ -64,7 +64,7 @@ function App() {
               <Services />
               <About />
               <Portfolio />
-              <Testimonials />
+              {/* <Testimonials /> */}
             </main>
           } />
           <Route path="/blog" element={<BlogPage />} />
