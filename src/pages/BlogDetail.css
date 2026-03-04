@@ -166,6 +166,9 @@
   gap: 4rem;
   max-width: 1200px;
   margin: 4rem auto;
+  padding: 0 1.5rem;
+  box-sizing: border-box;
+  width: 100%;
 }
 
 /* Main Blog Content */
@@ -173,6 +176,9 @@
   color: var(--text-secondary);
   line-height: 1.8;
   font-size: 1.125rem;
+  min-width: 0;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .blog-main-content h2 {
@@ -246,6 +252,10 @@
   overflow-x: auto;
   margin: 2rem 0;
   border: 1px solid var(--border-light);
+  max-width: 100%;
+  white-space: pre;
+  word-break: normal;
+  overflow-wrap: normal;
 }
 
 [data-theme="light"] .blog-main-content pre {
@@ -260,8 +270,11 @@
 }
 
 .blog-main-content img {
+  max-width: 100%;
+  height: auto;
+  display: block;
   border-radius: var(--radius-lg);
-  margin: 2rem 0;
+  margin: 2rem auto;
 }
 
 .blog-main-content strong {
