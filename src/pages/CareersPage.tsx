@@ -37,6 +37,10 @@ export const CareersPage = () => {
   const [jobs, setJobs] = useState<any[]>([]);
   const [expandedJob, setExpandedJob] = useState<string | null>(null);
 
+  const openPositionsCount = jobs.filter(
+    (job) => job.attributes?.status !== 'closed'
+  ).length;
+
   const toggleJob = (slug: string) => {
     setExpandedJob(prev => prev === slug ? null : slug);
   };
@@ -73,7 +77,7 @@ export const CareersPage = () => {
               <span className="stat-label">Team Members</span>
             </div>
             <div className="stat">
-              <span className="stat-number">5</span>
+              <span className="stat-number">{openPositionsCount}</span>
               <span className="stat-label">Open Positions</span>
             </div>
             <div className="stat">

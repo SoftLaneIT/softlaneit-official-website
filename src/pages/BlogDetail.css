@@ -27,13 +27,13 @@
 ======================================== */
 .blog-detail-hero {
   height: 60vh;
-  min-height: 400px;
+  min-height: 420px;
   background-size: cover;
   background-position: center;
   position: relative;
   display: flex;
-  align-items: flex-end;
-  padding-bottom: 4rem;
+  flex-direction: column;
+  padding: 0;
 }
 
 .blog-detail-overlay {
@@ -53,6 +53,19 @@
   margin: 0 auto;
   width: 100%;
   padding: 0 1.5rem;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Place back-nav at top, content at bottom */
+.blog-detail-header .back-nav {
+  margin-top: 0;
+  margin-bottom: auto;
+}
+
+.blog-detail-header .blog-detail-meta {
+  margin-top: auto;
 }
 
 /* Back Navigation */

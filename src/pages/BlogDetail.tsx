@@ -89,8 +89,8 @@ export const BlogDetail = () => {
         <article className="blog-detail">
             <div className="blog-detail-hero" style={{ backgroundImage: `url(${post.attributes.image})` }}>
                 <div className="blog-detail-overlay"></div>
-                <div className="container">
-                    <div className="blog-detail-header">
+                <div className="container" style={{ height: '100%', display: 'flex', alignItems: 'stretch' }}>
+                    <div className="blog-detail-header" style={{ paddingTop: '1.5rem', paddingBottom: '3rem' }}>
                         <Link to="/blog" className="back-nav">
                             <ArrowLeft size={20} />
                             Back to Blog
