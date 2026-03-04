@@ -43,10 +43,13 @@
 }
 
 @keyframes float {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0) translateX(0);
     opacity: 0.6;
   }
+
   50% {
     transform: translateY(-100px) translateX(50px);
     opacity: 0.3;
@@ -189,11 +192,10 @@
   bottom: 0;
   width: 2px;
   background: linear-gradient(180deg,
-    transparent 0%,
-    var(--primary-orange) 20%,
-    var(--primary-orange) 80%,
-    transparent 100%
-  );
+      transparent 0%,
+      var(--primary-orange) 20%,
+      var(--primary-orange) 80%,
+      transparent 100%);
 }
 
 .position-card {
@@ -250,21 +252,24 @@
 }
 
 .toggle-btn {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: rgba(245, 130, 31, 0.1);
-  border: 1px solid rgba(245, 130, 31, 0.2);
+  gap: 0.35rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: 20px;
+  background: transparent;
+  border: 1px solid rgba(245, 130, 31, 0.35);
   color: var(--primary-orange);
+  font-size: 0.82rem;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
+  white-space: nowrap;
 }
 
 .toggle-btn svg {
   transition: transform 0.3s ease;
+  flex-shrink: 0;
 }
 
 .toggle-btn-open svg {
@@ -272,7 +277,33 @@
 }
 
 .toggle-btn:hover {
-  background: rgba(245, 130, 31, 0.2);
+  background: rgba(245, 130, 31, 0.1);
+  border-color: var(--primary-orange);
+}
+
+/* Position status badge */
+.position-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.position-status-open {
+  background: rgba(34, 197, 94, 0.12);
+  color: #22c55e;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.position-status-closed {
+  background: rgba(156, 163, 175, 0.12);
+  color: #9ca3af;
+  border: 1px solid rgba(156, 163, 175, 0.25);
 }
 
 /* Collapsible body */
@@ -618,6 +649,7 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -628,6 +660,7 @@
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
