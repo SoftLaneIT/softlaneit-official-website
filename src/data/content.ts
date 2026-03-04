@@ -187,7 +187,7 @@ export const companyInfo = {
         linkedin: 'https://linkedin.com/company/softlaneit',
         twitter: 'https://x.com/SoftLane_It',
         github: 'https://github.com/softlaneit',
-        facebook: 'https://facebook.com/softlaneit',
+        facebook: 'https://www.facebook.com/share/1AJh558FUw/',
     },
 };
 

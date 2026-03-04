@@ -25,3 +25,7 @@ dist-ssr
 
 # OS generated files
 .DS_Store
+
+# Environment variables
+.env
+

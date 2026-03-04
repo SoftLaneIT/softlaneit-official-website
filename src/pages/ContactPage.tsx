@@ -167,6 +167,7 @@ export const ContactPage = () => {
                     <option value="consulting">Technology Consulting</option>
                     <option value="cybersecurity">Cybersecurity & Compliance</option>
                     <option value="api-development">API Development & Integration</option>
+                    <option value="other">Other</option>
                   </select>
                 </div>
 
