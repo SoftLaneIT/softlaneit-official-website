@@ -126,13 +126,19 @@ export const ProjectDetail = () => {
                             </a>
                         )}
 
-                        <div className="sidebar-widget" style={{ marginTop: '2rem' }}>
-                            <h3 style={{ fontSize: '1.1rem', marginBottom: '1rem', color: 'var(--text-primary)' }}>Share</h3>
-                            <button className="project-cta project-cta-demo" onClick={handleShare} style={{ backgroundColor: 'transparent', border: '1px solid var(--border-color)', color: 'var(--text-secondary)' }}>
-                                {copied ? <Check size={18} /> : <Share2 size={18} />}
-                                {copied ? 'Link Copied!' : 'Share Project'}
-                            </button>
-                        </div>
+                        <button
+                            className="project-cta project-cta-demo"
+                            onClick={handleShare}
+                            style={{
+                                marginTop: '1rem',
+                                backgroundColor: 'transparent',
+                                border: '1px solid var(--border-color)',
+                                color: 'var(--text-secondary)'
+                            }}
+                        >
+                            {copied ? 'Link Copied!' : 'Share Project'}
+                            {copied ? <Check size={18} /> : <Share2 size={18} />}
+                        </button>
                     </div>
                 </div>
             </div>

@@ -206,6 +206,17 @@
     box-shadow: 0 8px 25px rgba(var(--primary-rgb), 0.4);
 }
 
+/* Light Mode Overrides for transparent CTAs */
+[data-theme="light"] .project-cta.project-cta-demo {
+    color: var(--text-primary) !important;
+    border-color: var(--border-light) !important;
+}
+
+[data-theme="light"] .project-cta.project-cta-demo:hover {
+    background: var(--gray-100) !important;
+    box-shadow: none !important;
+}
+
 @media (max-width: 968px) {
     .project-content-grid {
         grid-template-columns: 1fr;
