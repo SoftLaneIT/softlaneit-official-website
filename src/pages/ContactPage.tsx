@@ -18,8 +18,10 @@
 
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import emailjs from '@emailjs/browser';
 import { Mail, Phone, MapPin, Send, CheckCircle, Calendar, MessageSquare, Building2, User } from 'lucide-react';
-import { companyInfo } from '../data/content';
+import { companyInfo, services } from '../data/content';
+import { Loader, Toast } from '../components/common';
 import './ContactPage.css';
 
 export const ContactPage = () => {
@@ -31,12 +33,62 @@ export const ContactPage = () => {
     service: '',
     message: '',
   });
-  const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [toast, setToast] = useState<{ show: boolean; message: string; type: 'success' | 'error' }>({ show: false, message: '', type: 'success' });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 3000);
+    setIsSubmitting(true);
+
+    const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+    const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+    const autoReplyTemplateId = import.meta.env.VITE_EMAILJS_AUTOREPLY_TEMPLATE_ID;
+    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+    try {
+      // Send notification to SoftlaneIT team
+      await emailjs.send(
+        serviceId,
+        templateId,
+        {
+          from_name: formData.name,
+          from_email: formData.email,
+          company: formData.company,
+          service: formData.service,
+          message: formData.message,
+          to_email: companyInfo.email,
+        },
+        publicKey
+      );
+
+      // Send auto-reply to the client
+      if (autoReplyTemplateId) {
+        await emailjs.send(
+          serviceId,
+          autoReplyTemplateId,
+          {
+            to_name: formData.name,
+            to_email: formData.email,
+            from_name: companyInfo.name,
+            company: formData.company,
+            service: formData.service,
+            message: formData.message,
+            reply_to: companyInfo.email,
+          },
+          publicKey
+        ).catch((err) => {
+          console.warn('Auto-reply could not be sent:', err);
+        });
+      }
+
+      setToast({ show: true, message: 'Thank you! Your message has been sent successfully. We\'ll get back to you soon.', type: 'success' });
+      setFormData({ name: '', email: '', company: '', phone: '', service: '', message: '' });
+    } catch (err) {
+      console.error('EmailJS error:', err);
+      setToast({ show: true, message: 'Oops! Something went wrong. Please try again or email us directly.', type: 'error' });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -48,6 +100,14 @@ export const ContactPage = () => {
 
   return (
     <div className="contact-page">
+      {isSubmitting && <Loader />}
+      {toast.show && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast({ ...toast, show: false })}
+        />
+      )}
       {/* Hero Section with Animated Grid */}
       <section className="contact-hero">
         <div className="contact-hero-grid">
@@ -120,7 +180,7 @@ export const ContactPage = () => {
                   <div className="form-group">
                     <label htmlFor="company">
                       <Building2 size={18} />
-                      Company Name
+                      Company Name/Your Name
                     </label>
                     <input
                       type="text"
@@ -159,14 +219,11 @@ export const ContactPage = () => {
                     onChange={handleChange}
                   >
                     <option value="">Select a service</option>
-                    <option value="software-development">Custom Software Development</option>
-                    <option value="mobile-development">Mobile App Development</option>
-                    <option value="cloud-infrastructure">Cloud Infrastructure</option>
-                    <option value="ai-ml">AI & Machine Learning</option>
-                    <option value="web-development">Web Application Development</option>
-                    <option value="consulting">Technology Consulting</option>
-                    <option value="cybersecurity">Cybersecurity & Compliance</option>
-                    <option value="api-development">API Development & Integration</option>
+                    {services.map(service => (
+                      <option key={service.id} value={service.id}>
+                        {service.title}
+                      </option>
+                    ))}
                     <option value="other">Other</option>
                   </select>
                 </div>
@@ -187,18 +244,9 @@ export const ContactPage = () => {
                   ></textarea>
                 </div>
 
-                <button type="submit" className="submit-btn" disabled={submitted}>
-                  {submitted ? (
-                    <>
-                      <CheckCircle size={20} />
-                      Message Sent!
-                    </>
-                  ) : (
-                    <>
-                      Send Message
-                      <Send size={20} />
-                    </>
-                  )}
+                <button type="submit" className="submit-btn" disabled={isSubmitting}>
+                  Send Message
+                  <Send size={20} />
                 </button>
               </form>
             </div>

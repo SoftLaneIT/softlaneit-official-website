@@ -90,14 +90,13 @@ export const BlogDetail = () => {
             <div className="blog-detail-hero" style={{ backgroundImage: `url(${post.attributes.image})` }}>
                 <div className="blog-detail-overlay"></div>
                 <div className="container" style={{ height: '100%', display: 'flex', alignItems: 'stretch' }}>
-                    <div className="blog-detail-header" style={{ paddingTop: '1.5rem', paddingBottom: '3rem' }}>
+                    <div className="blog-detail-header">
                         <Link to="/blog" className="back-nav">
-                            <ArrowLeft size={20} />
+                            <ArrowLeft size={18} />
                             Back to Blog
                         </Link>
+                        <span className="blog-category">{post.attributes.category}</span>
                         <div className="blog-detail-meta">
-                            <span className="blog-category">{post.attributes.category}</span>
-                            <span className="meta-separator">•</span>
                             <div className="meta-item">
                                 <Calendar size={16} />
                                 <span>{new Date(post.attributes.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>

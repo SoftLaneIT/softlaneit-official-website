@@ -52,20 +52,16 @@
   max-width: 800px;
   margin: 0 auto;
   width: 100%;
-  padding: 0 1.5rem;
+  padding: 150px 1.5rem 3rem;
   display: flex;
   flex-direction: column;
+  gap: 1.25rem;
   height: 100%;
+  box-sizing: border-box;
 }
 
-/* Place back-nav at top, content at bottom */
-.blog-detail-header .back-nav {
-  margin-top: 0;
+.blog-detail-header > .back-nav {
   margin-bottom: auto;
-}
-
-.blog-detail-header .blog-detail-meta {
-  margin-top: auto;
 }
 
 /* Back Navigation */
@@ -74,42 +70,52 @@
   width: fit-content;
   align-items: center;
   gap: 0.6rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.9);
   text-decoration: none;
-  margin-bottom: 2rem;
   font-size: 0.95rem;
   font-weight: 500;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(8px);
+  padding: 0.5rem 1rem 0.5rem 0.7rem;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .back-nav:hover {
-  color: var(--primary-orange);
+  color: var(--pure-white);
+  background: rgba(0, 0, 0, 0.4);
+  border-color: var(--primary-orange);
+  transform: translateX(-4px);
 }
 
 /* Meta Info */
 .blog-detail-meta {
   display: flex;
   align-items: center;
-  gap: 1.25rem;
-  margin-bottom: 1.5rem;
+  gap: 1rem;
   flex-wrap: wrap;
 }
 
 .blog-category {
+  display: inline-block;
   background: rgba(245, 130, 31, 0.25);
   color: var(--primary-orange-light);
-  padding: 0.35rem 1rem;
+  padding: 0.4rem 1.1rem;
   border-radius: 20px;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 700;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.8px;
   text-transform: uppercase;
   backdrop-filter: blur(4px);
+  border: 1px solid rgba(245, 130, 31, 0.3);
+  width: fit-content;
 }
 
 [data-theme="light"] .blog-category {
-  background: rgba(245, 130, 31, 0.15);
+  background: rgba(245, 130, 31, 0.2);
   color: var(--primary-orange);
+  border-color: rgba(245, 130, 31, 0.4);
 }
 
 .meta-separator {
@@ -136,8 +142,8 @@
   font-size: clamp(2rem, 5vw, 3.5rem);
   font-weight: 800;
   line-height: 1.2;
-  margin-bottom: 2rem;
   color: var(--pure-white);
+  margin: 0;
 }
 
 /* Author */

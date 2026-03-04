@@ -20,7 +20,7 @@ import React, { useState } from 'react';
 import emailjs from '@emailjs/browser';
 import { useScrollAnimation } from '../../hooks';
 import { companyInfo, services } from '../../data/content';
-import { Button } from '../common';
+import { Button, Loader, Toast } from '../common';
 import './Contact.css';
 
 interface FormData {
@@ -40,7 +40,7 @@ export const Contact: React.FC = () => {
         message: '',
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+    const [toast, setToast] = useState<{ show: boolean; message: string; type: 'success' | 'error' }>({ show: false, message: '', type: 'success' });
 
     const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation();
     const { ref: contentRef, isVisible: contentVisible } = useScrollAnimation({ threshold: 0.1 });
@@ -53,7 +53,6 @@ export const Contact: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
-        setSubmitStatus('idle');
 
         const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
         const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
@@ -97,19 +96,26 @@ export const Contact: React.FC = () => {
                 });
             }
 
-            setSubmitStatus('success');
+            setToast({ show: true, message: 'Thank you! Your message has been sent successfully. We\'ll get back to you soon.', type: 'success' });
             setFormData({ name: '', email: '', company: '', service: '', message: '' });
         } catch (err) {
             console.error('EmailJS error:', err);
-            setSubmitStatus('error');
+            setToast({ show: true, message: 'Oops! Something went wrong. Please try again or email us directly.', type: 'error' });
         } finally {
             setIsSubmitting(false);
-            setTimeout(() => setSubmitStatus('idle'), 6000);
         }
     };
 
     return (
         <section id="contact" className="contact section">
+            {isSubmitting && <Loader />}
+            {toast.show && (
+                <Toast
+                    message={toast.message}
+                    type={toast.type}
+                    onClose={() => setToast({ ...toast, show: false })}
+                />
+            )}
             <div className="contact-bg">
                 <div className="contact-gradient"></div>
                 <div className="contact-grid-pattern"></div>
@@ -243,14 +249,14 @@ export const Contact: React.FC = () => {
 
                             <div className="form-row">
                                 <div className="form-group">
-                                    <label htmlFor="company">Company Name</label>
+                                    <label htmlFor="company">Company Name/Your Name</label>
                                     <input
                                         type="text"
                                         id="company"
                                         name="company"
                                         value={formData.company}
                                         onChange={handleChange}
-                                        placeholder="Your Company"
+                                        placeholder="Company Name/Your Name"
                                     />
                                 </div>
                                 <div className="form-group">
@@ -292,28 +298,8 @@ export const Contact: React.FC = () => {
                                 fullWidth
                                 disabled={isSubmitting}
                             >
-                                {isSubmitting ? 'Sending...' : 'Send Message'}
+                                Send Message
                             </Button>
-
-                            {submitStatus === 'success' && (
-                                <div className="form-success">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                        <path d="M22 11.08V12a10 10 0 11-5.93-9.14" />
-                                        <polyline points="22 4 12 14.01 9 11.01" />
-                                    </svg>
-                                    Thank you! Your message has been sent successfully.
-                                </div>
-                            )}
-                            {submitStatus === 'error' && (
-                                <div className="form-error">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                        <circle cx="12" cy="12" r="10" />
-                                        <line x1="15" y1="9" x2="9" y2="15" />
-                                        <line x1="9" y1="9" x2="15" y2="15" />
-                                    </svg>
-                                    Oops! Something went wrong. Please try again or email us directly.
-                                </div>
-                            )}
                         </form>
                     </div>
                 </div>
