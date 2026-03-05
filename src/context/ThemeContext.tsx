@@ -40,12 +40,14 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
     useEffect(() => {
         const root = document.documentElement;
-        if (theme === 'light') {
-            root.setAttribute('data-theme', 'light');
-        } else {
-            root.removeAttribute('data-theme');
-        }
+        root.setAttribute('data-theme', theme);
         localStorage.setItem('theme', theme);
+
+        // Update favicon based on theme
+        const favicon = document.getElementById('favicon') as HTMLLinkElement | null;
+        if (favicon) {
+            favicon.href = theme === 'light' ? '/logo-icon-black.png' : '/logo-icon.jpg';
+        }
     }, [theme]);
 
     const toggleTheme = () => {

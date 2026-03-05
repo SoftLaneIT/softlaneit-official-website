@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/png" href="/logo-icon.jpg" />
+  <link rel="icon" id="favicon" type="image/png" href="/logo-icon.jpg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description"
     content="SoftlaneIT - Innovating the Future of Technology. We build digital solutions that drive success. Custom software development, mobile apps, cloud solutions, and AI/ML services." />
@@ -27,6 +27,25 @@
     rel="stylesheet">
 
   <title>SoftlaneIT - Innovating the Future of Technology</title>
+  <script>
+    // Theme detection: set data-theme and favicon before any CSS renders to prevent FOUC
+    (function() {
+      var saved = localStorage.getItem('theme');
+      var theme;
+      if (saved === 'light' || saved === 'dark') {
+        theme = saved;
+      } else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
+        theme = 'light';
+      } else {
+        theme = 'dark';
+      }
+      document.documentElement.setAttribute('data-theme', theme);
+      var favicon = document.getElementById('favicon');
+      if (favicon) {
+        favicon.href = theme === 'light' ? '/logo-icon-black.png' : '/logo-icon.jpg';
+      }
+    })();
+  </script>
   <script type="text/javascript">
     // Single Page Apps for GitHub Pages
     // MIT License
@@ -53,14 +72,12 @@
       color: #FFFFFF;
     }
 
-    @media (prefers-color-scheme: light) {
-      body {
-        background-color: #F5F7FA;
-        color: #212529;
-      }
-      #global-loader {
-        background-color: #F5F7FA !important;
-      }
+    [data-theme="light"] body {
+      background-color: #F5F7FA;
+      color: #212529;
+    }
+    [data-theme="light"] #global-loader {
+      background-color: #F5F7FA !important;
     }
 
     #global-loader {
