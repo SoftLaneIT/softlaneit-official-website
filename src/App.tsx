@@ -29,6 +29,7 @@ import { NotFoundPage } from './pages/NotFoundPage';
 import './styles/variables.css';
 import './styles/animations.css';
 import { useEffect } from 'react';
+import { initGoogleAnalytics } from './utils/analytics';
 
 const basename = import.meta.env.BASE_URL;
 
@@ -45,6 +46,9 @@ function ScrollToTop() {
 
 function App() {
   useEffect(() => {
+    // Initialise Google Analytics from env secret
+    initGoogleAnalytics();
+
     // Add class to body to fade out the global loader
     const timer = setTimeout(() => {
       document.body.classList.add('app-loaded');

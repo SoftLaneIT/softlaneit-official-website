@@ -3,22 +3,78 @@
 
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" id="favicon" type="image/png" href="/logo-icon.jpg" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description"
-    content="SoftlaneIT - Innovating the Future of Technology. We build digital solutions that drive success. Custom software development, mobile apps, cloud solutions, and AI/ML services." />
-  <meta name="keywords"
-    content="software development, mobile app development, cloud solutions, AI, machine learning, web development, IT consulting" />
-  <meta name="author" content="SoftlaneIT" />
 
-  <!-- Open Graph / Social Media -->
+  <!-- Favicons — Google requires multiples of 48×48 or SVG -->
+  <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <meta name="theme-color" content="#F5821F" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Primary SEO Meta Tags -->
+  <meta name="description"
+    content="SoftlaneIT — Leading software company delivering custom software development, mobile apps, cloud solutions, AI/ML services, and enterprise IT consulting. From concept to deployment." />
+  <meta name="keywords"
+    content="SoftlaneIT, software development, mobile app development, cloud solutions, AI, machine learning, web development, IT consulting, enterprise software, API development, DevOps, microservices, Sri Lanka" />
+  <meta name="author" content="SoftlaneIT" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <link rel="canonical" href="https://softlaneit.com/" />
+
+  <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="SoftlaneIT - Innovating the Future of Technology" />
+  <meta property="og:url" content="https://softlaneit.com/" />
+  <meta property="og:site_name" content="SoftlaneIT" />
+  <meta property="og:title" content="SoftlaneIT — Innovating the Future of Technology" />
   <meta property="og:description"
     content="We build digital solutions that drive success. Custom software development, mobile apps, cloud solutions, and AI/ML services." />
-  <meta property="og:image" content="/logo-icon-black.png" />
+  <meta property="og:image" content="https://softlaneit.com/logo-icon-black.png" />
+  <meta property="og:image:width" content="352" />
+  <meta property="og:image:height" content="344" />
+  <meta property="og:locale" content="en_US" />
+
+  <!-- Twitter / X -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:image" content="/logo-icon-black.png" />
+  <meta name="twitter:title" content="SoftlaneIT — Innovating the Future of Technology" />
+  <meta name="twitter:description"
+    content="We build digital solutions that drive success. Custom software development, mobile apps, cloud solutions, and AI/ML services." />
+  <meta name="twitter:image" content="https://softlaneit.com/logo-icon-black.png" />
+
+  <!-- Structured Data — Organization (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "SoftlaneIT",
+    "url": "https://softlaneit.com",
+    "logo": "https://softlaneit.com/logo-icon-black.png",
+    "description": "Leading software company delivering custom software development, mobile apps, cloud solutions, AI/ML services, and enterprise IT consulting.",
+    "sameAs": [],
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "customer service",
+      "url": "https://softlaneit.com/contact"
+    }
+  }
+  </script>
+
+  <!-- Structured Data — WebSite (enables Google Sitelinks search box) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "SoftlaneIT",
+    "url": "https://softlaneit.com",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://softlaneit.com/blog?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,7 +84,7 @@
 
   <title>SoftlaneIT - Innovating the Future of Technology</title>
   <script>
-    // Theme detection: set data-theme and favicon before any CSS renders to prevent FOUC
+    // Theme detection: set data-theme before any CSS renders to prevent FOUC
     (function() {
       var saved = localStorage.getItem('theme');
       var theme;
@@ -40,10 +96,6 @@
         theme = 'dark';
       }
       document.documentElement.setAttribute('data-theme', theme);
-      var favicon = document.getElementById('favicon');
-      if (favicon) {
-        favicon.href = theme === 'light' ? '/logo-icon-black.png' : '/logo-icon.jpg';
-      }
     })();
   </script>
   <script type="text/javascript">

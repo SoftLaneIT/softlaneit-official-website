@@ -42,12 +42,6 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         const root = document.documentElement;
         root.setAttribute('data-theme', theme);
         localStorage.setItem('theme', theme);
-
-        // Update favicon based on theme
-        const favicon = document.getElementById('favicon') as HTMLLinkElement | null;
-        if (favicon) {
-            favicon.href = theme === 'light' ? '/logo-icon-black.png' : '/logo-icon.jpg';
-        }
     }, [theme]);
 
     const toggleTheme = () => {
