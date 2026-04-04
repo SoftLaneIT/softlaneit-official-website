@@ -6,13 +6,13 @@ description: A sophisticated, cinematic web application for a premium dining bra
 technologies: ['React', 'TypeScript', 'Tailwind', 'Vite']
 featured: true
 order: 1
-link: 'https://onezerozero.pages.dev/'
+link: 'https://onezerozero.lk/'
 id: one-zero-zero
 ---
-
 A highly polished digital storefront for a premium Sri Lankan fine dining brand, demonstrating innovative front-end architecture and fluid user experiences.
 
 ### Key Highlights
+
 - **Immersive Storytelling**: Utilizes rich cinematic video backgrounds and high-quality photography to convey cultural heritage and culinary excellence.
 - **Fluid UI**: Designed with a focus on intuitive user interactions, smooth SPA navigation, and seamless animations.
 - **Modern Architecture**: Built with next-generation web technologies (React, Vite, Tailwind) for blazing fast performance and optimized asset delivery.
