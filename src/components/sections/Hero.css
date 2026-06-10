@@ -285,8 +285,11 @@
     align-items: center;
     gap: var(--space-2);
     padding: var(--space-2) var(--space-4);
-    background: rgba(245, 130, 31, 0.1);
-    border: 1px solid rgba(245, 130, 31, 0.3);
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+    border: 1px solid rgba(245, 130, 31, 0.35);
+    box-shadow: var(--glass-rim);
     border-radius: var(--radius-full);
     font-size: var(--text-sm);
     font-weight: var(--font-medium);

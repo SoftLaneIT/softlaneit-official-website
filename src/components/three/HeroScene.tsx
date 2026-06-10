@@ -18,11 +18,20 @@
 
 import React, { useMemo, useRef, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Float, MeshDistortMaterial } from '@react-three/drei';
 import * as THREE from 'three';
 
 const BRAND_ORANGE = '#F5821F';
 const BRAND_ORANGE_LIGHT = '#FF9A3C';
+const GLOBE_POS: [number, number, number] = [2.7, 0.15, -0.8];
+
+/** Deterministic PRNG (mulberry32) — keeps renders pure & geometry stable. */
+const mulberry32 = (seed: number) => () => {
+    seed |= 0;
+    seed = (seed + 0x6D2B79F5) | 0;
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+};
 
 /** Tracks the data-theme attribute so the scene adapts to light/dark. */
 const useTheme = (): 'light' | 'dark' => {
@@ -39,25 +48,273 @@ const useTheme = (): 'light' | 'dark' => {
     return theme;
 };
 
-/** Deterministic PRNG (mulberry32) — keeps the render pure & the field stable. */
-const mulberry32 = (seed: number) => () => {
-    seed |= 0;
-    seed = (seed + 0x6D2B79F5) | 0;
-    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+/** Fibonacci-sphere point distribution — even, clean, "digital globe" look. */
+const fibonacciSphere = (count: number, radius: number) => {
+    const arr = new Float32Array(count * 3);
+    const golden = Math.PI * (3 - Math.sqrt(5));
+    for (let i = 0; i < count; i++) {
+        const y = 1 - (i / (count - 1)) * 2;
+        const r = Math.sqrt(1 - y * y);
+        const theta = golden * i;
+        arr[i * 3] = Math.cos(theta) * r * radius;
+        arr[i * 3 + 1] = y * radius;
+        arr[i * 3 + 2] = Math.sin(theta) * r * radius;
+    }
+    return arr;
 };
 
-/** Slowly drifting particle field with mouse parallax. */
+/* ------------------------------------------------------------------ */
+/* Digital network globe — dotted sphere + glowing connection arcs     */
+/* ------------------------------------------------------------------ */
+const NetworkGlobe: React.FC<{ theme: 'light' | 'dark' }> = ({ theme }) => {
+    const group = useRef<THREE.Group>(null);
+    const globe = useRef<THREE.Group>(null);
+    const RADIUS = 1.55;
+
+    const dots = useMemo(() => fibonacciSphere(700, RADIUS), []);
+
+    // network arcs between surface points (quadratic curves lifted off the surface)
+    const arcs = useMemo(() => {
+        const rand = mulberry32(99);
+        const segs: number[] = [];
+        const ARCS = 14;
+        for (let a = 0; a < ARCS; a++) {
+            const p = (i: number) => new THREE.Vector3(dots[i * 3], dots[i * 3 + 1], dots[i * 3 + 2]);
+            const i1 = Math.floor(rand() * 700);
+            const i2 = Math.floor(rand() * 700);
+            const start = p(i1);
+            const end = p(i2);
+            const mid = start.clone().add(end).multiplyScalar(0.5);
+            const lift = 1 + start.distanceTo(end) / (RADIUS * 2.2);
+            mid.setLength(RADIUS * lift);
+            const curve = new THREE.QuadraticBezierCurve3(start, mid, end);
+            const pts = curve.getPoints(24);
+            for (let i = 0; i < pts.length - 1; i++) {
+                segs.push(pts[i].x, pts[i].y, pts[i].z, pts[i + 1].x, pts[i + 1].y, pts[i + 1].z);
+            }
+        }
+        return new Float32Array(segs);
+    }, [dots]);
+
+    useFrame(({ pointer, clock }) => {
+        const t = clock.getElapsedTime();
+        if (globe.current) {
+            globe.current.rotation.y = t * 0.12;
+        }
+        if (group.current) {
+            group.current.rotation.y += ((pointer.x * 0.35) - group.current.rotation.y) * 0.04;
+            group.current.rotation.x += ((-pointer.y * 0.25) - group.current.rotation.x) * 0.04;
+        }
+    });
+
+    return (
+        <group position={GLOBE_POS}>
+            <group ref={group} rotation={[0.25, 0, 0.18]}>
+                <group ref={globe}>
+                    {/* surface dots */}
+                    <points>
+                        <bufferGeometry>
+                            <bufferAttribute attach="attributes-position" args={[dots, 3]} />
+                        </bufferGeometry>
+                        <pointsMaterial
+                            size={0.028}
+                            color={theme === 'dark' ? BRAND_ORANGE_LIGHT : '#D96E0F'}
+                            transparent
+                            opacity={0.95}
+                            sizeAttenuation
+                        />
+                    </points>
+
+                    {/* fine wireframe shell */}
+                    <mesh>
+                        <sphereGeometry args={[RADIUS, 24, 18]} />
+                        <meshBasicMaterial
+                            color={theme === 'dark' ? BRAND_ORANGE : '#3D3D3D'}
+                            wireframe
+                            transparent
+                            opacity={theme === 'dark' ? 0.05 : 0.06}
+                        />
+                    </mesh>
+
+                    {/* network connection arcs */}
+                    <lineSegments>
+                        <bufferGeometry>
+                            <bufferAttribute attach="attributes-position" args={[arcs, 3]} />
+                        </bufferGeometry>
+                        <lineBasicMaterial
+                            color={BRAND_ORANGE_LIGHT}
+                            transparent
+                            opacity={theme === 'dark' ? 0.45 : 0.4}
+                        />
+                    </lineSegments>
+                </group>
+
+                {/* equator highlight ring */}
+                <mesh rotation={[Math.PI / 2, 0, 0]}>
+                    <torusGeometry args={[RADIUS * 1.18, 0.0045, 8, 128]} />
+                    <meshBasicMaterial
+                        color={BRAND_ORANGE_LIGHT}
+                        transparent
+                        opacity={theme === 'dark' ? 0.4 : 0.3}
+                    />
+                </mesh>
+            </group>
+        </group>
+    );
+};
+
+/* ------------------------------------------------------------------ */
+/* Circuit ring — networked nodes + traces orbiting the globe          */
+/* ------------------------------------------------------------------ */
+const CircuitRing: React.FC<{ theme: 'light' | 'dark' }> = ({ theme }) => {
+    const group = useRef<THREE.Group>(null);
+
+    const { nodes, lines } = useMemo(() => {
+        const rand = mulberry32(1337);
+        const N = 72;
+        const pts: THREE.Vector3[] = [];
+        for (let i = 0; i < N; i++) {
+            const angle = (i / N) * Math.PI * 2;
+            const radius = 2.5 + (rand() - 0.5) * 0.5;
+            pts.push(new THREE.Vector3(
+                Math.cos(angle) * radius,
+                (rand() - 0.5) * 0.6,
+                Math.sin(angle) * radius * 0.92
+            ));
+        }
+        const nodeArr = new Float32Array(N * 3);
+        pts.forEach((p, i) => p.toArray(nodeArr, i * 3));
+
+        const segs: number[] = [];
+        for (let i = 0; i < N; i++) {
+            const a = pts[i];
+            const b = pts[(i + 1) % N];
+            segs.push(a.x, a.y, a.z, b.x, b.y, b.z);
+            if (rand() > 0.82) {
+                const c = pts[(i + 5 + Math.floor(rand() * 8)) % N];
+                segs.push(a.x, a.y, a.z, c.x, c.y, c.z);
+            }
+        }
+        return { nodes: nodeArr, lines: new Float32Array(segs) };
+    }, []);
+
+    useFrame(({ clock }) => {
+        if (!group.current) return;
+        group.current.rotation.y = clock.getElapsedTime() * 0.06;
+    });
+
+    const lineColor = theme === 'dark' ? BRAND_ORANGE_LIGHT : '#D96E0F';
+
+    return (
+        <group ref={group} position={GLOBE_POS} rotation={[0.5, 0, -0.14]}>
+            <points>
+                <bufferGeometry>
+                    <bufferAttribute attach="attributes-position" args={[nodes, 3]} />
+                </bufferGeometry>
+                <pointsMaterial
+                    size={0.045}
+                    color={lineColor}
+                    transparent
+                    opacity={theme === 'dark' ? 0.85 : 0.7}
+                    sizeAttenuation
+                    depthWrite={false}
+                />
+            </points>
+            <lineSegments>
+                <bufferGeometry>
+                    <bufferAttribute attach="attributes-position" args={[lines, 3]} />
+                </bufferGeometry>
+                <lineBasicMaterial
+                    color={lineColor}
+                    transparent
+                    opacity={theme === 'dark' ? 0.18 : 0.15}
+                />
+            </lineSegments>
+        </group>
+    );
+};
+
+/* ------------------------------------------------------------------ */
+/* Data packets — bright dots streaming along the circuit ring         */
+/* ------------------------------------------------------------------ */
+const DataPackets: React.FC = () => {
+    const ref = useRef<THREE.Points>(null);
+    const COUNT = 12;
+    const positions = useMemo(() => new Float32Array(COUNT * 3), []);
+
+    useFrame(({ clock }) => {
+        if (!ref.current) return;
+        const t = clock.getElapsedTime();
+        const attr = ref.current.geometry.getAttribute('position') as THREE.BufferAttribute;
+        for (let i = 0; i < COUNT; i++) {
+            const angle = t * 0.3 + (i / COUNT) * Math.PI * 2;
+            attr.setXYZ(
+                i,
+                Math.cos(angle) * 2.55,
+                Math.sin(angle * 3 + i) * 0.24,
+                Math.sin(angle) * 2.4
+            );
+        }
+        attr.needsUpdate = true;
+    });
+
+    return (
+        <group position={GLOBE_POS} rotation={[0.5, 0, -0.14]}>
+            <points ref={ref}>
+                <bufferGeometry>
+                    <bufferAttribute attach="attributes-position" args={[positions, 3]} />
+                </bufferGeometry>
+                <pointsMaterial
+                    size={0.085}
+                    color="#FFD9B0"
+                    transparent
+                    opacity={0.95}
+                    sizeAttenuation
+                    depthWrite={false}
+                />
+            </points>
+        </group>
+    );
+};
+
+/* ------------------------------------------------------------------ */
+/* Digital grid floor — endless "flythrough" wireframe plane           */
+/* ------------------------------------------------------------------ */
+const GridFloor: React.FC<{ theme: 'light' | 'dark' }> = ({ theme }) => {
+    const ref = useRef<THREE.Group>(null);
+    const CELL = 1.25;
+
+    useFrame(({ clock }) => {
+        if (!ref.current) return;
+        ref.current.position.z = (clock.getElapsedTime() * 0.35) % CELL;
+    });
+
+    return (
+        <group ref={ref} position={[0, -2.4, 0]}>
+            <mesh rotation={[-Math.PI / 2, 0, 0]}>
+                <planeGeometry args={[40, 30, 32, 24]} />
+                <meshBasicMaterial
+                    color={theme === 'dark' ? BRAND_ORANGE : '#3D3D3D'}
+                    wireframe
+                    transparent
+                    opacity={theme === 'dark' ? 0.07 : 0.06}
+                />
+            </mesh>
+        </group>
+    );
+};
+
+/* ------------------------------------------------------------------ */
+/* Ambient particle field with mouse parallax                          */
+/* ------------------------------------------------------------------ */
 const ParticleField: React.FC<{ theme: 'light' | 'dark' }> = ({ theme }) => {
     const points = useRef<THREE.Points>(null);
-    const COUNT = 1400;
+    const COUNT = 1100;
 
     const positions = useMemo(() => {
         const rand = mulberry32(20260610);
         const arr = new Float32Array(COUNT * 3);
         for (let i = 0; i < COUNT; i++) {
-            // distribute in a flat-ish ellipsoid shell around the camera view
             const r = 6 + rand() * 10;
             const theta = rand() * Math.PI * 2;
             const phi = Math.acos(2 * rand() - 1);
@@ -84,95 +341,11 @@ const ParticleField: React.FC<{ theme: 'light' | 'dark' }> = ({ theme }) => {
                 size={0.035}
                 color={theme === 'dark' ? BRAND_ORANGE_LIGHT : '#D96E0F'}
                 transparent
-                opacity={theme === 'dark' ? 0.55 : 0.4}
+                opacity={theme === 'dark' ? 0.5 : 0.38}
                 sizeAttenuation
                 depthWrite={false}
             />
         </points>
-    );
-};
-
-/** Core "energy" blob — distorted sphere wrapped in a wireframe icosahedron. */
-const CoreShape: React.FC<{ theme: 'light' | 'dark' }> = ({ theme }) => {
-    const group = useRef<THREE.Group>(null);
-    const wire = useRef<THREE.Mesh>(null);
-
-    useFrame(({ pointer, clock }) => {
-        const t = clock.getElapsedTime();
-        if (group.current) {
-            // gentle mouse parallax
-            group.current.rotation.y += ((pointer.x * 0.5) - group.current.rotation.y) * 0.04;
-            group.current.rotation.x += ((-pointer.y * 0.35) - group.current.rotation.x) * 0.04;
-        }
-        if (wire.current) {
-            wire.current.rotation.y = t * 0.12;
-            wire.current.rotation.z = t * 0.06;
-        }
-    });
-
-    return (
-        <group ref={group} position={[2.6, 0.2, -1]}>
-            <Float speed={1.4} rotationIntensity={0.4} floatIntensity={1.2}>
-                {/* inner molten sphere */}
-                <mesh scale={1.25}>
-                    <sphereGeometry args={[1, 64, 64]} />
-                    <MeshDistortMaterial
-                        color={BRAND_ORANGE}
-                        emissive={new THREE.Color(BRAND_ORANGE).multiplyScalar(0.25)}
-                        roughness={0.25}
-                        metalness={0.7}
-                        distort={0.38}
-                        speed={1.6}
-                    />
-                </mesh>
-                {/* outer wireframe cage */}
-                <mesh ref={wire} scale={1.9}>
-                    <icosahedronGeometry args={[1, 1]} />
-                    <meshBasicMaterial
-                        color={theme === 'dark' ? BRAND_ORANGE_LIGHT : '#3D3D3D'}
-                        wireframe
-                        transparent
-                        opacity={theme === 'dark' ? 0.22 : 0.18}
-                    />
-                </mesh>
-                {/* orbital ring */}
-                <mesh rotation={[Math.PI / 2.4, 0.4, 0]} scale={2.5}>
-                    <torusGeometry args={[1, 0.006, 16, 128]} />
-                    <meshBasicMaterial
-                        color={BRAND_ORANGE_LIGHT}
-                        transparent
-                        opacity={theme === 'dark' ? 0.5 : 0.35}
-                    />
-                </mesh>
-            </Float>
-        </group>
-    );
-};
-
-/** Small floating accent shapes for depth. */
-const Accents: React.FC<{ theme: 'light' | 'dark' }> = ({ theme }) => {
-    const color = theme === 'dark' ? BRAND_ORANGE_LIGHT : '#3D3D3D';
-    return (
-        <>
-            <Float speed={2} rotationIntensity={1.2} floatIntensity={1.6}>
-                <mesh position={[-4.2, 1.6, -3]} scale={0.5}>
-                    <octahedronGeometry args={[1, 0]} />
-                    <meshBasicMaterial color={color} wireframe transparent opacity={0.3} />
-                </mesh>
-            </Float>
-            <Float speed={1.6} rotationIntensity={1} floatIntensity={1.2}>
-                <mesh position={[-2.8, -1.8, -2]} scale={0.32}>
-                    <torusKnotGeometry args={[1, 0.3, 64, 12]} />
-                    <meshBasicMaterial color={BRAND_ORANGE} wireframe transparent opacity={0.28} />
-                </mesh>
-            </Float>
-            <Float speed={2.4} rotationIntensity={1.4} floatIntensity={2}>
-                <mesh position={[4.6, -1.4, -4]} scale={0.4}>
-                    <dodecahedronGeometry args={[1, 0]} />
-                    <meshBasicMaterial color={color} wireframe transparent opacity={0.25} />
-                </mesh>
-            </Float>
-        </>
     );
 };
 
@@ -197,6 +370,7 @@ export const HeroScene: React.FC<HeroSceneProps> = ({ scrollProgress = 0 }) => {
         () => window.matchMedia('(prefers-reduced-motion: reduce)').matches,
         []
     );
+    const paused = scrollProgress >= 0.98;
 
     return (
         <div
@@ -208,18 +382,16 @@ export const HeroScene: React.FC<HeroSceneProps> = ({ scrollProgress = 0 }) => {
             aria-hidden="true"
         >
             <Canvas
-                dpr={[1, 1.75]}
+                dpr={[1, 1.5]}
                 camera={{ position: [0, 0, 8], fov: 42 }}
-                frameloop={reducedMotion ? 'demand' : 'always'}
+                frameloop={reducedMotion || paused ? 'demand' : 'always'}
                 gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
             >
-                <ambientLight intensity={theme === 'dark' ? 0.4 : 0.9} />
-                <directionalLight position={[5, 5, 5]} intensity={1.2} color="#ffffff" />
-                <pointLight position={[-4, -2, 2]} intensity={6} color={BRAND_ORANGE} />
-
                 <ParticleField theme={theme} />
-                <CoreShape theme={theme} />
-                <Accents theme={theme} />
+                <GridFloor theme={theme} />
+                <CircuitRing theme={theme} />
+                <DataPackets />
+                <NetworkGlobe theme={theme} />
                 {!reducedMotion && <CameraRig />}
             </Canvas>
         </div>
