@@ -1,13 +1,13 @@
 ---
 title: "The Future of AI in Enterprise Software Development"
 excerpt: "Explore how artificial intelligence is transforming the way we build and deploy enterprise applications, from simple automated testing to deep, agentic AI integration."
-image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=500&fit=crop"
+image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=500&fit=crop&fm=webp"
 category: "AI & Technology"
 date: 2026-01-28
 readTime: "10-15 min read"
 author:
   name: "Pramitha Jayasooriya"
-  avatar: "https://miro.medium.com/v2/resize:fill:176:176/1*lU1S63GUL3m8BO6mFjGKyw.jpeg?w=150&h=150&fit=crop"
+  avatar: "https://miro.medium.com/v2/resize:fill:176:176/format:webp/1*lU1S63GUL3m8BO6mFjGKyw.jpeg?w=150&h=150&fit=crop"
 tags:
   - AI
   - Machine Learning

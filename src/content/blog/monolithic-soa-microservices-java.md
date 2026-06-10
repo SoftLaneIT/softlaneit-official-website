@@ -1,13 +1,13 @@
 ---
 title: "Monolithic vs. SOA vs. Microservices Architecture: A Deep Java Perspective"
 excerpt: "An in-depth exploration of software architectures from a Java perspective, comparing Monolithic, SOA, and Microservices."
-image: "https://miro.medium.com/v2/resize:fit:1400/0*GqQJd_ZaRPRSJs38.jpg"
+image: "https://miro.medium.com/v2/resize:fit:1400/format:webp/0*GqQJd_ZaRPRSJs38.jpg"
 category: "Software Architecture"
 date: 2024-03-01
 readTime: "10-12 min read"
 author:
   name: "Pramitha Jayasooriya"
-  avatar: "https://miro.medium.com/v2/resize:fill:176:176/1*lU1S63GUL3m8BO6mFjGKyw.jpeg?w=150&h=150&fit=crop"
+  avatar: "https://miro.medium.com/v2/resize:fill:176:176/format:webp/1*lU1S63GUL3m8BO6mFjGKyw.jpeg?w=150&h=150&fit=crop"
 tags:
   - Java
   - Architecture
@@ -15,7 +15,7 @@ tags:
   - Spring Boot
 ---
 
-![Architecture Comparison](https://miro.medium.com/v2/resize:fit:1400/0*GqQJd_ZaRPRSJs38.jpg)
+![Architecture Comparison](https://miro.medium.com/v2/resize:fit:1400/format:webp/0*GqQJd_ZaRPRSJs38.jpg)
 
 Software architecture is one of the most critical decisions in any software project. The way an application is structured determines how easily it can scale, evolve, and be maintained over time.
 

@@ -1,13 +1,13 @@
 ---
 title: "Why Do We Need the Circuit Breaker Pattern in Microservices?"
 excerpt: "A detailed look into handling failures in distributed systems using the Circuit Breaker design pattern."
-image: "https://miro.medium.com/v2/resize:fit:1400/1*6vQmHRN60fWX5pgwg3GGJw.png"
+image: "https://miro.medium.com/v2/resize:fit:1400/format:webp/1*6vQmHRN60fWX5pgwg3GGJw.png"
 category: "Software Architecture"
 date: 2024-04-01
 readTime: "8 min read"
 author:
   name: "Pramitha Jayasooriya"
-  avatar: "https://miro.medium.com/v2/resize:fill:176:176/1*lU1S63GUL3m8BO6mFjGKyw.jpeg?w=150&h=150&fit=crop"
+  avatar: "https://miro.medium.com/v2/resize:fill:176:176/format:webp/1*lU1S63GUL3m8BO6mFjGKyw.jpeg?w=150&h=150&fit=crop"
 tags:
   - Microservices
   - Resilience
@@ -15,7 +15,7 @@ tags:
   - Design Patterns
 ---
 
-![Circuit Breaker Pattern](https://miro.medium.com/v2/resize:fit:1400/1*6vQmHRN60fWX5pgwg3GGJw.png)
+![Circuit Breaker Pattern](https://miro.medium.com/v2/resize:fit:1400/format:webp/1*6vQmHRN60fWX5pgwg3GGJw.png)
 
 ---
 

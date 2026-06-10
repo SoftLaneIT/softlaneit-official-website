@@ -1,13 +1,13 @@
 ---
 title: "Understanding P95 and P99 Latency in System Performance"
 excerpt: "When building software systems, performance is often discussed using averages such as average response time, average throughput, and average load. But averages lie. If 95% of your users have a fast experience and 5% are stuck waiting for seconds."
-image: https://miro.medium.com/v2/resize:fit:1400/1*KjeHpEaS6BO6OdIp2KhBtQ.png
+image: https://miro.medium.com/v2/resize:fit:1400/format:webp/1*KjeHpEaS6BO6OdIp2KhBtQ.png
 category: Architecture
 date: 2026-03-07
 readTime: "3 min read"
 author:
   name: Tharindu Jayawardhana
-  avatar: https://miro.medium.com/v2/resize:fill:176:176/1*Frjl2Ze5k4_IZY6LT3JFFw.jpeg?w=150&h=150&fit=crop
+  avatar: https://miro.medium.com/v2/resize:fill:176:176/format:webp/1*Frjl2Ze5k4_IZY6LT3JFFw.jpeg?w=150&h=150&fit=crop
 tags:
   - Performance
   - Architecture

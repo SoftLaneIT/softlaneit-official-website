@@ -19,7 +19,7 @@
 
 import { Link } from 'react-router-dom';
 import { Home, ArrowLeft } from 'lucide-react';
-import spacemanImage from '../assets/falling-spaceman.png';
+import spacemanImage from '../assets/falling-spaceman.webp';
 import './NotFoundPage.css';
 
 export const NotFoundPage = () => {

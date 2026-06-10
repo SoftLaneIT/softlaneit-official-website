@@ -1,13 +1,13 @@
 ---
 title: "The Ultimate Guide to Secure API Development in 2026"
 excerpt: "A comprehensive, 15-minute deep dive into enterprise-grade API security, covering OWASP 2026 trends, Zero Trust, and DevSecOps within microservices architectures."
-image: "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=800&h=500&fit=crop"
+image: "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=800&h=500&fit=crop&fm=webp"
 category: "Cybersecurity"
 date: 2026-02-15
 readTime: "10-15 min read"
 author:
   name: "Pramitha Jayasooriya"
-  avatar: "https://miro.medium.com/v2/resize:fill:176:176/1*lU1S63GUL3m8BO6mFjGKyw.jpeg?w=150&h=150&fit=crop"
+  avatar: "https://miro.medium.com/v2/resize:fill:176:176/format:webp/1*lU1S63GUL3m8BO6mFjGKyw.jpeg?w=150&h=150&fit=crop"
 tags:
   - Security
   - API

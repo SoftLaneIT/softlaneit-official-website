@@ -1,7 +1,7 @@
 ---
 title: NeuralCommerce
 description: AI-first marketplace revolutionizing online shopping with neural product matching, voice commerce, and augmented reality try-ons. Personalization at scale.
-image: https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=600&fit=crop
+image: https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=600&fit=crop&fm=webp
 category: E-Commerce
 technologies:
   - Next.js
