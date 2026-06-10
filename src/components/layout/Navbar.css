@@ -113,7 +113,7 @@
     position: relative;
 }
 
-/* Shared liquid-glass bubble — one element that glides between links (iOS tab-bar style) */
+/* Shared liquid-glass bubble — a water-drop lens that glides between links (iOS style) */
 .navbar-bubble {
     position: absolute;
     top: 0;
@@ -121,10 +121,22 @@
     width: 0;
     height: 0;
     border-radius: var(--radius-full);
-    background: var(--glass-bg-strong);
-    backdrop-filter: blur(var(--glass-blur)) saturate(180%);
-    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
-    box-shadow: var(--glass-rim), 0 4px 16px rgba(0, 0, 0, 0.18);
+    background: linear-gradient(165deg,
+            rgba(255, 255, 255, 0.10) 0%,
+            rgba(255, 255, 255, 0.03) 40%,
+            rgba(255, 255, 255, 0.01) 60%,
+            rgba(255, 255, 255, 0.07) 100%);
+    /* light blur + slight brightness = looking through a water lens */
+    backdrop-filter: blur(5px) saturate(170%) brightness(1.07);
+    -webkit-backdrop-filter: blur(5px) saturate(170%) brightness(1.07);
+    box-shadow:
+        /* bright refracting rim, top-left */
+        inset 2px 3px 3px -2.5px rgba(255, 255, 255, 0.65),
+        /* softer counter-rim, bottom-right */
+        inset -2px -3px 3px -2.5px rgba(255, 255, 255, 0.45),
+        /* inner darkening toward the edge, like lens curvature */
+        inset 0 0 12px rgba(0, 0, 0, 0.10),
+        0 8px 24px rgba(0, 0, 0, 0.22);
     opacity: 0;
     pointer-events: none;
     z-index: 0;
@@ -137,13 +149,57 @@
     will-change: left, width, opacity;
 }
 
+/* chromatic-aberration fringe around the rim, like the iOS lens edge */
+.navbar-bubble::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1.5px;
+    background: conic-gradient(from 210deg,
+            rgba(255, 255, 255, 0.55),
+            rgba(120, 220, 160, 0.35),
+            rgba(255, 255, 255, 0.15),
+            rgba(180, 140, 255, 0.30),
+            rgba(255, 190, 120, 0.35),
+            rgba(255, 255, 255, 0.55));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    opacity: 0.55;
+    filter: blur(0.4px);
+}
+
+/* specular highlight — the light spot on the water drop */
+.navbar-bubble::after {
+    content: '';
+    position: absolute;
+    top: 6%;
+    left: 12%;
+    width: 40%;
+    height: 30%;
+    border-radius: 50%;
+    background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.35) 0%, transparent 70%);
+    filter: blur(3px);
+}
+
 /* applied for one frame when the bubble (re)appears, so it doesn't slide in from a corner */
 .navbar-bubble-snap {
     transition: opacity 0.25s ease;
 }
 
 [data-theme="light"] .navbar-bubble {
-    box-shadow: var(--glass-rim), 0 4px 16px rgba(0, 0, 0, 0.08);
+    background: linear-gradient(165deg,
+            rgba(255, 255, 255, 0.45) 0%,
+            rgba(255, 255, 255, 0.12) 40%,
+            rgba(255, 255, 255, 0.06) 60%,
+            rgba(255, 255, 255, 0.30) 100%);
+    box-shadow:
+        inset 2px 3px 3px -2.5px rgba(255, 255, 255, 1),
+        inset -2px -3px 3px -2.5px rgba(255, 255, 255, 0.8),
+        inset 0 0 12px rgba(0, 0, 0, 0.05),
+        0 8px 24px rgba(0, 0, 0, 0.10);
 }
 
 /* Default: Adapt to theme (Black in Light Mode, White in Dark Mode) */

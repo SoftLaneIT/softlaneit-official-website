@@ -44,10 +44,13 @@ export const Navbar: React.FC = () => {
         if (hidden) {
             bubble.classList.add('navbar-bubble-snap');
         }
-        bubble.style.left = `${el.offsetLeft}px`;
-        bubble.style.top = `${el.offsetTop}px`;
-        bubble.style.width = `${el.offsetWidth}px`;
-        bubble.style.height = `${el.offsetHeight}px`;
+        // inflate beyond the link so the lens overflows the bar, like a real water drop
+        const PAD_X = 10;
+        const PAD_Y = 12;
+        bubble.style.left = `${el.offsetLeft - PAD_X}px`;
+        bubble.style.top = `${el.offsetTop - PAD_Y}px`;
+        bubble.style.width = `${el.offsetWidth + PAD_X * 2}px`;
+        bubble.style.height = `${el.offsetHeight + PAD_Y * 2}px`;
         if (hidden) {
             // force reflow so the position applies before re-enabling the slide transition
             void bubble.offsetWidth;
