@@ -17,9 +17,22 @@
  */
 
 .footer {
+    position: relative;
     background: var(--bg-body);
     padding: var(--space-20) 0 0;
-    border-top: 1px solid var(--border-light);
+    border-top: 1px solid var(--glass-border);
+}
+
+/* glass sheen along the footer's top edge */
+.footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 120px;
+    background: linear-gradient(180deg, var(--glass-bg) 0%, transparent 100%);
+    pointer-events: none;
 }
 
 .footer-container {

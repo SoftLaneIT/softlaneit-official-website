@@ -108,13 +108,10 @@ export const ContactPage = () => {
           onClose={() => setToast({ ...toast, show: false })}
         />
       )}
-      {/* Hero Section with Animated Grid */}
+      {/* Hero Section */}
       <section className="contact-hero">
-        <div className="contact-hero-grid">
-          {[...Array(100)].map((_, i) => (
-            <div key={i} className="grid-cell" style={{ animationDelay: `${(i * 0.03) % 3}s` }}></div>
-          ))}
-        </div>
+        <div className="contact-hero-hex" aria-hidden="true"></div>
+        <div className="contact-hero-aurora" aria-hidden="true"></div>
         <div className="container">
           <div className="contact-hero-content">
             <div className="hero-badge">

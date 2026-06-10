@@ -20,7 +20,8 @@
 import React, { useEffect, useState } from 'react';
 import { useScrollAnimation } from '../../hooks';
 import { Code2, Smartphone, CloudCog, Brain, Globe, Lightbulb, Shield, Network } from 'lucide-react';
-import { loadMarkdownFiles } from '../../utils/markdown';
+import { loadMarkdownFiles, type MarkdownContent } from '../../utils/markdown';
+import { TiltCard } from '../common';
 import './Services.css';
 
 interface Service {
@@ -31,7 +32,7 @@ interface Service {
     features: string[];
 }
 
-const iconMap: Record<string, React.ElementType> = {
+const iconMap: Record<string, React.ComponentType<{ size?: number; strokeWidth?: number }>> = {
     Code2,
     Smartphone,
     CloudCog,
@@ -43,7 +44,7 @@ const iconMap: Record<string, React.ElementType> = {
 };
 
 export const Services: React.FC = () => {
-    const [services, setServices] = useState<any[]>([]);
+    const [services, setServices] = useState<MarkdownContent<Service>[]>([]);
     const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation({ wait: services.length });
     const { ref: cardsRef, isVisible: cardsVisible } = useScrollAnimation({ threshold: 0.2, wait: services.length });
 
@@ -87,25 +88,27 @@ export const Services: React.FC = () => {
                         return (
                             <div
                                 key={service.slug}
-                                className="service-card"
+                                className="service-card-wrapper"
                                 style={{ transitionDelay: `${index * 100}ms` }}
                             >
-                                <div className="service-icon">
-                                    {IconComponent && <IconComponent size={32} strokeWidth={1.5} />}
-                                </div>
-                                <h3 className="service-title">{service.attributes.title}</h3>
-                                <p className="service-description">{service.attributes.description}</p>
-                                <ul className="service-features">
-                                    {(service.attributes.features || []).map((feature: string, idx: number) => (
-                                        <li key={idx}>
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                                <polyline points="20 6 9 17 4 12"></polyline>
-                                            </svg>
-                                            {feature}
-                                        </li>
-                                    ))}
-                                </ul>
-                                <div className="service-hover-glow"></div>
+                                <TiltCard className="service-card" max={7}>
+                                    <div className="service-icon">
+                                        {IconComponent && <IconComponent size={32} strokeWidth={1.5} />}
+                                    </div>
+                                    <h3 className="service-title">{service.attributes.title}</h3>
+                                    <p className="service-description">{service.attributes.description}</p>
+                                    <ul className="service-features">
+                                        {(service.attributes.features || []).map((feature: string, idx: number) => (
+                                            <li key={idx}>
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                                </svg>
+                                                {feature}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                    <div className="service-hover-glow"></div>
+                                </TiltCard>
                             </div>
                         );
                     })}

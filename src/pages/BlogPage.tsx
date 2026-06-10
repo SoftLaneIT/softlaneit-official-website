@@ -20,7 +20,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Calendar, Clock, ArrowRight, Search, Tag, Share2, Check, BookOpen } from 'lucide-react';
-import { loadMarkdownFiles } from '../utils/markdown';
+import { loadMarkdownFiles, type MarkdownContent } from '../utils/markdown';
 import { Loader } from '../components/common';
 import './BlogPage.css';
 
@@ -41,7 +41,7 @@ interface BlogPost {
 export const BlogPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
-  const [posts, setPosts] = useState<any[]>([]);
+  const [posts, setPosts] = useState<MarkdownContent<BlogPost>[]>([]);
   const [copiedSlug, setCopiedSlug] = useState<string | null>(null);
   const [deepSearch, setDeepSearch] = useState(false);
   const [searchFocused, setSearchFocused] = useState(false);
@@ -117,6 +117,7 @@ export const BlogPage = () => {
           <div className="hero-gradient-orb orb-1"></div>
           <div className="hero-gradient-orb orb-2"></div>
           <div className="hero-gradient-orb orb-3"></div>
+          <div className="blog-hero-hex" aria-hidden="true"></div>
         </div>
         <div className="container">
           <div className="blog-hero-content">

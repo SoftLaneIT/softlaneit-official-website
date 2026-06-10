@@ -191,8 +191,25 @@
     transition: transform 0.5s ease;
 }
 
-.about-image:hover {
-    transform: scale(1.02);
+/* Shine sweep across the image on hover */
+.about-image-shine {
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-2xl);
+    background: linear-gradient(105deg,
+            transparent 40%,
+            rgba(255, 255, 255, 0.12) 48%,
+            rgba(255, 255, 255, 0.05) 52%,
+            transparent 60%);
+    background-size: 250% 100%;
+    background-position: 120% 0;
+    z-index: 3;
+    pointer-events: none;
+    transition: background-position 0.9s ease;
+}
+
+.about-image-wrapper:hover .about-image-shine {
+    background-position: -60% 0;
 }
 
 .about-image-glow {

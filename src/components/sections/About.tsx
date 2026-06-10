@@ -18,6 +18,7 @@
 
 import React from 'react';
 import { useScrollAnimation, useParallax } from '../../hooks';
+import { TiltCard } from '../common';
 // import { stats } from '../../data/content';
 import './About.css';
 
@@ -155,18 +156,15 @@ export const About: React.FC = () => {
 
                     {/* Visual Replacement for Stats */}
                     <div className={`about-visual ${isVisible ? 'visible' : ''}`}>
-                        <div className="about-image-wrapper">
+                        <TiltCard className="about-image-wrapper" max={6} scale={1.01}>
                             <div className="about-image-glow"></div>
                             <img
                                 src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&auto=format&fit=crop"
                                 alt="SoftlaneIT Team Collaboration"
                                 className="about-image"
                             />
-                            {/* <div className="about-experience-badge">
-                                <span className="experience-years">3+</span>
-                                <span className="experience-text">Years of<br />Excellence</span>
-                            </div> */}
-                        </div>
+                            <div className="about-image-shine" aria-hidden="true"></div>
+                        </TiltCard>
                     </div>
                 </div>
             </div>

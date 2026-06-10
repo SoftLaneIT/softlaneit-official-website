@@ -19,7 +19,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useScrollAnimation } from '../../hooks';
-import { loadMarkdownFiles } from '../../utils/markdown';
+import { loadMarkdownFiles, type MarkdownContent } from '../../utils/markdown';
 import './Testimonials.css';
 
 interface Testimonial {
@@ -33,7 +33,7 @@ interface Testimonial {
 
 export const Testimonials: React.FC = () => {
     const [activeIndex, setActiveIndex] = useState(0);
-    const [testimonials, setTestimonials] = useState<any[]>([]);
+    const [testimonials, setTestimonials] = useState<MarkdownContent<Testimonial>[]>([]);
     const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation({ wait: testimonials.length });
     const { ref: contentRef, isVisible: contentVisible } = useScrollAnimation({ threshold: 0.2, wait: testimonials.length });
 

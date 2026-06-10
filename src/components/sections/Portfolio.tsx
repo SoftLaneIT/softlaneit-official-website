@@ -20,7 +20,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useScrollAnimation } from '../../hooks';
-import { loadMarkdownFiles } from '../../utils/markdown';
+import { loadMarkdownFiles, type MarkdownContent } from '../../utils/markdown';
+import { TiltCard } from '../common';
 import './Portfolio.css';
 
 interface Project {
@@ -37,7 +38,7 @@ const categories = ['All', 'Web Application', 'Mobile App', 'E-Commerce', 'AI/ML
 
 export const Portfolio: React.FC = () => {
     const [activeCategory, setActiveCategory] = useState('All');
-    const [projects, setProjects] = useState<any[]>([]);
+    const [projects, setProjects] = useState<MarkdownContent<Project>[]>([]);
     const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation({ wait: projects.length });
     const { ref: gridRef, isVisible: gridVisible } = useScrollAnimation({ threshold: 0.2, wait: projects.length });
     const navigate = useNavigate();
@@ -102,23 +103,29 @@ export const Portfolio: React.FC = () => {
                     {filteredProjects.map((project, index) => (
                         <div
                             key={project.slug}
-                            className="portfolio-card"
+                            className="portfolio-card-wrapper"
                             style={{ transitionDelay: `${index * 100}ms` }}
-                            onClick={() => navigate(`/projects/${project.slug}`)}
                         >
-                            <div className="portfolio-card-image">
-                                <img src={project.attributes.image} alt={project.attributes.title} loading="lazy" />
-                                <div className="portfolio-card-overlay">
-                                    <span className="portfolio-card-category">{project.attributes.category}</span>
-                                    <h3 className="portfolio-card-title">{project.attributes.title}</h3>
-                                    <p className="portfolio-card-description">{project.attributes.description}</p>
-                                    <div className="portfolio-card-tech">
-                                        {(project.attributes.technologies || []).slice(0, 3).map((tech: string, idx: number) => (
-                                            <span key={idx} className="portfolio-tech-tag">{tech}</span>
-                                        ))}
+                            <TiltCard
+                                className="portfolio-card"
+                                max={9}
+                                scale={1.02}
+                                onClick={() => navigate(`/projects/${project.slug}`)}
+                            >
+                                <div className="portfolio-card-image">
+                                    <img src={project.attributes.image} alt={project.attributes.title} loading="lazy" />
+                                    <div className="portfolio-card-overlay">
+                                        <span className="portfolio-card-category">{project.attributes.category}</span>
+                                        <h3 className="portfolio-card-title">{project.attributes.title}</h3>
+                                        <p className="portfolio-card-description">{project.attributes.description}</p>
+                                        <div className="portfolio-card-tech">
+                                            {(project.attributes.technologies || []).slice(0, 3).map((tech: string, idx: number) => (
+                                                <span key={idx} className="portfolio-tech-tag">{tech}</span>
+                                            ))}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </TiltCard>
                         </div>
                     ))}
                 </div>

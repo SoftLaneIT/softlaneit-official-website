@@ -146,6 +146,19 @@
   --border-light: rgba(255, 255, 255, 0.1);
   --border-medium: rgba(255, 255, 255, 0.2);
 
+  /* Liquid Glass (Apple-style) */
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-bg-strong: rgba(255, 255, 255, 0.08);
+  --glass-border: rgba(255, 255, 255, 0.14);
+  --glass-highlight: rgba(255, 255, 255, 0.22);
+  --glass-blur: 28px;
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  /* refraction rim: bright top-left edge, softer bottom-right — like light bending through glass */
+  --glass-rim:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05),
+    inset 1.5px 2.5px 1px -2px rgba(255, 255, 255, 0.55),
+    inset -1.5px -1.5px 1px -2px rgba(255, 255, 255, 0.3);
+
   /* Gradients */
   --gradient-bg: var(--gradient-dark);
 
@@ -175,6 +188,17 @@
   /* Borders */
   --border-light: rgba(0, 0, 0, 0.12);
   --border-medium: rgba(0, 0, 0, 0.2);
+
+  /* Liquid Glass (Apple-style) */
+  --glass-bg: rgba(255, 255, 255, 0.55);
+  --glass-bg-strong: rgba(255, 255, 255, 0.72);
+  --glass-border: rgba(255, 255, 255, 0.65);
+  --glass-highlight: rgba(255, 255, 255, 0.95);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  --glass-rim:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.35),
+    inset 1.5px 2.5px 1px -2px rgba(255, 255, 255, 1),
+    inset -1.5px -1.5px 1px -2px rgba(255, 255, 255, 0.7);
 
   /* Gradients */
   --gradient-bg: linear-gradient(180deg, #FFFFFF 0%, #F8F9FA 100%);
@@ -304,6 +328,15 @@ ol {
 
 .text-center {
   text-align: center;
+}
+
+/* Apple-style liquid glass surface */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-rim), var(--glass-shadow);
 }
 
 /* ========================================

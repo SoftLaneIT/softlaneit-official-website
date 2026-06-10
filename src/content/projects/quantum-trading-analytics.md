@@ -1,7 +1,7 @@
 ---
 title: Quantum Trading Analytics
 description: Next-generation financial intelligence platform with real-time market analysis, predictive modeling, and algorithmic trading capabilities powered by advanced AI.
-image: https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop
+image: https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop&fm=webp
 category: FinTech
 technologies:
   - Next.js

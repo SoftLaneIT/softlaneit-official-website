@@ -1,13 +1,13 @@
 ---
 title: "Multi-Architecture Containers: How OCI & Buildx Made Docker Truly Universal"
 excerpt: "Why the modern container world runs on OCI + BuildKit multi-architecture image building, and how it solves hardware fragmentation."
-image: "https://miro.medium.com/v2/resize:fit:1400/1*jQN_BmGOrNDa9WYNCHZNTQ.png"
+image: "https://miro.medium.com/v2/resize:fit:1400/format:webp/1*jQN_BmGOrNDa9WYNCHZNTQ.png"
 category: "DevOps & Infrastructure"
 date: 2026-03-04
 readTime: "4 min read"
 author:
   name: "Pramitha Jayasooriya"
-  avatar: "https://miro.medium.com/v2/resize:fill:176:176/1*lU1S63GUL3m8BO6mFjGKyw.jpeg"
+  avatar: "https://miro.medium.com/v2/resize:fill:176:176/format:webp/1*lU1S63GUL3m8BO6mFjGKyw.jpeg"
 tags:
   - Docker
   - OCI
@@ -29,7 +29,7 @@ To solve this, the industry converged on a layered stack.
 
 ---
 
-![Container Stack Architecture](https://miro.medium.com/v2/resize\:fit:1400/1*VfnJs7BavMxk2o_QPJYjSw.png)
+![Container Stack Architecture](https://miro.medium.com/v2/resize\:fit:1400/format:webp/1*VfnJs7BavMxk2o_QPJYjSw.png)
 
 This article explains **why this mattered, how it works, and why multi-architecture OCI images are now the backbone of modern DevOps workflows.**
 
@@ -63,7 +63,7 @@ This is where the **Open Container Initiative (OCI)** stepped in.
 
 ## OCI: The Industry Standard Container Format
 
-![OCI Container Format](https://miro.medium.com/v2/resize\:fit:1400/1*kZYU2dn9qpam1bMMR4Vs0w.png)
+![OCI Container Format](https://miro.medium.com/v2/resize\:fit:1400/format:webp/1*kZYU2dn9qpam1bMMR4Vs0w.png)
 
 OCI introduced **two key standards**.
 
@@ -179,7 +179,7 @@ Buildx enables workflows that **classic Docker builds cannot support**.
 
 ## The Multi-Level Architecture That Makes Everything Work
 
-![Modern Container Build Architecture](https://miro.medium.com/v2/resize\:fit:1400/1*jibOA3t-pSritV1qd4Q9PQ.png)
+![Modern Container Build Architecture](https://miro.medium.com/v2/resize\:fit:1400/format:webp/1*jibOA3t-pSritV1qd4Q9PQ.png)
 
 ### Problem 1: Architecture Incompatibility
 
@@ -239,7 +239,7 @@ The resulting OCI image can run anywhere:
 
 BuildKit introduced **multiple exporters** to support modern workflows.
 
-![BuildKit Exporters Overview](https://miro.medium.com/v2/resize\:fit:1400/1*h8Psx-h6b9xB5iN-cyZt2A.png)
+![BuildKit Exporters Overview](https://miro.medium.com/v2/resize\:fit:1400/format:webp/1*h8Psx-h6b9xB5iN-cyZt2A.png)
 
 These exporters allow builds to output different artifacts depending on use cases.
 

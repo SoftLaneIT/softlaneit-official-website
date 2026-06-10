@@ -1,13 +1,13 @@
 ---
 title: "Art of Clean Code: Understanding the SOLID Principles in Java"
 excerpt: "A comprehensive guide to the SOLID principles in software engineering with practical Java code examples."
-image: "https://miro.medium.com/v2/resize:fit:1400/1*r7ghEEpTH0EIwrxtJRUfbg.jpeg"
+image: "https://miro.medium.com/v2/resize:fit:1400/format:webp/1*r7ghEEpTH0EIwrxtJRUfbg.jpeg"
 category: "Software Engineering"
 date: 2024-02-01
 readTime: "5 min read"
 author:
   name: "Pramitha Jayasooriya"
-  avatar: "https://miro.medium.com/v2/resize:fill:176:176/1*lU1S63GUL3m8BO6mFjGKyw.jpeg?w=150&h=150&fit=crop"
+  avatar: "https://miro.medium.com/v2/resize:fill:176:176/format:webp/1*lU1S63GUL3m8BO6mFjGKyw.jpeg?w=150&h=150&fit=crop"
 tags:
   - Java
   - SOLID

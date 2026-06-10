@@ -16,23 +16,125 @@
  * under the LICENSE.
  */
 
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, Suspense, lazy } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useParallax } from '../../hooks';
 import { companyInfo } from '../../data/content';
 import { Button } from '../common';
+import {
+    SiReact, SiTypescript, SiNextdotjs, SiNodedotjs, SiNestjs, SiJavascript,
+    SiGo, SiOpenjdk, SiGithub, SiKubernetes, SiDocker, SiTerraform,
+    SiPython, SiAngular, SiVuedotjs, SiFlutter, SiSwift, SiKotlin,
+    SiPostgresql, SiMongodb, SiMysql, SiRedis, SiGraphql, SiSpring,
+    SiDjango, SiLaravel, SiPhp, SiDotnet, SiRust, SiGooglecloud,
+    SiFirebase, SiGit, SiGitlab, SiJenkins, SiAnsible, SiLinux,
+    SiNginx, SiApachekafka, SiElasticsearch, SiTailwindcss, SiFigma,
+} from 'react-icons/si';
+import { FaAws } from 'react-icons/fa';
+import { VscAzure } from 'react-icons/vsc';
+import {
+    ShieldCheck, Code2, Infinity as InfinityIcon, Brain, CloudCog, Network,
+    Database, Smartphone,
+} from 'lucide-react';
 import './Hero.css';
 
+/* What we do + what we build with — rendered as a slim marquee strip */
+const TECH_STRIP: { Icon: React.ComponentType<{ size?: number | string }>; label: string }[] = [
+    { Icon: Code2, label: 'Software Engineering' },
+    { Icon: SiReact, label: 'React' },
+    { Icon: ShieldCheck, label: 'Cybersecurity' },
+    { Icon: SiTypescript, label: 'TypeScript' },
+    { Icon: InfinityIcon, label: 'DevOps' },
+    { Icon: FaAws, label: 'AWS' },
+    { Icon: Brain, label: 'AI / ML' },
+    { Icon: SiKubernetes, label: 'Kubernetes' },
+    { Icon: CloudCog, label: 'Cloud Solutions' },
+    { Icon: SiGo, label: 'Go' },
+    { Icon: Network, label: 'Solution Architecture' },
+    { Icon: SiNodedotjs, label: 'Node.js' },
+    { Icon: SiPython, label: 'Python' },
+    { Icon: SiNextdotjs, label: 'Next.js' },
+    { Icon: SiOpenjdk, label: 'Java' },
+    { Icon: Database, label: 'Data Engineering' },
+    { Icon: SiDocker, label: 'Docker' },
+    { Icon: SiTerraform, label: 'Terraform' },
+    { Icon: SiGithub, label: 'GitHub' },
+    { Icon: SiJavascript, label: 'JavaScript' },
+    { Icon: SiNestjs, label: 'NestJS' },
+    { Icon: SiAngular, label: 'Angular' },
+    { Icon: SiVuedotjs, label: 'Vue.js' },
+    { Icon: Smartphone, label: 'Mobile Apps' },
+    { Icon: SiFlutter, label: 'Flutter' },
+    { Icon: SiSwift, label: 'Swift' },
+    { Icon: SiKotlin, label: 'Kotlin' },
+    { Icon: SiSpring, label: 'Spring' },
+    { Icon: SiDjango, label: 'Django' },
+    { Icon: SiDotnet, label: '.NET' },
+    { Icon: SiPhp, label: 'PHP' },
+    { Icon: SiLaravel, label: 'Laravel' },
+    { Icon: SiRust, label: 'Rust' },
+    { Icon: SiPostgresql, label: 'PostgreSQL' },
+    { Icon: SiMongodb, label: 'MongoDB' },
+    { Icon: SiMysql, label: 'MySQL' },
+    { Icon: SiRedis, label: 'Redis' },
+    { Icon: SiGraphql, label: 'GraphQL' },
+    { Icon: SiElasticsearch, label: 'Elasticsearch' },
+    { Icon: SiApachekafka, label: 'Kafka' },
+    { Icon: VscAzure, label: 'Azure' },
+    { Icon: SiGooglecloud, label: 'Google Cloud' },
+    { Icon: SiFirebase, label: 'Firebase' },
+    { Icon: SiGit, label: 'Git' },
+    { Icon: SiGitlab, label: 'GitLab' },
+    { Icon: SiJenkins, label: 'Jenkins' },
+    { Icon: SiAnsible, label: 'Ansible' },
+    { Icon: SiLinux, label: 'Linux' },
+    { Icon: SiNginx, label: 'Nginx' },
+    { Icon: SiTailwindcss, label: 'Tailwind CSS' },
+    { Icon: SiFigma, label: 'Figma' },
+];
+
+const HeroScene = lazy(() =>
+    import('../three/HeroScene').then((m) => ({ default: m.HeroScene }))
+);
+
 export const Hero: React.FC = () => {
-    const { style: parallaxStyle } = useParallax({ speed: 0.3, direction: 'up' });
     const [isLoaded, setIsLoaded] = useState(false);
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+    const [scrollProgress, setScrollProgress] = useState(0);
+    const [isMobile, setIsMobile] = useState(
+        () => window.matchMedia('(max-width: 768px)').matches
+    );
     const heroRef = useRef<HTMLElement>(null);
 
     useEffect(() => {
-        setIsLoaded(true);
+        // defer so the entrance transition actually plays
+        const raf = requestAnimationFrame(() => setIsLoaded(true));
+        const mq = window.matchMedia('(max-width: 768px)');
+        const onChange = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+        mq.addEventListener('change', onChange);
+        return () => {
+            cancelAnimationFrame(raf);
+            mq.removeEventListener('change', onChange);
+        };
     }, []);
 
+    // Scroll-driven parallax: 0 at top, 1 when hero fully scrolled past
+    useEffect(() => {
+        let ticking = false;
+        const onScroll = () => {
+            if (ticking) return;
+            ticking = true;
+            requestAnimationFrame(() => {
+                ticking = false;
+                const vh = window.innerHeight;
+                setScrollProgress(Math.min(1, Math.max(0, window.scrollY / vh)));
+            });
+        };
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+        return () => window.removeEventListener('scroll', onScroll);
+    }, []);
+
+    // Smoothed cursor follower
     useEffect(() => {
         let animationFrameId: number;
         let targetX = 0;
@@ -56,7 +158,7 @@ export const Hero: React.FC = () => {
         };
 
         const heroElement = heroRef.current;
-        if (heroElement) {
+        if (heroElement && !isMobile) {
             heroElement.addEventListener('mousemove', handleMouseMove);
             animationFrameId = requestAnimationFrame(animate);
         }
@@ -67,7 +169,7 @@ export const Hero: React.FC = () => {
             }
             cancelAnimationFrame(animationFrameId);
         };
-    }, []);
+    }, [isMobile]);
 
     const navigate = useNavigate();
 
@@ -82,44 +184,44 @@ export const Hero: React.FC = () => {
         }
     };
 
+    const contentParallax: React.CSSProperties = {
+        transform: `translateY(${scrollProgress * -60}px)`,
+        opacity: 1 - scrollProgress * 1.1,
+    };
+
     return (
         <section id="home" className="hero" ref={heroRef}>
             {/* Custom Cursor */}
-            <div
-                className="hero-cursor"
-                style={{
-                    left: mousePosition.x,
-                    top: mousePosition.y,
-                }}
-            ></div>
+            {!isMobile && (
+                <>
+                    <div
+                        className="hero-cursor"
+                        style={{ left: mousePosition.x, top: mousePosition.y }}
+                    ></div>
+                    <div
+                        className="hero-cursor-glow"
+                        style={{ left: mousePosition.x, top: mousePosition.y }}
+                    ></div>
+                </>
+            )}
 
-            {/* Cursor-following Glow */}
-            <div
-                className="hero-cursor-glow"
-                style={{
-                    left: mousePosition.x,
-                    top: mousePosition.y,
-                }}
-            ></div>
-
-            {/* Animated Background */}
-            <div className="hero-bg" style={parallaxStyle}>
+            {/* Layered Background */}
+            <div className="hero-bg" style={{ transform: `translateY(${scrollProgress * 120}px)` }}>
                 <div className="hero-gradient"></div>
-                <div className="hero-grid"></div>
-                <div className="hero-orb hero-orb-1"></div>
-                <div className="hero-orb hero-orb-2"></div>
-                <div className="hero-orb hero-orb-3"></div>
+                <div className="hero-grid" style={{ transform: `translateY(${scrollProgress * -40}px)` }}></div>
+                <div className="hero-aurora hero-aurora-1"></div>
+                <div className="hero-aurora hero-aurora-2"></div>
             </div>
 
-            {/* Floating Elements */}
-            <div className="hero-floating">
-                <div className="hero-float-element hero-float-1">{'</>'}</div>
-                <div className="hero-float-element hero-float-2">{'{ }'}</div>
-                <div className="hero-float-element hero-float-3">{'( )'}</div>
-            </div>
+            {/* 3D Scene (lazy, desktop-first) */}
+            {!isMobile && (
+                <Suspense fallback={null}>
+                    <HeroScene scrollProgress={scrollProgress} />
+                </Suspense>
+            )}
 
             {/* Content */}
-            <div className="hero-container">
+            <div className="hero-container" style={contentParallax}>
                 <div className={`hero-content ${isLoaded ? 'hero-content-loaded' : ''}`}>
                     <div className="hero-badge">
                         <span className="hero-badge-dot"></span>
@@ -148,27 +250,22 @@ export const Hero: React.FC = () => {
                         </Button>
                     </div>
 
-                    {/* <div className="hero-stats">
-                        <div className="hero-stat">
-                            <span className="hero-stat-value">150+</span>
-                            <span className="hero-stat-label">Projects</span>
+                    {/* Tech & services strip */}
+                    <div className="hero-tech-strip" aria-label="Our technologies and services">
+                        <div className="hero-tech-track">
+                            {[...TECH_STRIP, ...TECH_STRIP].map((tech, i) => (
+                                <div className="hero-tech-chip" key={`${tech.label}-${i}`} title={tech.label}>
+                                    <tech.Icon size={14} />
+                                    <span>{tech.label}</span>
+                                </div>
+                            ))}
                         </div>
-                        <div className="hero-stat-divider"></div>
-                        <div className="hero-stat">
-                            <span className="hero-stat-value">50+</span>
-                            <span className="hero-stat-label">Clients</span>
-                        </div>
-                        <div className="hero-stat-divider"></div>
-                        <div className="hero-stat">
-                            <span className="hero-stat-value">8+</span>
-                            <span className="hero-stat-label">Years</span>
-                        </div>
-                    </div> */}
+                    </div>
                 </div>
             </div>
 
             {/* Modern Scroll Indicator */}
-            <div className="hero-scroll-modern" onClick={handleLearnMore}>
+            <div className="hero-scroll-modern" onClick={handleLearnMore} style={{ opacity: 1 - scrollProgress * 2 }}>
                 <div className="hero-scroll-line"></div>
                 <div className="hero-scroll-arrows">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
