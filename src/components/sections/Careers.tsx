@@ -21,7 +21,7 @@ import { teamMembers, jobOpenings, companyPerks } from '../../data/content';
 import { Home, GraduationCap, Heart, Palmtree, TrendingUp, Zap } from 'lucide-react';
 import './Careers.css';
 
-const perkIconMap: Record<string, React.ElementType> = {
+const perkIconMap: Record<string, React.ComponentType<{ size?: number; strokeWidth?: number }>> = {
   Home,
   GraduationCap,
   Heart,

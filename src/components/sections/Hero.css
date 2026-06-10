@@ -134,6 +134,64 @@
     display: none;
 }
 
+/* 3D Scene Layer */
+.hero-scene {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    will-change: transform, opacity;
+}
+
+.hero-scene canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* Aurora glows behind the 3D scene */
+.hero-aurora {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(110px);
+    pointer-events: none;
+    animation: aurora-drift 18s ease-in-out infinite alternate;
+}
+
+.hero-aurora-1 {
+    width: 55vw;
+    height: 55vw;
+    top: -20%;
+    right: -15%;
+    background: radial-gradient(circle, rgba(245, 130, 31, 0.18) 0%, transparent 60%);
+}
+
+.hero-aurora-2 {
+    width: 40vw;
+    height: 40vw;
+    bottom: -15%;
+    left: -10%;
+    background: radial-gradient(circle, rgba(255, 107, 0, 0.10) 0%, transparent 60%);
+    animation-delay: -9s;
+}
+
+[data-theme="light"] .hero-aurora-1 {
+    background: radial-gradient(circle, rgba(245, 130, 31, 0.14) 0%, transparent 60%);
+}
+
+[data-theme="light"] .hero-aurora-2 {
+    background: radial-gradient(circle, rgba(255, 107, 0, 0.08) 0%, transparent 60%);
+}
+
+@keyframes aurora-drift {
+    0% {
+        transform: translate3d(0, 0, 0) scale(1);
+    }
+
+    100% {
+        transform: translate3d(-6%, 8%, 0) scale(1.15);
+    }
+}
+
 /* Floating Code Elements */
 .hero-floating {
     position: absolute;
@@ -331,8 +389,7 @@
     align-items: center;
     gap: var(--space-4);
     cursor: pointer;
-    animation: fadeIn 1s ease-out 1s forwards;
-    opacity: 0;
+    transition: opacity 0.3s ease-out;
 }
 
 .hero-scroll-line {

@@ -1,0 +1,66 @@
+/*
+ * Copyright (c) 2026, SoftlaneIT (https://softlaneit.com/) All Rights Reserved.
+ *
+ * SoftlaneIT licenses this file to you under the Apache License,
+ * Version 2.0 (the "LICENSE"); you may not use this file except
+ * in compliance with the LICENSE.
+ * You may obtain a copy of the LICENSE at
+ *
+ * https://softlaneit.com/LICENSE.txt
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the LICENSE is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the LICENSE for the
+ * specific language governing permissions and limitations
+ * under the LICENSE.
+ */
+
+.tilt-card {
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform;
+}
+
+.tilt-card:hover {
+    transition: transform 0.08s linear;
+}
+
+/* Moving glare — follows --glare-x / --glare-y set by useTilt */
+.tilt-card-glare {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    background: radial-gradient(
+        circle at var(--glare-x, 50%) var(--glare-y, 50%),
+        rgba(255, 255, 255, 0.12) 0%,
+        rgba(245, 130, 31, 0.06) 25%,
+        transparent 55%
+    );
+    transition: opacity 0.3s ease;
+    z-index: 2;
+}
+
+.tilt-card:hover .tilt-card-glare {
+    opacity: 1;
+}
+
+[data-theme="light"] .tilt-card-glare {
+    background: radial-gradient(
+        circle at var(--glare-x, 50%) var(--glare-y, 50%),
+        rgba(245, 130, 31, 0.10) 0%,
+        rgba(245, 130, 31, 0.04) 25%,
+        transparent 55%
+    );
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .tilt-card,
+    .tilt-card:hover {
+        transition: none;
+        transform: none !important;
+    }
+}

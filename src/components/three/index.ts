@@ -16,8 +16,4 @@
  * under the LICENSE.
  */
 
-export * from './Button';
-export * from './Logo';
-export * from './Loader';
-export * from './Toast';
-export * from './TiltCard';
+export { HeroScene } from './HeroScene';
