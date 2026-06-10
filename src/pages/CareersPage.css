@@ -73,9 +73,75 @@
   background: var(--bg-body);
 }
 
+/* aurora glow matching the homepage hero */
+.careers-hero::before {
+  content: '';
+  position: absolute;
+  width: 50vw;
+  height: 50vw;
+  top: -25vw;
+  left: -15vw;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(245, 130, 31, 0.13) 0%, transparent 60%);
+  filter: blur(100px);
+  pointer-events: none;
+  animation: aurora-drift 18s ease-in-out infinite alternate;
+}
+
+/* hex grid backdrop matching the homepage hero */
+.careers-hero-hex {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='112' height='130' viewBox='0 0 112 130'%3E%3Cpolygon points='56,2 106,29.5 106,84.5 56,112 6,84.5 6,29.5' fill='none' stroke='rgba(255,255,255,0.05)' stroke-width='1'/%3E%3C/svg%3E");
+  background-size: 112px 130px;
+  mask-image: radial-gradient(ellipse at center, black 25%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 25%, transparent 70%);
+  pointer-events: none;
+}
+
+[data-theme="light"] .careers-hero-hex {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='112' height='130' viewBox='0 0 112 130'%3E%3Cpolygon points='56,2 106,29.5 106,84.5 56,112 6,84.5 6,29.5' fill='none' stroke='rgba(0,0,0,0.07)' stroke-width='1'/%3E%3C/svg%3E");
+}
+
+/* staggered entrance */
+.careers-hero-content {
+  position: relative;
+  z-index: 1;
+}
+
+.careers-hero-content > * {
+  opacity: 0;
+  transform: translateY(24px);
+  animation: careers-rise 0.6s ease-out forwards;
+}
+
+.careers-hero-content > *:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.careers-hero-content > *:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+@keyframes careers-rise {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .careers-hero-content > * {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
 .careers-hero h1 {
-  font-size: 3.5rem;
-  font-weight: 700;
+  font-size: clamp(2.5rem, 5vw, 3.75rem);
+  font-weight: var(--font-extrabold);
+  letter-spacing: -0.02em;
   margin-bottom: 1.5rem;
   color: var(--text-primary);
 }
@@ -148,9 +214,13 @@
   align-items: center;
   gap: 0.4rem;
   padding: 0.5rem 1rem;
-  background: rgba(245, 130, 31, 0.12);
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  border: 1px solid rgba(245, 130, 31, 0.35);
+  box-shadow: var(--glass-rim);
   color: var(--primary-orange);
-  border-radius: 20px;
+  border-radius: var(--radius-full);
   font-size: 0.85rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -159,7 +229,6 @@
 }
 
 [data-theme="light"] .section-label {
-  background: rgba(245, 130, 31, 0.1);
   color: var(--primary-orange-dark);
 }
 
@@ -200,18 +269,16 @@
 
 .position-card {
   position: relative;
-  background: var(--bg-card);
-  border: 1px solid var(--border-light);
-  border-radius: 16px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--glass-rim), var(--glass-shadow);
   padding: 2rem;
   margin-bottom: 2rem;
   margin-left: 2rem;
   transition: all 0.3s ease;
-}
-
-[data-theme="light"] .position-card {
-  border-color: rgba(0, 0, 0, 0.12);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
 }
 
 .position-card::before {
@@ -228,12 +295,13 @@
 
 .position-card:hover {
   transform: translateX(10px);
-  border-color: var(--primary-orange);
-  box-shadow: 0 10px 40px rgba(245, 130, 31, 0.15);
+  background: var(--glass-bg-strong);
+  border-color: rgba(245, 130, 31, 0.4);
+  box-shadow: var(--glass-rim), 0 10px 40px rgba(245, 130, 31, 0.15);
 }
 
 [data-theme="light"] .position-card:hover {
-  box-shadow: 0 10px 40px rgba(245, 130, 31, 0.12);
+  box-shadow: var(--glass-rim), 0 10px 40px rgba(245, 130, 31, 0.12);
 }
 
 .position-header {
@@ -427,21 +495,26 @@
 
 .skill-tag {
   padding: 0.5rem 1rem;
-  background: rgba(245, 130, 31, 0.12);
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-rim);
   color: var(--primary-orange);
-  border-radius: 20px;
+  border-radius: var(--radius-full);
   font-size: 0.85rem;
   font-weight: 500;
   transition: all 0.3s ease;
 }
 
 [data-theme="light"] .skill-tag {
-  background: rgba(245, 130, 31, 0.1);
   color: var(--primary-orange-dark);
 }
 
 .skill-tag:hover {
-  background: rgba(245, 130, 31, 0.2);
+  background: var(--glass-bg-strong);
+  border-color: rgba(245, 130, 31, 0.35);
+  transform: scale(1.05);
 }
 
 /* Perks Grid - Bento Style */
@@ -453,17 +526,15 @@
 
 .perk-card {
   position: relative;
-  background: var(--bg-card);
-  border: 1px solid var(--border-light);
-  border-radius: 16px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--glass-rim), var(--glass-shadow);
   padding: 2rem;
   transition: all 0.3s ease;
   overflow: hidden;
-}
-
-[data-theme="light"] .perk-card {
-  border-color: rgba(0, 0, 0, 0.12);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
 }
 
 .perk-card::before {
@@ -480,12 +551,13 @@
 
 .perk-card:hover {
   transform: translateY(-5px);
-  border-color: var(--primary-orange);
-  box-shadow: 0 10px 40px rgba(245, 130, 31, 0.15);
+  background: var(--glass-bg-strong);
+  border-color: rgba(245, 130, 31, 0.4);
+  box-shadow: var(--glass-rim), 0 10px 40px rgba(245, 130, 31, 0.15);
 }
 
 [data-theme="light"] .perk-card:hover {
-  box-shadow: 0 10px 40px rgba(245, 130, 31, 0.12);
+  box-shadow: var(--glass-rim), 0 10px 40px rgba(245, 130, 31, 0.12);
 }
 
 .perk-card:hover::before {
@@ -495,17 +567,15 @@
 .perk-icon {
   width: 48px;
   height: 48px;
-  background: rgba(245, 130, 31, 0.12);
+  background: var(--glass-bg-strong);
+  border: 1px solid rgba(245, 130, 31, 0.25);
+  box-shadow: var(--glass-rim);
   border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 1.5rem;
   color: var(--primary-orange);
-}
-
-[data-theme="light"] .perk-icon {
-  background: rgba(245, 130, 31, 0.1);
 }
 
 .perk-icon svg {
@@ -531,16 +601,14 @@
   z-index: 1;
   text-align: center;
   padding: 4rem 2rem;
-  background: var(--bg-card);
-  border: 1px solid var(--border-light);
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+  border: 1px solid var(--glass-border);
   border-radius: 24px;
+  box-shadow: var(--glass-rim), var(--glass-shadow);
   margin: 0 auto var(--space-12);
   max-width: 1200px;
-}
-
-[data-theme="light"] .careers-cta {
-  border-color: rgba(0, 0, 0, 0.12);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
 }
 
 .careers-cta h2 {

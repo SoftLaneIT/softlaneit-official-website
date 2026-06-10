@@ -20,7 +20,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { MapPin, ArrowRight, CheckCircle2, Sparkles, Zap, Briefcase, Clock, ChevronDown } from 'lucide-react';
-import { loadMarkdownFiles } from '../utils/markdown';
+import { loadMarkdownFiles, type MarkdownContent } from '../utils/markdown';
 import './CareersPage.css';
 
 interface JobOpening {
@@ -28,13 +28,14 @@ interface JobOpening {
   department: string;
   location: string;
   type: string;
+  status?: 'open' | 'closed';
   description: string;
   requirements: string[];
   skills: string[];
 }
 
 export const CareersPage = () => {
-  const [jobs, setJobs] = useState<any[]>([]);
+  const [jobs, setJobs] = useState<MarkdownContent<JobOpening>[]>([]);
   const [expandedJob, setExpandedJob] = useState<string | null>(null);
 
 
@@ -57,7 +58,8 @@ export const CareersPage = () => {
 
       {/* Hero Section */}
       <section className="careers-hero">
-        <div className="container">
+        <div className="careers-hero-hex" aria-hidden="true"></div>
+        <div className="container careers-hero-content">
           <span className="section-label">
             <Sparkles size={16} />
             We're Hiring
