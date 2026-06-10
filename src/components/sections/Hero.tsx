@@ -20,7 +20,36 @@ import React, { useEffect, useState, useRef, Suspense, lazy } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { companyInfo } from '../../data/content';
 import { Button } from '../common';
+import {
+    SiReact, SiTypescript, SiNextdotjs, SiNodedotjs,
+    SiGo, SiOpenjdk, SiGithub, SiKubernetes, SiDocker, SiTerraform,
+} from 'react-icons/si';
+import { FaAws } from 'react-icons/fa';
+import {
+    ShieldCheck, Code2, Infinity as InfinityIcon, Brain, CloudCog, Network,
+} from 'lucide-react';
 import './Hero.css';
+
+/* What we do + what we build with — rendered as a slim marquee strip */
+const TECH_STRIP: { Icon: React.ComponentType<{ size?: number | string }>; label: string }[] = [
+    { Icon: Code2, label: 'Software Engineering' },
+    { Icon: SiReact, label: 'React' },
+    { Icon: ShieldCheck, label: 'Cybersecurity' },
+    { Icon: SiTypescript, label: 'TypeScript' },
+    { Icon: InfinityIcon, label: 'DevOps' },
+    { Icon: FaAws, label: 'AWS' },
+    { Icon: Brain, label: 'AI / ML' },
+    { Icon: SiKubernetes, label: 'Kubernetes' },
+    { Icon: CloudCog, label: 'Cloud Solutions' },
+    { Icon: SiGo, label: 'Go' },
+    { Icon: Network, label: 'Solution Architecture' },
+    { Icon: SiNodedotjs, label: 'Node.js' },
+    { Icon: SiNextdotjs, label: 'Next.js' },
+    { Icon: SiOpenjdk, label: 'Java' },
+    { Icon: SiDocker, label: 'Docker' },
+    { Icon: SiTerraform, label: 'Terraform' },
+    { Icon: SiGithub, label: 'GitHub' },
+];
 
 const HeroScene = lazy(() =>
     import('../three/HeroScene').then((m) => ({ default: m.HeroScene }))
@@ -178,6 +207,18 @@ export const Hero: React.FC = () => {
                         <Button variant="outline" size="lg" onClick={handleLearnMore}>
                             Learn More
                         </Button>
+                    </div>
+
+                    {/* Tech & services strip */}
+                    <div className="hero-tech-strip" aria-label="Our technologies and services">
+                        <div className="hero-tech-track">
+                            {[...TECH_STRIP, ...TECH_STRIP].map((tech, i) => (
+                                <div className="hero-tech-chip" key={`${tech.label}-${i}`} title={tech.label}>
+                                    <tech.Icon size={14} />
+                                    <span>{tech.label}</span>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </div>

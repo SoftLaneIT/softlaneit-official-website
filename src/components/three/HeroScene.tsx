@@ -18,14 +18,7 @@
 
 import React, { useMemo, useRef, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Html } from '@react-three/drei';
 import * as THREE from 'three';
-import type { IconType } from 'react-icons';
-import {
-    SiReact, SiTypescript, SiNextdotjs, SiNodedotjs,
-    SiGo, SiOpenjdk, SiGithub, SiKubernetes, SiDocker,
-} from 'react-icons/si';
-import { FaAws } from 'react-icons/fa';
 
 const BRAND_ORANGE = '#F5821F';
 const BRAND_ORANGE_LIGHT = '#FF9A3C';
@@ -193,63 +186,6 @@ const NetworkGlobe: React.FC<{ theme: 'light' | 'dark' }> = ({ theme }) => {
 /* ------------------------------------------------------------------ */
 /* Tech orbit — the stack we work with, orbiting the globe             */
 /* ------------------------------------------------------------------ */
-const TECH_STACK: { Icon: IconType; label: string }[] = [
-    { Icon: SiReact, label: 'React' },
-    { Icon: SiTypescript, label: 'TypeScript' },
-    { Icon: SiGo, label: 'Go' },
-    { Icon: SiGithub, label: 'GitHub' },
-    { Icon: FaAws, label: 'AWS' },
-    { Icon: SiNodedotjs, label: 'Node.js' },
-    { Icon: SiOpenjdk, label: 'Java' },
-    { Icon: SiKubernetes, label: 'Kubernetes' },
-    { Icon: SiNextdotjs, label: 'Next.js' },
-    { Icon: SiDocker, label: 'Docker' },
-];
-
-const TechOrbit: React.FC = () => {
-    const group = useRef<THREE.Group>(null);
-    // tight orbit hugging the globe so icons never drift over the headline
-    const RADIUS = 1.95;
-
-    useFrame(({ clock }) => {
-        if (!group.current) return;
-        group.current.rotation.y = clock.getElapsedTime() * 0.09;
-    });
-
-    return (
-        <group position={GLOBE_POS} rotation={[0.45, 0, -0.12]}>
-            <group ref={group}>
-                {TECH_STACK.map((tech, i) => {
-                    const angle = (i / TECH_STACK.length) * Math.PI * 2;
-                    return (
-                        <group
-                            key={tech.label}
-                            position={[
-                                Math.cos(angle) * RADIUS,
-                                Math.sin(angle * 2) * 0.12,
-                                Math.sin(angle) * RADIUS * 0.94,
-                            ]}
-                        >
-                            <Html
-                                center
-                                transform
-                                sprite
-                                distanceFactor={4}
-                                zIndexRange={[2, 0]}
-                                wrapperClass="tech-orbit-wrapper"
-                            >
-                                <div className="tech-orbit-icon" title={tech.label}>
-                                    <tech.Icon />
-                                </div>
-                            </Html>
-                        </group>
-                    );
-                })}
-            </group>
-        </group>
-    );
-};
-
 /* ------------------------------------------------------------------ */
 /* Digital grid floor — endless "flythrough" wireframe plane           */
 /* ------------------------------------------------------------------ */
@@ -364,7 +300,6 @@ export const HeroScene: React.FC<HeroSceneProps> = ({ scrollProgress = 0 }) => {
             >
                 <ParticleField theme={theme} />
                 <GridFloor theme={theme} />
-                <TechOrbit />
                 <NetworkGlobe theme={theme} />
                 {!reducedMotion && <CameraRig />}
             </Canvas>
