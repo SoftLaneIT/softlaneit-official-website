@@ -184,80 +184,6 @@ const NetworkGlobe: React.FC<{ theme: 'light' | 'dark' }> = ({ theme }) => {
 };
 
 /* ------------------------------------------------------------------ */
-/* Circuit ring — networked nodes + traces orbiting the globe          */
-/* ------------------------------------------------------------------ */
-const CircuitRing: React.FC<{ theme: 'light' | 'dark' }> = ({ theme }) => {
-    const group = useRef<THREE.Group>(null);
-
-    const { nodes, lines } = useMemo(() => {
-        const rand = mulberry32(1337);
-        const N = 72;
-        const pts: THREE.Vector3[] = [];
-        for (let i = 0; i < N; i++) {
-            const angle = (i / N) * Math.PI * 2;
-            const radius = 2.5 + (rand() - 0.5) * 0.5;
-            pts.push(new THREE.Vector3(
-                Math.cos(angle) * radius,
-                (rand() - 0.5) * 0.6,
-                Math.sin(angle) * radius * 0.92
-            ));
-        }
-        const nodeArr = new Float32Array(N * 3);
-        pts.forEach((p, i) => p.toArray(nodeArr, i * 3));
-
-        const segs: number[] = [];
-        for (let i = 0; i < N; i++) {
-            const a = pts[i];
-            const b = pts[(i + 1) % N];
-            segs.push(a.x, a.y, a.z, b.x, b.y, b.z);
-            // rare short chords only — keeps the ring clean, not a tangle of wires
-            if (rand() > 0.94) {
-                const c = pts[(i + 3 + Math.floor(rand() * 3)) % N];
-                segs.push(a.x, a.y, a.z, c.x, c.y, c.z);
-            }
-        }
-        return { nodes: nodeArr, lines: new Float32Array(segs) };
-    }, []);
-
-    useFrame(({ clock }) => {
-        if (!group.current) return;
-        group.current.rotation.y = clock.getElapsedTime() * 0.06;
-    });
-
-    const lineColor = theme === 'dark' ? BRAND_ORANGE_LIGHT : '#D96E0F';
-
-    return (
-        <group ref={group} position={GLOBE_POS} rotation={[0.5, 0, -0.14]}>
-            <points>
-                <bufferGeometry>
-                    <bufferAttribute attach="attributes-position" args={[nodes, 3]} />
-                </bufferGeometry>
-                <pointsMaterial
-                    size={0.05}
-                    map={getDotTexture()}
-                    alphaTest={0.01}
-                    color={lineColor}
-                    transparent
-                    opacity={theme === 'dark' ? 0.8 : 0.65}
-                    sizeAttenuation
-                    depthWrite={false}
-                />
-            </points>
-            <lineSegments>
-                <bufferGeometry>
-                    <bufferAttribute attach="attributes-position" args={[lines, 3]} />
-                </bufferGeometry>
-                <lineBasicMaterial
-                    color={lineColor}
-                    transparent
-                    opacity={theme === 'dark' ? 0.10 : 0.09}
-                />
-            </lineSegments>
-        </group>
-    );
-};
-
-/* ------------------------------------------------------------------ */
 /* Data packets — bright dots streaming along the circuit ring         */
 /* ------------------------------------------------------------------ */
 const DataPackets: React.FC = () => {
@@ -416,7 +342,6 @@ export const HeroScene: React.FC<HeroSceneProps> = ({ scrollProgress = 0 }) => {
             >
                 <ParticleField theme={theme} />
                 <GridFloor theme={theme} />
-                <CircuitRing theme={theme} />
                 <DataPackets />
                 <NetworkGlobe theme={theme} />
                 {!reducedMotion && <CameraRig />}
