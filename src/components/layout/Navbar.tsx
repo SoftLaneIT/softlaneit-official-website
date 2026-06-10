@@ -16,7 +16,7 @@
  * under the LICENSE.
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { navLinks } from '../../data/content';
 import { Logo } from '../common/Logo';
@@ -29,6 +29,45 @@ export const Navbar: React.FC = () => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [activeSection, setActiveSection] = useState('home');
+    const linksRef = useRef<HTMLDivElement>(null);
+    const bubbleRef = useRef<HTMLDivElement>(null);
+
+    /** Slide the shared glass bubble to a link. If it was hidden, snap (no slide-in from a corner). */
+    const moveBubble = useCallback((el: HTMLElement | null) => {
+        const bubble = bubbleRef.current;
+        if (!bubble) return;
+        if (!el) {
+            bubble.style.opacity = '0';
+            return;
+        }
+        const hidden = bubble.style.opacity !== '1';
+        if (hidden) {
+            bubble.classList.add('navbar-bubble-snap');
+        }
+        bubble.style.left = `${el.offsetLeft}px`;
+        bubble.style.top = `${el.offsetTop}px`;
+        bubble.style.width = `${el.offsetWidth}px`;
+        bubble.style.height = `${el.offsetHeight}px`;
+        if (hidden) {
+            // force reflow so the position applies before re-enabling the slide transition
+            void bubble.offsetWidth;
+            bubble.classList.remove('navbar-bubble-snap');
+        }
+        bubble.style.opacity = '1';
+    }, []);
+
+    /** Return the bubble to the currently active link (or hide it). */
+    const settleBubble = useCallback(() => {
+        const active = linksRef.current?.querySelector<HTMLElement>('.navbar-link-active');
+        moveBubble(active ?? null);
+    }, [moveBubble]);
+
+    // keep the bubble parked on the active link as it changes / on resize
+    useEffect(() => {
+        settleBubble();
+        window.addEventListener('resize', settleBubble, { passive: true });
+        return () => window.removeEventListener('resize', settleBubble);
+    }, [settleBubble, activeSection, location.pathname, isScrolled]);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -103,13 +142,21 @@ export const Navbar: React.FC = () => {
                     <Logo className="navbar-logo-svg" variant="default" height={42} />
                 </Link>
 
-                <div className={`navbar-links ${isMobileMenuOpen ? 'navbar-links-open' : ''}`}>
+                <div
+                    ref={linksRef}
+                    className={`navbar-links ${isMobileMenuOpen ? 'navbar-links-open' : ''}`}
+                    onMouseLeave={settleBubble}
+                >
+                    {/* shared sliding glass bubble */}
+                    <div ref={bubbleRef} className="navbar-bubble" aria-hidden="true"></div>
+
                     {navLinks.filter(link => !['blog', 'careers', 'contact'].includes(link.id)).map((link) => (
                         <a
                             key={link.id}
                             href={link.href}
                             className={`navbar-link ${isHomePage && activeSection === link.id ? 'navbar-link-active' : ''}`}
                             onClick={(e) => handleNavClick(e, link.href)}
+                            onMouseEnter={(e) => moveBubble(e.currentTarget)}
                         >
                             {link.label}
                             <span className="navbar-link-underline"></span>
@@ -119,6 +166,7 @@ export const Navbar: React.FC = () => {
                         to="/blog"
                         className={`navbar-link ${location.pathname.startsWith('/blog') ? 'navbar-link-active' : ''}`}
                         onClick={() => { window.scrollTo({ top: 0, behavior: 'smooth' }); setIsMobileMenuOpen(false); }}
+                        onMouseEnter={(e) => moveBubble(e.currentTarget)}
                     >
                         Blog
                         <span className="navbar-link-underline"></span>
@@ -127,6 +175,7 @@ export const Navbar: React.FC = () => {
                         to="/careers"
                         className={`navbar-link ${location.pathname === '/careers' ? 'navbar-link-active' : ''}`}
                         onClick={() => { window.scrollTo({ top: 0, behavior: 'smooth' }); setIsMobileMenuOpen(false); }}
+                        onMouseEnter={(e) => moveBubble(e.currentTarget)}
                     >
                         Careers
                         <span className="navbar-link-underline"></span>
