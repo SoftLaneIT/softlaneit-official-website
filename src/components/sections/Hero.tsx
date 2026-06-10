@@ -21,12 +21,19 @@ import { useNavigate } from 'react-router-dom';
 import { companyInfo } from '../../data/content';
 import { Button } from '../common';
 import {
-    SiReact, SiTypescript, SiNextdotjs, SiNodedotjs,
+    SiReact, SiTypescript, SiNextdotjs, SiNodedotjs, SiNestjs, SiJavascript,
     SiGo, SiOpenjdk, SiGithub, SiKubernetes, SiDocker, SiTerraform,
+    SiPython, SiAngular, SiVuedotjs, SiFlutter, SiSwift, SiKotlin,
+    SiPostgresql, SiMongodb, SiMysql, SiRedis, SiGraphql, SiSpring,
+    SiDjango, SiLaravel, SiPhp, SiDotnet, SiRust, SiGooglecloud,
+    SiFirebase, SiGit, SiGitlab, SiJenkins, SiAnsible, SiLinux,
+    SiNginx, SiApachekafka, SiElasticsearch, SiTailwindcss, SiFigma,
 } from 'react-icons/si';
 import { FaAws } from 'react-icons/fa';
+import { VscAzure } from 'react-icons/vsc';
 import {
     ShieldCheck, Code2, Infinity as InfinityIcon, Brain, CloudCog, Network,
+    Database, Smartphone,
 } from 'lucide-react';
 import './Hero.css';
 
@@ -44,11 +51,45 @@ const TECH_STRIP: { Icon: React.ComponentType<{ size?: number | string }>; label
     { Icon: SiGo, label: 'Go' },
     { Icon: Network, label: 'Solution Architecture' },
     { Icon: SiNodedotjs, label: 'Node.js' },
+    { Icon: SiPython, label: 'Python' },
     { Icon: SiNextdotjs, label: 'Next.js' },
     { Icon: SiOpenjdk, label: 'Java' },
+    { Icon: Database, label: 'Data Engineering' },
     { Icon: SiDocker, label: 'Docker' },
     { Icon: SiTerraform, label: 'Terraform' },
     { Icon: SiGithub, label: 'GitHub' },
+    { Icon: SiJavascript, label: 'JavaScript' },
+    { Icon: SiNestjs, label: 'NestJS' },
+    { Icon: SiAngular, label: 'Angular' },
+    { Icon: SiVuedotjs, label: 'Vue.js' },
+    { Icon: Smartphone, label: 'Mobile Apps' },
+    { Icon: SiFlutter, label: 'Flutter' },
+    { Icon: SiSwift, label: 'Swift' },
+    { Icon: SiKotlin, label: 'Kotlin' },
+    { Icon: SiSpring, label: 'Spring' },
+    { Icon: SiDjango, label: 'Django' },
+    { Icon: SiDotnet, label: '.NET' },
+    { Icon: SiPhp, label: 'PHP' },
+    { Icon: SiLaravel, label: 'Laravel' },
+    { Icon: SiRust, label: 'Rust' },
+    { Icon: SiPostgresql, label: 'PostgreSQL' },
+    { Icon: SiMongodb, label: 'MongoDB' },
+    { Icon: SiMysql, label: 'MySQL' },
+    { Icon: SiRedis, label: 'Redis' },
+    { Icon: SiGraphql, label: 'GraphQL' },
+    { Icon: SiElasticsearch, label: 'Elasticsearch' },
+    { Icon: SiApachekafka, label: 'Kafka' },
+    { Icon: VscAzure, label: 'Azure' },
+    { Icon: SiGooglecloud, label: 'Google Cloud' },
+    { Icon: SiFirebase, label: 'Firebase' },
+    { Icon: SiGit, label: 'Git' },
+    { Icon: SiGitlab, label: 'GitLab' },
+    { Icon: SiJenkins, label: 'Jenkins' },
+    { Icon: SiAnsible, label: 'Ansible' },
+    { Icon: SiLinux, label: 'Linux' },
+    { Icon: SiNginx, label: 'Nginx' },
+    { Icon: SiTailwindcss, label: 'Tailwind CSS' },
+    { Icon: SiFigma, label: 'Figma' },
 ];
 
 const HeroScene = lazy(() =>
