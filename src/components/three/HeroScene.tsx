@@ -24,6 +24,23 @@ const BRAND_ORANGE = '#F5821F';
 const BRAND_ORANGE_LIGHT = '#FF9A3C';
 const GLOBE_POS: [number, number, number] = [2.7, 0.15, -0.8];
 
+/** Soft circular sprite so points render as glowing dots, not squares. */
+let _dotTexture: THREE.CanvasTexture | null = null;
+const getDotTexture = () => {
+    if (_dotTexture) return _dotTexture;
+    const c = document.createElement('canvas');
+    c.width = c.height = 64;
+    const ctx = c.getContext('2d')!;
+    const g = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+    g.addColorStop(0, 'rgba(255,255,255,1)');
+    g.addColorStop(0.4, 'rgba(255,255,255,0.8)');
+    g.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, 64, 64);
+    _dotTexture = new THREE.CanvasTexture(c);
+    return _dotTexture;
+};
+
 /** Deterministic PRNG (mulberry32) — keeps renders pure & geometry stable. */
 const mulberry32 = (seed: number) => () => {
     seed |= 0;
@@ -77,7 +94,7 @@ const NetworkGlobe: React.FC<{ theme: 'light' | 'dark' }> = ({ theme }) => {
     const arcs = useMemo(() => {
         const rand = mulberry32(99);
         const segs: number[] = [];
-        const ARCS = 14;
+        const ARCS = 7;
         for (let a = 0; a < ARCS; a++) {
             const p = (i: number) => new THREE.Vector3(dots[i * 3], dots[i * 3 + 1], dots[i * 3 + 2]);
             const i1 = Math.floor(rand() * 700);
@@ -117,11 +134,14 @@ const NetworkGlobe: React.FC<{ theme: 'light' | 'dark' }> = ({ theme }) => {
                             <bufferAttribute attach="attributes-position" args={[dots, 3]} />
                         </bufferGeometry>
                         <pointsMaterial
-                            size={0.028}
+                            size={0.035}
+                            map={getDotTexture()}
+                            alphaTest={0.01}
                             color={theme === 'dark' ? BRAND_ORANGE_LIGHT : '#D96E0F'}
                             transparent
-                            opacity={0.95}
+                            opacity={0.9}
                             sizeAttenuation
+                            depthWrite={false}
                         />
                     </points>
 
@@ -144,7 +164,7 @@ const NetworkGlobe: React.FC<{ theme: 'light' | 'dark' }> = ({ theme }) => {
                         <lineBasicMaterial
                             color={BRAND_ORANGE_LIGHT}
                             transparent
-                            opacity={theme === 'dark' ? 0.45 : 0.4}
+                            opacity={theme === 'dark' ? 0.28 : 0.25}
                         />
                     </lineSegments>
                 </group>
@@ -190,8 +210,9 @@ const CircuitRing: React.FC<{ theme: 'light' | 'dark' }> = ({ theme }) => {
             const a = pts[i];
             const b = pts[(i + 1) % N];
             segs.push(a.x, a.y, a.z, b.x, b.y, b.z);
-            if (rand() > 0.82) {
-                const c = pts[(i + 5 + Math.floor(rand() * 8)) % N];
+            // rare short chords only — keeps the ring clean, not a tangle of wires
+            if (rand() > 0.94) {
+                const c = pts[(i + 3 + Math.floor(rand() * 3)) % N];
                 segs.push(a.x, a.y, a.z, c.x, c.y, c.z);
             }
         }
@@ -212,10 +233,12 @@ const CircuitRing: React.FC<{ theme: 'light' | 'dark' }> = ({ theme }) => {
                     <bufferAttribute attach="attributes-position" args={[nodes, 3]} />
                 </bufferGeometry>
                 <pointsMaterial
-                    size={0.045}
+                    size={0.05}
+                    map={getDotTexture()}
+                    alphaTest={0.01}
                     color={lineColor}
                     transparent
-                    opacity={theme === 'dark' ? 0.85 : 0.7}
+                    opacity={theme === 'dark' ? 0.8 : 0.65}
                     sizeAttenuation
                     depthWrite={false}
                 />
@@ -227,7 +250,7 @@ const CircuitRing: React.FC<{ theme: 'light' | 'dark' }> = ({ theme }) => {
                 <lineBasicMaterial
                     color={lineColor}
                     transparent
-                    opacity={theme === 'dark' ? 0.18 : 0.15}
+                    opacity={theme === 'dark' ? 0.10 : 0.09}
                 />
             </lineSegments>
         </group>
@@ -265,10 +288,12 @@ const DataPackets: React.FC = () => {
                     <bufferAttribute attach="attributes-position" args={[positions, 3]} />
                 </bufferGeometry>
                 <pointsMaterial
-                    size={0.085}
+                    size={0.08}
+                    map={getDotTexture()}
+                    alphaTest={0.01}
                     color="#FFD9B0"
                     transparent
-                    opacity={0.95}
+                    opacity={0.9}
                     sizeAttenuation
                     depthWrite={false}
                 />
@@ -338,10 +363,12 @@ const ParticleField: React.FC<{ theme: 'light' | 'dark' }> = ({ theme }) => {
                 <bufferAttribute attach="attributes-position" args={[positions, 3]} />
             </bufferGeometry>
             <pointsMaterial
-                size={0.035}
+                size={0.03}
+                map={getDotTexture()}
+                alphaTest={0.01}
                 color={theme === 'dark' ? BRAND_ORANGE_LIGHT : '#D96E0F'}
                 transparent
-                opacity={theme === 'dark' ? 0.5 : 0.38}
+                opacity={theme === 'dark' ? 0.4 : 0.3}
                 sizeAttenuation
                 depthWrite={false}
             />

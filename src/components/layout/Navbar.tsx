@@ -44,9 +44,9 @@ export const Navbar: React.FC = () => {
         if (hidden) {
             bubble.classList.add('navbar-bubble-snap');
         }
-        // inflate beyond the link so the lens overflows the bar, like a real water drop
-        const PAD_X = 10;
-        const PAD_Y = 12;
+        // inflate slightly beyond the link so the lens reads as a water drop
+        const PAD_X = 4;
+        const PAD_Y = 5;
         bubble.style.left = `${el.offsetLeft - PAD_X}px`;
         bubble.style.top = `${el.offsetTop - PAD_Y}px`;
         bubble.style.width = `${el.offsetWidth + PAD_X * 2}px`;
